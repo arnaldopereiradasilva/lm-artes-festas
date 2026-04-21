@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - L&M Artes e Festas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <img src="imagem/logo-2.png" alt="Logo" class="login-logo">
+            <h2>Painel Administrativo</h2>
+            <p>L&M Artes e Festas</p>
+            <div class="form-group">
+                <label>Usuário</label>
+                <input type="text" id="login-user" placeholder="Digite o usuário">
+            </div>
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="login-pass" placeholder="Digite a senha">
+            </div>
+            <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+            <p class="login-erro hidden" id="login-erro">❌ Usuário ou senha incorretos!</p>
+        </div>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="painel hidden" id="painel">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="imagem/logo-2.png" alt="Logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" onclick="showPage('dashboard')">
+                    📊 Dashboard
+                </a>
+                <a href="#" class="sidebar-link" onclick="showPage('pedidos')">
+                    📋 Pedidos
+                </a>
+                <a href="#" class="sidebar-link" onclick="showPage('calendario')">
+                    📅 Calendário
+                </a>
+                <a href="#" class="sidebar-link" onclick="showPage('financeiro')">
+                    💰 Financeiro
+                </a>
+                <a href="#" class="sidebar-link" onclick="showPage('configuracoes')">
+                    ⚙️ Configurações
+                </a>
+            </nav>
+            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
+        </aside>
+
+        <!-- CONTEÚDO -->
+        <main class="main-content">
+
+            <!-- HEADER DO PAINEL -->
+            <div class="painel-header">
+                <div>
+                    <h1 id="page-title">Dashboard</h1>
+                    <p id="page-sub">Bem-vinda, Lenice! 👋</p>
+                </div>
+                <div class="painel-header-right">
+                    <span class="data-atual" id="dataAtual"></span>
+                    <button class="btn-menu-mobile" onclick="toggleSidebar()">☰</button>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div class="page active" id="page-dashboard">
+
+                <!-- CARDS DE RESUMO -->
+                <div class="cards-grid">
+                    <div class="card-resumo">
+                        <div class="card-icon">📋</div>
+                        <div class="card-info">
+                            <span class="card-num" id="total-pedidos">0</span>
+                            <span class="card-label">Total de Pedidos</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo verde">
+                        <div class="card-icon">✅</div>
+                        <div class="card-info">
+                            <span class="card-num" id="pedidos-confirmados">0</span>
+                            <span class="card-label">Confirmados</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo amarelo">
+                        <div class="card-icon">⏳</div>
+                        <div class="card-info">
+                            <span class="card-num" id="pedidos-pendentes">0</span>
+                            <span class="card-label">Pendentes</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo azul">
+                        <div class="card-icon">💰</div>
+                        <div class="card-info">
+                            <span class="card-num" id="faturamento-total">R$ 0</span>
+                            <span class="card-label">Faturamento Total</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PEDIDOS RECENTES -->
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>📋 Pedidos Recentes</h2>
+                        <button class="btn-ver-todos" onclick="showPage('pedidos')">Ver todos →</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="tabela" id="tabela-recentes">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Data Evento</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-recentes">
+                                <tr>
+                                    <td colspan="6" class="sem-dados">Nenhum pedido ainda</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PRÓXIMOS EVENTOS -->
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>📅 Próximos Eventos</h2>
+                    </div>
+                    <div id="proximos-eventos">
+                        <p class="sem-dados">Nenhum evento agendado</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PEDIDOS -->
+            <div class="page hidden" id="page-pedidos">
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>📋 Todos os Pedidos</h2>
+                        <div class="filtros">
+                            <select id="filtro-status" onchange="filtrarPedidos()">
+                                <option value="todos">Todos</option>
+                                <option value="pendente">Pendentes</option>
+                                <option value="confirmado">Confirmados</option>
+                                <option value="cancelado">Cancelados</option>
+                                <option value="concluido">Concluídos</option>
+                            </select>
+                            <input type="text" id="filtro-busca" placeholder="Buscar cliente..." oninput="filtrarPedidos()">
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="tabela">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>WhatsApp</th>
+                                    <th>Data Evento</th>
+                                    <th>Pagamento</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-pedidos">
+                                <tr>
+                                    <td colspan="8" class="sem-dados">Nenhum pedido ainda</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALENDÁRIO -->
+            <div class="page hidden" id="page-calendario">
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>📅 Calendário de Eventos</h2>
+                        <div class="cal-nav">
+                            <button onclick="mudarMes(-1)">◀</button>
+                            <span id="mes-ano"></span>
+                            <button onclick="mudarMes(1)">▶</button>
+                        </div>
+                    </div>
+                    <div class="calendario" id="calendario"></div>
+                    <div class="cal-legenda">
+                        <span class="leg-item"><span class="leg-cor disponivel"></span> Disponível</span>
+                        <span class="leg-item"><span class="leg-cor ocupado"></span> Ocupado</span>
+                        <span class="leg-item"><span class="leg-cor hoje"></span> Hoje</span>
+                    </div>
+                </div>
+
+                <!-- BLOQUEAR DATA -->
+                <div class="section-box">
+                    <h2>🔒 Bloquear / Desbloquear Datas</h2>
+                    <div class="bloquear-form">
+                        <input type="date" id="data-bloquear">
+                        <input type="text" id="motivo-bloqueio" placeholder="Motivo (opcional)">
+                        <button class="btn-bloquear" onclick="bloquearData()">🔒 Bloquear Data</button>
+                        <button class="btn-desbloquear" onclick="desbloquearData()">🔓 Desbloquear</button>
+                    </div>
+                    <div id="lista-bloqueios"></div>
+                </div>
+            </div>
+
+            <!-- FINANCEIRO -->
+            <div class="page hidden" id="page-financeiro">
+                <div class="cards-grid">
+                    <div class="card-resumo verde">
+                        <div class="card-icon">💰</div>
+                        <div class="card-info">
+                            <span class="card-num" id="fat-mes">R$ 0</span>
+                            <span class="card-label">Faturamento do Mês</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo azul">
+                        <div class="card-icon">📈</div>
+                        <div class="card-info">
+                            <span class="card-num" id="fat-total">R$ 0</span>
+                            <span class="card-label">Faturamento Total</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo amarelo">
+                        <div class="card-icon">⏳</div>
+                        <div class="card-info">
+                            <span class="card-num" id="fat-pendente">R$ 0</span>
+                            <span class="card-label">Aguardando Pagamento</span>
+                        </div>
+                    </div>
+                    <div class="card-resumo">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-info">
+                            <span class="card-num" id="ticket-medio">R$ 0</span>
+                            <span class="card-label">Ticket Médio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>💰 Histórico Financeiro</h2>
+                        <select id="filtro-mes-fin" onchange="filtrarFinanceiro()">
+                            <option value="todos">Todos os meses</option>
+                            <option value="0">Janeiro</option>
+                            <option value="1">Fevereiro</option>
+                            <option value="2">Março</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Maio</option>
+                            <option value="5">Junho</option>
+                            <option value="6">Julho</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Setembro</option>
+                            <option value="9">Outubro</option>
+                            <option value="10">Novembro</option>
+                            <option value="11">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="tabela">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Data Evento</th>
+                                    <th>Pagamento</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-financeiro">
+                                <tr>
+                                    <td colspan="6" class="sem-dados">Nenhum registro</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIGURAÇÕES -->
+             <!-- ABA FOTOS -->
+<div class="config-section" id="config-fotos">
+    <h3>🖼️ Gerenciar Fotos dos Carrosseis</h3>
+
+    <!-- AVALIAÇÕES -->
+    <div class="fotos-section">
+        <h4>⭐ Avaliações Reais</h4>
+        <p class="fotos-desc">Fotos exibidas no carrossel de avaliações do site</p>
+        <div class="fotos-grid" id="grid-avaliacoes"></div>
+        <div class="fotos-add">
+            <label class="btn-add-foto">
+                ➕ Adicionar Foto
+                <input type="file" accept="image/*" multiple onchange="adicionarFotos('avaliacoes', this)">
+            </label>
+        </div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="fotos-section">
+        <h4>🎉 Nossos Eventos</h4>
+        <p class="fotos-desc">Fotos exibidas no carrossel de eventos do site</p>
+        <div class="fotos-grid" id="grid-eventos"></div>
+        <div class="fotos-add">
+            <label class="btn-add-foto">
+                ➕ Adicionar Foto
+                <input type="file" accept="image/*" multiple onchange="adicionarFotos('eventos', this)">
+            </label>
+        </div>
+    </div>
+
+    <!-- ESTAÇÕES -->
+    <div class="fotos-section">
+        <h4>🍿 Nossas Estações</h4>
+        <p class="fotos-desc">Fotos exibidas no carrossel de estações do site</p>
+        <div class="fotos-grid" id="grid-estacoes"></div>
+        <div class="fotos-add">
+            <label class="btn-add-foto">
+                ➕ Adicionar Foto
+                <input type="file" accept="image/*" multiple onchange="adicionarFotos('estacoes', this)">
+            </label>
+        </div>
+    </div>
+
+</div>
+            <div class="page hidden" id="page-configuracoes">
+                <div class="section-box">
+                    <h2>⚙️ Configurações do Sistema</h2>
+
+                    <div class="config-section">
+                        <h3>🔐 Alterar Senha</h3>
+                        <div class="form-group">
+                            <label>Senha Atual</label>
+                            <input type="password" id="senha-atual" placeholder="Digite a senha atual">
+                        </div>
+                        <div class="form-group">
+                            <label>Nova Senha</label>
+                            <input type="password" id="senha-nova" placeholder="Digite a nova senha">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Nova Senha</label>
+                            <input type="password" id="senha-confirmar" placeholder="Confirme a nova senha">
+                        </div>
+                        <button class="btn-salvar" onclick="alterarSenha()">💾 Salvar Senha</button>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>💰 Preços dos Serviços</h3>
+                        <div class="precos-grid">
+                            <div class="form-group">
+                                <label>Garçom (R$)</label>
+                                <input type="number" id="preco-garcom" value="180">
+                            </div>
+                            <div class="form-group">
+                                <label>Copeira (R$)</label>
+                                <input type="number" id="preco-copeira" value="160">
+                            </div>
+                            <div class="form-group">
+                                <label>Fritadeira (R$)</label>
+                                <input type="number" id="preco-fritadeira" value="150">
+                            </div>
+                            <div class="form-group">
+                                <label>Churrasqueiro (R$)</label>
+                                <input type="number" id="preco-churrasqueiro" value="220">
+                            </div>
+                                                        <div class="form-group">
+                                <label>Monitora (R$)</label>
+                                <input type="number" id="preco-monitora" value="140">
+                            </div>
+                            <div class="form-group">
+                                <label>Recepcionista (R$)</label>
+                                <input type="number" id="preco-recepcionista" value="160">
+                            </div>
+                        </div>
+                        <h3 style="margin-top: 1.5rem;">🍿 Preços das Estações</h3>
+                        <div class="precos-grid">
+                            <div class="form-group">
+                                <label>Pipoca (R$)</label>
+                                <input type="number" id="preco-pipoca" value="120">
+                            </div>
+                            <div class="form-group">
+                                <label>Algodão Doce (R$)</label>
+                                <input type="number" id="preco-algodao" value="130">
+                            </div>
+                            <div class="form-group">
+                                <label>Açaí (R$)</label>
+                                <input type="number" id="preco-acai" value="200">
+                            </div>
+                            <div class="form-group">
+                                <label>Sorvete (R$)</label>
+                                <input type="number" id="preco-sorvete" value="180">
+                            </div>
+                            <div class="form-group">
+                                <label>Batata Frita (R$)</label>
+                                <input type="number" id="preco-batata" value="150">
+                            </div>
+                            <div class="form-group">
+                                <label>Crepe (R$)</label>
+                                <input type="number" id="preco-crepe" value="160">
+                            </div>
+                            <div class="form-group">
+                                <label>Suco Natural (R$)</label>
+                                <input type="number" id="preco-suco" value="140">
+                            </div>
+                        </div>
+                        <button class="btn-salvar" onclick="salvarPrecos()">💾 Salvar Preços</button>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>📱 Dados de Contato</h3>
+                        <div class="form-group">
+                            <label>WhatsApp</label>
+                            <input type="text" id="config-whatsapp" value="5521985412860">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="text" id="config-email" value="lenicebraga@hotmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Chave PIX</label>
+                            <input type="text" id="config-pix" value="lenicebraga@hotmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Máximo de eventos por dia</label>
+                            <input type="number" id="config-max-eventos" value="5">
+                        </div>
+                        <button class="btn-salvar" onclick="salvarConfiguracoes()">💾 Salvar Configurações</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL DETALHES DO PEDIDO -->
+    <div class="modal-overlay hidden" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-titulo">Detalhes do Pedido</h2>
+                <button class="modal-fechar" onclick="fecharModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-confirmar" onclick="atualizarStatus('confirmado')">✅ Confirmar</button>
+                <button class="btn-concluir" onclick="atualizarStatus('concluido')">🏁 Concluir</button>
+                <button class="btn-cancelar-pedido" onclick="atualizarStatus('cancelado')">❌ Cancelar</button>
+                <button class="btn-whatsapp-admin" onclick="contatarCliente()">📱 WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+
+</body>
+</html>
+                            

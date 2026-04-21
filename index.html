@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="L&M Artes e Festas - Equipe profissional para eventos na Zona Oeste do Rio de Janeiro. Garçons, copeiras, churrasqueiros, estações e muito mais!">
+    <meta name="keywords"
+        content="garçom, copeira, churrasqueiro, eventos, festas, estações, Zona Oeste, Rio de Janeiro">
+    <meta name="author" content="L&M Artes e Festas">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="lm-style.css">
+    <title>L&M Artes e Festas</title>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="header">
+        <div class="header-inner">
+            <img src="imagem/logo-2.png" alt="logo" class="logo">
+            <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">Sobre</a>
+                <a href="#servico" class="nav-link">Serviços</a>
+                <a href="#pedido" class="nav-link">Fazer Pedido</a>
+                <a href="#deslocamento" class="nav-link">Deslocamento</a>
+                <a href="#sugestoes" class="nav-link">Sugestões</a>
+                <a href="#avaliacoes" class="nav-link">Avaliações</a>
+                <a href="#equipe" class="nav-link">Contato</a>
+            </nav>
+            <a href="https://wa.me/5521985412860?text=Olá%2C%20quero%20fazer%20minha%20festa!" class="btn-contato"
+                target="_blank">Contato</a>
+        </div>
+    </header>
+
+    <!-- WHATSAPP FIXO -->
+    <a href="https://wa.me/5521985412860?text=Olá%2C%20quero%20fazer%20minha%20festa!" target="_blank"
+        class="link-whatsapp" aria-label="WhatsApp">
+        <img src="imagem/whatsapp.png" alt="WhatsApp">
+    </a>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-badge">✦ Equipe profissional para eventos</span>
+            <h1>🥂 Sua festa merece<br><em>o melhor suporte</em></h1>
+            <p>Garçons, copeiras, churrasqueiros, estações e muito mais.<br>Atendemos toda a <strong>Zona Oeste do Rio
+                    de Janeiro</strong> com qualidade e pontualidade.</p>
+            <div class="hero-btns">
+                <a href="#pedido" class="btn-principal">Fazer Pedido Online</a>
+                <a href="#servico" class="btn-secundario">Ver Serviços</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="about" id="about">
+        <h2 class="title">Sobre <span>Nós</span></h2>
+        <div class="about-row">
+            <div class="about-img">
+                <img src="imagem/images.jpg" alt="sobre-nos">
+            </div>
+            <div class="about-text">
+                <h3>O que faz nosso serviço especial</h3>
+                <p>O que torna o nosso serviço realmente especial é o cuidado com cada detalhe e o respeito por cada
+                    cliente. Não oferecemos apenas mão de obra, entregamos compromisso, responsabilidade e dedicação em
+                    cada evento.</p>
+                <p>Nossa equipe é formada por profissionais experientes, educados e preparados para atender com
+                    agilidade, simpatia e organização, garantindo que tudo aconteça da melhor forma possível. Atendemos
+                    toda a <strong>Zona Oeste do Rio de Janeiro!</strong></p>
+                <a href="#pedido" class="btn-principal" style="margin-top:1.5rem; display:inline-block;">Fazer Pedido
+                    Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section class="servico" id="servico">
+        <h2 class="title">Nossos <span>Serviços</span></h2>
+        <div class="servico-grid">
+            <div class="servico-card">
+                <div class="servico-icone">🤵</div>
+                <h3>Mão de Obra</h3>
+                <ul>
+                    <li>Garçom</li>
+                    <li>Copeira</li>
+                    <li>Fritadeira</li>
+                    <li>Churrasqueiro</li>
+                    <li>Monitora</li>
+                    <li>Recepcionista</li>
+                </ul>
+            </div>
+            <div class="servico-card destaque">
+                <div class="servico-icone">🍿</div>
+                <h3>Estações</h3>
+                <ul>
+                    <li>Pipoca</li>
+                    <li>Algodão Doce</li>
+                    <li>Açaí</li>
+                    <li>Sorvete</li>
+                    <li>Batata Frita</li>
+                    <li>Crepe</li>
+                    <li>Suco Natural</li>
+                </ul>
+            </div>
+            <div class="servico-card">
+                <div class="servico-icone">🎉</div>
+                <h3>Diferenciais</h3>
+                <ul>
+                    <li>Equipe uniformizada</li>
+                    <li>Pontualidade garantida</li>
+                    <li>Certificado de garantia</li>
+                    <li>Atendimento personalizado</li>
+                    <li>Melhor custo benefício</li>
+                    <li>Orçamento sem compromisso</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PEDIDO ONLINE -->
+    <section class="pedido-online" id="pedido">
+        <h2 class="title">Faça seu <span>Pedido Online</span></h2>
+        <p class="pedido-sub">Monte sua equipe, escolha a data e pague tudo pelo site!</p>
+
+        <div class="steps">
+            <div class="step active" id="step-indicator-1">
+                <div class="step-num">1</div>
+                <span>Seus Dados</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-2">
+                <div class="step-num">2</div>
+                <span>Data e Local</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-3">
+                <div class="step-num">3</div>
+                <span>Monte a Equipe</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-4">
+                <div class="step-num">4</div>
+                <span>Estações</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-5">
+                <div class="step-num">5</div>
+                <span>Pagamento</span>
+            </div>
+        </div>
+
+        <div class="pedido-container">
+
+            <!-- STEP 1 -->
+            <div class="pedido-step" id="step-1">
+                <h3>📋 Seus Dados</h3>
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" id="p-nome" placeholder="Ex: Maria Silva">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp</label>
+                    <input type="text" id="p-whatsapp" placeholder="(21) 9 9999-9999">
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="p-email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="p-cpf" placeholder="000.000.000-00">
+                </div>
+                <div class="step-btns">
+                    <button class="btn-next" onclick="nextStep(1)">Próximo →</button>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="pedido-step hidden" id="step-2">
+                <h3>📅 Data e Local do Evento</h3>
+                <div class="form-group">
+                    <label>Data do evento</label>
+                    <input type="text" id="p-data" placeholder="Selecione a data" readonly>
+                    <small id="data-status"></small>
+                </div>
+                <div class="form-group">
+                    <label>Horário de início</label>
+                    <input type="time" id="p-horario">
+                </div>
+                <div class="form-group">
+                    <label>Duração estimada</label>
+                    <select id="p-duracao">
+                        <option value="5" selected>5 horas</option>
+                        <option value="6">6 horas</option>
+                        <option value="7">7 horas</option>
+                        <option value="8">8 horas</option>
+                        <option value="9">9 horas</option>
+                        <option value="10">10 horas</option>
+                        <option value="11">11 horas</option>
+                        <option value="12">12 horas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Endereço do evento</label>
+                    <input type="text" id="p-endereco" placeholder="Rua, número, bairro, cidade">
+                </div>
+                <div class="form-group">
+                    <label>Número de convidados</label>
+                    <input type="number" id="p-convidados" placeholder="Ex: 100" min="1">
+                </div>
+                <div class="step-btns">
+                    <button class="btn-back" onclick="prevStep(2)">← Voltar</button>
+                    <button class="btn-next" onclick="nextStep(2)">Próximo →</button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="pedido-step hidden" id="step-3">
+                <h3>🤵 Monte sua Equipe de Apoio</h3>
+                <p class="step-desc">Selecione a quantidade de cada profissional que deseja</p>
+                <div class="servicos-grid">
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">🤵</span>
+                            <div>
+                                <strong>Garçom</strong>
+                                <span class="servico-preco">R$ 180,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('garcom', -1)">−</button>
+                            <span id="qty-garcom">0</span>
+                            <button onclick="changeQty('garcom', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">👩‍🍳</span>
+                            <div>
+                                <strong>Copeira</strong>
+                                <span class="servico-preco">R$ 160,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('copeira', -1)">−</button>
+                            <span id="qty-copeira">0</span>
+                            <button onclick="changeQty('copeira', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">🍳</span>
+                            <div>
+                                <strong>Fritadeira</strong>
+                                <span class="servico-preco">R$ 150,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('fritadeira', -1)">−</button>
+                            <span id="qty-fritadeira">0</span>
+                            <button onclick="changeQty('fritadeira', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">🔥</span>
+                            <div>
+                                <strong>Churrasqueiro</strong>
+                                <span class="servico-preco">R$ 220,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('churrasqueiro', -1)">−</button>
+                            <span id="qty-churrasqueiro">0</span>
+                            <button onclick="changeQty('churrasqueiro', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">👧</span>
+                            <div>
+                                <strong>Monitora</strong>
+                                <span class="servico-preco">R$ 140,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('monitora', -1)">−</button>
+                            <span id="qty-monitora">0</span>
+                            <button onclick="changeQty('monitora', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <span class="servico-emoji">💁‍♀️</span>
+                            <div>
+                                <strong>Recepcionista</strong>
+                                <span class="servico-preco">R$ 160,00 / evento</span>
+                            </div>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty('recepcionista', -1)">−</button>
+                            <span id="qty-recepcionista">0</span>
+                            <button onclick="changeQty('recepcionista', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-btns">
+                    <button class="btn-back" onclick="prevStep(3)">← Voltar</button>
+                    <button class="btn-next" onclick="nextStep(3)">Próximo →</button>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="pedido-step hidden" id="step-4">
+                <h3>🍿 Escolha as Estações</h3>
+                <p class="step-desc">Opcional - Adicione estações para tornar seu evento ainda mais especial!</p>
+                <div class="estacoes-grid">
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-pipoca" onchange="toggleEstacao('pipoca', 120)">
+                        <label for="est-pipoca">
+                            <span class="est-emoji">🍿</span>
+                            <strong>Pipoca</strong>
+                            <span class="est-preco">R$ 120,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-algodao" onchange="toggleEstacao('algodao', 130)">
+                        <label for="est-algodao">
+                            <span class="est-emoji">🩷</span>
+                            <strong>Algodão Doce</strong>
+                            <span class="est-preco">R$ 130,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-acai" onchange="toggleEstacao('acai', 200)">
+                        <label for="est-acai">
+                            <span class="est-emoji">🫐</span>
+                            <strong>Açaí</strong>
+                            <span class="est-preco">R$ 200,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-sorvete" onchange="toggleEstacao('sorvete', 180)">
+                        <label for="est-sorvete">
+                            <span class="est-emoji">🍦</span>
+                            <strong>Sorvete</strong>
+                            <span class="est-preco">R$ 180,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-batata" onchange="toggleEstacao('batata', 150)">
+                        <label for="est-batata">
+                            <span class="est-emoji">🍟</span>
+                            <strong>Batata Frita</strong>
+                            <span class="est-preco">R$ 150,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-crepe" onchange="toggleEstacao('crepe', 160)">
+                        <label for="est-crepe">
+                            <span class="est-emoji">🥞</span>
+                            <strong>Crepe</strong>
+                            <span class="est-preco">R$ 160,00</span>
+                        </label>
+                    </div>
+                    <div class="estacao-item">
+                        <input type="checkbox" id="est-suco" onchange="toggleEstacao('suco', 140)">
+                        <label for="est-suco">
+                            <span class="est-emoji">🥤</span>
+                            <strong>Suco Natural</strong>
+                            <span class="est-preco">R$ 140,00</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="step-btns">
+                    <button class="btn-back" onclick="prevStep(4)">← Voltar</button>
+                    <button class="btn-next" onclick="nextStep(4)">Próximo →</button>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="pedido-step hidden" id="step-5">
+                <h3>💳 Resumo e Pagamento</h3>
+                <div class="resumo-pedido" id="resumo-pedido"></div>
+                <div class="total-pedido">
+                    <strong>Total:</strong>
+                    <span id="total-valor">R$ 0,00</span>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Forma de Pagamento</label>
+                    <div class="pagamento-opcoes">
+                        <div class="pag-opcao" onclick="selectPagamento('pix')" id="pag-pix">
+                            <span>💠</span>
+                            <strong>PIX</strong>
+                            <small>Aprovação imediata</small>
+                        </div>
+                        <div class="pag-opcao" onclick="selectPagamento('credito')" id="pag-credito">
+                            <span>💳</span>
+                            <strong>Crédito</strong>
+                            <small>Em até 12x</small>
+                        </div>
+                        <div class="pag-opcao" onclick="selectPagamento('debito')" id="pag-debito">
+                            <span>💳</span>
+                            <strong>Débito</strong>
+                            <small>À vista</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="pag-detalhe hidden" id="detalhe-pix">
+                    <div class="pix-box">
+                        <p>📱 Escaneie o QR Code ou copie a chave PIX</p>
+                        <div class="pix-qr">
+                            <img src="imagem/qrcode-pix.png" alt="QR Code PIX" onerror="this.style.display='none'">
+                            <p class="pix-chave">Chave PIX: <strong>lenicebraga@hotmail.com</strong></p>
+                        </div>
+                        <button class="btn-copiar" onclick="copiarPix()">📋 Copiar Chave PIX</button>
+                        <p class="pix-aviso">⚠️ Após o pagamento, envie o comprovante pelo WhatsApp</p>
+                    </div>
+                </div>
+                <div class="pag-detalhe hidden" id="detalhe-cartao">
+                    <div class="cartao-form">
+                        <div class="form-group">
+                            <label>Número do Cartão</label>
+                            <input type="text" id="card-numero" placeholder="0000 0000 0000 0000" maxlength="19">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Validade</label>
+                                <input type="text" id="card-validade" placeholder="MM/AA" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="card-cvv" placeholder="000" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome no Cartão</label>
+                            <input type="text" id="card-nome" placeholder="NOME SOBRENOME">
+                        </div>
+                        <div class="form-group" id="parcelas-group" style="display:none;">
+                            <label>Parcelas</label>
+                            <select id="card-parcelas">
+                                <option value="1">1x sem juros</option>
+                                <option value="2">2x sem juros</option>
+                                <option value="3">3x sem juros</option>
+                                <option value="6">6x com juros</option>
+                                <option value="12">12x com juros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-btns">
+                    <button class="btn-back" onclick="prevStep(5)">← Voltar</button>
+                    <button class="btn-finalizar" onclick="finalizarPedido()">✅ Finalizar Pedido</button>
+                </div>
+            </div>
+
+            <!-- SUCESSO -->
+            <div class="pedido-step hidden" id="step-sucesso">
+                <div class="sucesso-box">
+                    <div class="sucesso-icone">🎉</div>
+                    <h3>Pedido Realizado com Sucesso!</h3>
+                    <p>Obrigado! Seu pedido foi recebido e em breve entraremos em contato pelo WhatsApp para confirmar
+                        todos os detalhes.</p>
+                    <div class="sucesso-num" id="sucesso-num"></div>
+                    <a href="https://wa.me/5521985412860" class="btn-principal" target="_blank">Falar no WhatsApp</a>
+                    <button class="btn-secundario" onclick="novoPedido()">Fazer Novo Pedido</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DESLOCAMENTO -->
+    <section class="deslocamento" id="deslocamento">
+        <h2 class="title">Cálculo de <span>Deslocamento</span></h2>
+        <p class="desloc-sub">O deslocamento da equipe é feito por aplicativo (Uber / 99) e o valor é cobrado do cliente
+        </p>
+
+        <div class="desloc-container">
+
+            <div class="desloc-info">
+                <div class="desloc-info-card">
+                    <span class="desloc-emoji">📱</span>
+                    <h3>Como funciona?</h3>
+                    <p>O deslocamento da nossa equipe é realizado via aplicativo de transporte <strong>(Uber /
+                            99)</strong>. O valor das corridas de <strong>ida e volta</strong> é de responsabilidade do
+                        cliente. Atendemos toda a <strong>Zona Oeste do Rio de Janeiro.</strong></p>
+                </div>
+                <div class="desloc-info-card">
+                    <span class="desloc-emoji">🚗</span>
+                    <h3>Ida e Volta</h3>
+                    <p>São cobradas <strong>2 corridas</strong> por profissional contratado. Uma na <strong>ida</strong>
+                        ao evento e outra na <strong>volta</strong> após o término do serviço.</p>
+                </div>
+                <div class="desloc-info-card">
+                    <span class="desloc-emoji">💡</span>
+                    <h3>Dica importante</h3>
+                    <p>O valor das corridas pode variar de acordo com o <strong>horário</strong>,
+                        <strong>distância</strong> e <strong>demanda</strong> do aplicativo no momento. Recomendamos
+                        simular pelo próprio app antes do evento.</p>
+                </div>
+                <div class="desloc-info-card">
+                    <span class="desloc-emoji">📍</span>
+                    <h3>Nossa Base</h3>
+                    <p>Estamos localizados na <strong>Av. do Contorno, 129 - Paciência, Rio de Janeiro - RJ</strong>,
+                        CEP: 23585-808. Atendemos toda a <strong>Zona Oeste do Rio de Janeiro!</strong></p>
+                </div>
+            </div>
+
+            <div class="desloc-simulador">
+                <h3>🧮 Simule o Deslocamento</h3>
+                <p>Estime o valor aproximado das corridas para o seu evento</p>
+
+                <div class="form-group">
+                    <label>Valor estimado da corrida (ida) R$</label>
+                    <input type="number" id="desloc-ida" placeholder="Ex: 25,00" min="1" step="0.50"
+                        oninput="calcularDeslocamento()">
+                    <small>Consulte o valor no app Uber ou 99 antes do evento</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Valor estimado da corrida (volta) R$</label>
+                    <input type="number" id="desloc-volta" placeholder="Ex: 25,00" min="1" step="0.50"
+                        oninput="calcularDeslocamento()">
+                    <small>O valor da volta pode variar dependendo do horário</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Número de profissionais contratados</label>
+                    <input type="number" id="desloc-profissionais" placeholder="Ex: 3" min="1"
+                        oninput="calcularDeslocamento()">
+                    <small>Cada profissional tem sua corrida individual</small>
+                </div>
+
+                <div class="desloc-resultado hidden" id="desloc-resultado">
+                    <div class="desloc-linha">
+                        <span>👥 Profissionais</span>
+                        <span id="res-profissionais">0</span>
+                    </div>
+                    <div class="desloc-linha">
+                        <span>🚗 Veículos necessários</span>
+                        <span id="res-veiculos">-</span>
+                    </div>
+                    <div class="desloc-linha">
+                        <span>➡️ Corridas de ida</span>
+                        <span id="res-ida">R$ 0,00</span>
+                    </div>
+                    <div class="desloc-linha">
+                        <span>⬅️ Corridas de volta</span>
+                        <span id="res-volta">R$ 0,00</span>
+                    </div>
+                    <div class="desloc-linha destaque">
+                        <span>💰 Total Deslocamento</span>
+                        <span id="res-total-valor">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="desloc-aviso">
+                    <p>⚠️ Esta é uma simulação aproximada. Os valores reais das corridas podem variar de acordo com o
+                        horário e demanda do aplicativo.</p>
+                </div>
+
+                <a href="https://wa.me/5521985412860?text=Olá! Gostaria de saber mais sobre o deslocamento da equipe para meu evento!"
+                    class="btn-principal" target="_blank" style="display:block; text-align:center; margin-top:1.5rem;">
+                    📱 Falar com a Equipe
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SUGESTÕES -->
+    <section class="sugestoes" id="sugestoes">
+        <h2 class="title">Sugestões de <span>Equipe</span></h2>
+        <p class="sugestoes-sub">Monte a equipe ideal para o tamanho do seu evento</p>
+        <div class="sugestoes-grid">
+            <div class="sugestao-box">
+                <div class="sugestao-num">até 30</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>1 Fritadeira (se precisar)</li>
+                    <li>1 Copeira</li>
+                    <li>1 Garçom</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box">
+                <div class="sugestao-num">30–50</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>1 Fritadeira (se precisar)</li>
+                    <li>1 Copeira</li>
+                    <li>2 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box">
+                <div class="sugestao-num">60–80</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>1 Fritadeira (se precisar)</li>
+                    <li>1 Copeira</li>
+                    <li>3 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box destaque">
+                <div class="badge-popular">Mais pedido</div>
+                <div class="sugestao-num">80–100</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>1 Fritadeira (se precisar)</li>
+                    <li>1 Copeira</li>
+                    <li>4 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box">
+                <div class="sugestao-num">120–150</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>1 Fritadeira (se precisar)</li>
+                    <li>2 Copeiras</li>
+                    <li>6 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box">
+                <div class="sugestao-num">150–170</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>2 Fritadeiras (se precisar)</li>
+                    <li>2 Copeiras</li>
+                    <li>7 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+            <div class="sugestao-box">
+                <div class="sugestao-num">170–200</div>
+                <h3>convidados</h3>
+                <ul>
+                    <li>2 Fritadeiras (se precisar)</li>
+                    <li>3 Copeiras</li>
+                    <li>8 Garçons</li>
+                </ul>
+                <a href="#pedido" class="btn-orcamento">Pedir Agora ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AVALIAÇÕES -->
+    <section class="avaliacoes" id="avaliacoes">
+        <h2 class="title">Avaliações <span>Reais</span></h2>
+        <div class="carrossel-wrapper">
+            <div class="carrossel-inner" id="avalSlider">
+                <img src="imagem/imagem-1.jpg" alt="Avaliação 1">
+                <img src="imagem/imagem-2.jpg" alt="Avaliação 2">
+                <img src="imagem/imagem-3.jpg" alt="Avaliação 3">
+                <img src="imagem/imagem-4.jpg" alt="Avaliação 4">
+            </div>
+            <button class="carr-btn carr-esq" id="avalEsq">&#10094;</button>
+            <button class="carr-btn carr-dir" id="avalDir">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- EVENTOS -->
+    <section class="eventos" id="eventos">
+        <h2 class="title">Nossos <span>Eventos</span></h2>
+        <div class="carrossel-wrapper">
+            <div class="carrossel-inner" id="eventosSlider">
+                <img src="imagem/evento-1.jpg" alt="Evento 1">
+                <img src="imagem/evento-2.jpg" alt="Evento 2">
+                <img src="imagem/evento-3.jpg" alt="Evento 3">
+                <img src="imagem/evento-4.jpg" alt="Evento 4">
+                <img src="imagem/evento-5.jpg" alt="Evento 5">
+                <img src="imagem/evento-6.jpg" alt="Evento 6">
+                <img src="imagem/evento-7.jpg" alt="Evento 7">
+                <img src="imagem/evento-8.jpg" alt="Evento 8">
+                <img src="imagem/evento-9.jpg" alt="Evento 9">
+                <img src="imagem/evento-10.jpg" alt="Evento 10">
+                <img src="imagem/evento-11.jpg" alt="Evento 11">
+                <img src="imagem/evento-12.jpg" alt="Evento 12">
+                <img src="imagem/evento-13.jpg" alt="Evento 13">
+            </div>
+            <button class="carr-btn carr-esq" id="eventosEsq">&#10094;</button>
+            <button class="carr-btn carr-dir" id="eventosDir">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- ESTAÇÕES -->
+    <section class="estacoes" id="estacoes">
+        <h2 class="title">Nossas <span>Estações</span></h2>
+        <div class="carrossel-wrapper">
+            <div class="carrossel-inner" id="estacoesSlider">
+                <img src="imagem/estaçao-1.jpg" alt="Estação 1">
+                <img src="imagem/estaçao-2.jpg" alt="Estação 2">
+                <img src="imagem/estaçao-3.jpg" alt="Estação 3">
+                <img src="imagem/estaçao-4.jpg" alt="Estação 4">
+            </div>
+            <button class="carr-btn carr-esq" id="estacoesEsq">&#10094;</button>
+            <button class="carr-btn carr-dir" id="estacoesDir">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="reserva" id="equipe">
+        <h2 class="title">Fale <span>Conosco</span></h2>
+        <p class="reserva-sub">Prefere falar diretamente? Preencha o formulário abaixo!</p>
+        <form class="reserva-form" id="reservaForm" onsubmit="enviarReserva(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" id="r-nome" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp</label>
+                    <input type="text" id="r-whatsapp" placeholder="(21) 9 9999-9999" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Data do evento</label>
+                    <input type="date" id="r-data" required>
+                </div>
+                <div class="form-group">
+                    <label>Número de convidados</label>
+                    <input type="number" id="r-convidados" placeholder="Ex: 100" min="1" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mensagem</label>
+                <textarea id="r-mensagem" rows="4" placeholder="Conte mais sobre seu evento..."></textarea>
+            </div>
+            <button type="submit" class="btn-principal">Enviar Mensagem 📩</button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <img src="imagem/logo-2.png" alt="Logo" class="footer-logo">
+                <p>Equipe profissional para eventos em toda a Zona Oeste do Rio de Janeiro. Qualidade, pontualidade e
+                    dedicação em cada detalhe.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#servico">Serviços</a></li>
+                    <li><a href="#pedido">Fazer Pedido</a></li>
+                    <li><a href="#deslocamento">Deslocamento</a></li>
+                    <li><a href="#sugestoes">Sugestões</a></li>
+                    <li><a href="#avaliacoes">Avaliações</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <ul>
+                    <li>📱 (21) 9 8541-2860</li>
+                    <li>📧 lenicebraga@hotmail.com</li>
+                    <li>
+                        <a href="https://www.google.com/maps/search/Avenida+do+Contorno+129+Paciência+Rio+de+Janeiro"
+                            target="_blank" style="color:rgba(255,255,255,0.6); text-decoration:none;">
+                            📍 Av. do Contorno, 129 - Paciência - RJ
+                        </a>
+                    </li>
+                    <li>📍 CEP: 23585-808</li>
+                    <li>🗺️ Atendemos toda a Zona Oeste - RJ</li>
+                </ul>
+                <div class="footer-redes">
+                    <a href="https://www.instagram.com/lm_artes_e_festas/" target="_blank" aria-label="Instagram">
+                        <img src="imagem/instagram.png" alt="Instagram">
+                    </a>
+                    <a href="https://wa.me/5521985412860" target="_blank" aria-label="WhatsApp">
+                        <img src="imagem/whatsapp.png" alt="WhatsApp">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 L&M Artes e Festas. Todos os direitos reservados.</p>
+            <br>
+            <p>Site produzido por Arnaldo . zap (21)99864-5286 . @arnaldo7461</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+    <script src="lm-script.js"></script>
+
+</body>
+
+</html>
