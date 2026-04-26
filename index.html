@@ -30,7 +30,6 @@
                 <a href="#about" class="nav-link">Sobre</a>
                 <a href="#servico" class="nav-link">Serviços</a>
                 <a href="#pedido" class="nav-link">Fazer Pedido</a>
-                <a href="#deslocamento" class="nav-link">Deslocamento</a>
                 <a href="#sugestoes" class="nav-link">Sugestões</a>
                 <a href="#avaliacoes" class="nav-link">Avaliações</a>
                 <a href="#equipe" class="nav-link">Contato</a>
@@ -228,7 +227,7 @@
                 <h3>🤵 Monte sua Equipe de Apoio</h3>
                 <p class="step-desc">Selecione a quantidade de cada profissional que deseja</p>
                 <div class="servicos-grid">
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="garcom">
                         <div class="servico-info">
                             <span class="servico-emoji">🤵</span>
                             <div>
@@ -242,7 +241,7 @@
                             <button onclick="changeQty('garcom', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="copeira">
                         <div class="servico-info">
                             <span class="servico-emoji">👩‍🍳</span>
                             <div>
@@ -256,7 +255,7 @@
                             <button onclick="changeQty('copeira', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="fritadeira">
                         <div class="servico-info">
                             <span class="servico-emoji">🍳</span>
                             <div>
@@ -270,7 +269,7 @@
                             <button onclick="changeQty('fritadeira', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="Churrasqueiro">
                         <div class="servico-info">
                             <span class="servico-emoji">🔥</span>
                             <div>
@@ -284,7 +283,7 @@
                             <button onclick="changeQty('churrasqueiro', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="Monitora">
                         <div class="servico-info">
                             <span class="servico-emoji">👧</span>
                             <div>
@@ -298,7 +297,7 @@
                             <button onclick="changeQty('monitora', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item">
+                    <div class="servico-item" data-servico="recepcionista">
                         <div class="servico-info">
                             <span class="servico-emoji">💁‍♀️</span>
                             <div>
@@ -475,105 +474,6 @@
                     <a href="https://wa.me/5521985412860" class="btn-principal" target="_blank">Falar no WhatsApp</a>
                     <button class="btn-secundario" onclick="novoPedido()">Fazer Novo Pedido</button>
                 </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- DESLOCAMENTO -->
-    <section class="deslocamento" id="deslocamento">
-        <h2 class="title">Cálculo de <span>Deslocamento</span></h2>
-        <p class="desloc-sub">O deslocamento da equipe é feito por aplicativo (Uber / 99) e o valor é cobrado do cliente
-        </p>
-
-        <div class="desloc-container">
-
-            <div class="desloc-info">
-                <div class="desloc-info-card">
-                    <span class="desloc-emoji">📱</span>
-                    <h3>Como funciona?</h3>
-                    <p>O deslocamento da nossa equipe é realizado via aplicativo de transporte <strong>(Uber /
-                            99)</strong>. O valor das corridas de <strong>ida e volta</strong> é de responsabilidade do
-                        cliente. Atendemos toda a <strong>Zona Oeste do Rio de Janeiro.</strong></p>
-                </div>
-                <div class="desloc-info-card">
-                    <span class="desloc-emoji">🚗</span>
-                    <h3>Ida e Volta</h3>
-                    <p>São cobradas <strong>2 corridas</strong> por profissional contratado. Uma na <strong>ida</strong>
-                        ao evento e outra na <strong>volta</strong> após o término do serviço.</p>
-                </div>
-                <div class="desloc-info-card">
-                    <span class="desloc-emoji">💡</span>
-                    <h3>Dica importante</h3>
-                    <p>O valor das corridas pode variar de acordo com o <strong>horário</strong>,
-                        <strong>distância</strong> e <strong>demanda</strong> do aplicativo no momento. Recomendamos
-                        simular pelo próprio app antes do evento.</p>
-                </div>
-                <div class="desloc-info-card">
-                    <span class="desloc-emoji">📍</span>
-                    <h3>Nossa Base</h3>
-                    <p>Estamos localizados na <strong>Av. do Contorno, 129 - Paciência, Rio de Janeiro - RJ</strong>,
-                        CEP: 23585-808. Atendemos toda a <strong>Zona Oeste do Rio de Janeiro!</strong></p>
-                </div>
-            </div>
-
-            <div class="desloc-simulador">
-                <h3>🧮 Simule o Deslocamento</h3>
-                <p>Estime o valor aproximado das corridas para o seu evento</p>
-
-                <div class="form-group">
-                    <label>Valor estimado da corrida (ida) R$</label>
-                    <input type="number" id="desloc-ida" placeholder="Ex: 25,00" min="1" step="0.50"
-                        oninput="calcularDeslocamento()">
-                    <small>Consulte o valor no app Uber ou 99 antes do evento</small>
-                </div>
-
-                <div class="form-group">
-                    <label>Valor estimado da corrida (volta) R$</label>
-                    <input type="number" id="desloc-volta" placeholder="Ex: 25,00" min="1" step="0.50"
-                        oninput="calcularDeslocamento()">
-                    <small>O valor da volta pode variar dependendo do horário</small>
-                </div>
-
-                <div class="form-group">
-                    <label>Número de profissionais contratados</label>
-                    <input type="number" id="desloc-profissionais" placeholder="Ex: 3" min="1"
-                        oninput="calcularDeslocamento()">
-                    <small>Cada equipe tem sua corrida particular</small>
-                </div>
-
-                <div class="desloc-resultado hidden" id="desloc-resultado">
-                    <div class="desloc-linha">
-                        <span>👥 Profissionais</span>
-                        <span id="res-profissionais">0</span>
-                    </div>
-                    <div class="desloc-linha">
-                        <span>🚗 Veículos necessários</span>
-                        <span id="res-veiculos">-</span>
-                    </div>
-                    <div class="desloc-linha">
-                        <span>➡️ Corridas de ida</span>
-                        <span id="res-ida">R$ 0,00</span>
-                    </div>
-                    <div class="desloc-linha">
-                        <span>⬅️ Corridas de volta</span>
-                        <span id="res-volta">R$ 0,00</span>
-                    </div>
-                    <div class="desloc-linha destaque">
-                        <span>💰 Total Deslocamento</span>
-                        <span id="res-total-valor">R$ 0,00</span>
-                    </div>
-                </div>
-
-                <div class="desloc-aviso">
-                    <p>⚠️ Esta é uma simulação aproximada. Os valores reais das corridas podem variar de acordo com o
-                        horário e demanda do aplicativo.</p>
-                </div>
-
-                <a href="https://wa.me/5521985412860?text=Olá! Gostaria de saber mais sobre o deslocamento da equipe para meu evento!"
-                    class="btn-principal" target="_blank" style="display:block; text-align:center; margin-top:1.5rem;">
-                    📱 Falar com a Equipe
-                </a>
             </div>
 
         </div>
@@ -760,7 +660,6 @@
                     <li><a href="#about">Sobre</a></li>
                     <li><a href="#servico">Serviços</a></li>
                     <li><a href="#pedido">Fazer Pedido</a></li>
-                    <li><a href="#deslocamento">Deslocamento</a></li>
                     <li><a href="#sugestoes">Sugestões</a></li>
                     <li><a href="#avaliacoes">Avaliações</a></li>
                 </ul>

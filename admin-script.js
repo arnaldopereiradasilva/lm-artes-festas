@@ -1175,3 +1175,189 @@ function inicializarFotos() {
 document.addEventListener('DOMContentLoaded', function() {
     inicializarFotos();
 });
+
+
+// ========================================
+// MERCADO PAGO - CONFIGURAÇÕES
+// ========================================
+
+function salvarMercadoPago() {
+    const dadosMP = {
+        nome: document.getElementById('mp-nome').value,
+        documento: document.getElementById('mp-documento').value,
+        email: document.getElementById('mp-email').value,
+        publicKey: document.getElementById('mp-public-key').value,
+        accessToken: document.getElementById('mp-access-token').value,
+        modo: document.getElementById('mp-modo').value
+    };
+
+    // Validações
+    if (!dadosMP.nome || !dadosMP.documento || !dadosMP.email) {
+        alert('❌ Preencha todos os dados cadastrais!');
+        return;
+    }
+
+    if (!dadosMP.publicKey || !dadosMP.accessToken) {
+        alert('❌ Adicione as chaves do Mercado Pago!');
+        return;
+    }
+
+    if (!dadosMP.publicKey.startsWith('APP_USR-') && 
+        !dadosMP.publicKey.startsWith('TEST-')) {
+        alert('⚠️ Public Key parece estar incorreta! Verifique no painel do Mercado Pago.');
+        return;
+    }
+
+    localStorage.setItem('lm_mercadopago', JSON.stringify(dadosMP));
+    alert('✅ Configurações do Mercado Pago salvas com sucesso!');
+}
+
+function carregarMercadoPago() {
+    const dados = localStorage.getItem('lm_mercadopago');
+    if (!dados) return;
+
+    const mp = JSON.parse(dados);
+    
+    if (document.getElementById('mp-nome')) {
+        document.getElementById('mp-nome').value = mp.nome || '';
+        document.getElementById('mp-documento').value = mp.documento || '';
+        document.getElementById('mp-email').value = mp.email || '';
+        document.getElementById('mp-public-key').value = mp.publicKey || '';
+        document.getElementById('mp-access-token').value = mp.accessToken || '';
+        document.getElementById('mp-modo').value = mp.modo || 'teste';
+    }
+}
+
+function getMercadoPago() {
+    const dados = localStorage.getItem('lm_mercadopago');
+    return dados ? JSON.parse(dados) : null;
+}
+
+// ========================================
+// GERAR LINK DE PAGAMENTO
+// ========================================
+
+async function gerarLinkPagamento() {
+    const mp = getMercadoPago();
+
+    if (!mp || !mp.accessToken) {
+        alert('❌ Configure primeiro as credenciais do Mercado Pago!');
+        return;
+    }
+
+    const cliente = document.getElementById('link-cliente').value;
+    const descricao = document.getElementById('link-descricao').value;
+    const valor = parseFloat(document.getElementById('link-valor').value);
+    const whatsapp = document.getElementById('link-whatsapp').value;
+
+    if (!cliente || !descricao || !valor || valor <= 0) {
+        alert('❌ Preencha todos os campos!');
+        return;
+    }
+
+    try {
+        // Criar preferência de pagamento no Mercado Pago
+        const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${mp.accessToken}`
+            },
+            body: JSON.stringify({
+                items: [{
+                    title: descricao,
+                    description: `Cliente: ${cliente}`,
+                    quantity: 1,
+                    currency_id: 'BRL',
+                    unit_price: valor
+                }],
+                payer: {
+                    name: cliente
+                },
+                back_urls: {
+                    success: window.location.origin + '/sucesso.html',
+                    failure: window.location.origin + '/erro.html',
+                    pending: window.location.origin + '/pendente.html'
+                },
+                auto_return: 'approved',
+                statement_descriptor: 'LM ARTES E FESTAS'
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.init_point) {
+            const linkPagamento = mp.modo === 'producao' 
+                ? data.init_point 
+                : data.sandbox_init_point;
+
+            // Mostrar link na tela
+            document.getElementById('link-resultado').style.display = 'block';
+            document.getElementById('link-gerado').value = linkPagamento;
+
+            // Enviar WhatsApp automaticamente
+            if (whatsapp) {
+                const mensagem = `Olá ${cliente}! 😊\n\n` +
+                    `Aqui é a L&M Artes e Festas.\n\n` +
+                    `Segue o link para pagamento do seu pedido:\n\n` +
+                    `*${descricao}*\n` +
+                    `💰 Valor: R$ ${valor.toFixed(2).replace('.', ',')}\n\n` +
+                    `🔗 Link de pagamento:\n${linkPagamento}\n\n` +
+                    `✅ Você pode pagar com cartão de crédito, débito, PIX ou boleto.\n\n` +
+                    `Qualquer dúvida, estou à disposição! 💕`;
+
+                const whatsappLimpo = whatsapp.replace(/\D/g, '');
+                const whatsappFinal = whatsappLimpo.length === 11 
+                    ? '55' + whatsappLimpo 
+                    : whatsappLimpo;
+
+                const urlWhatsapp = `https://wa.me/${whatsappFinal}?text=${encodeURIComponent(mensagem)}`;
+                
+                setTimeout(() => {
+                    if (confirm('✅ Link gerado com sucesso!\n\nDeseja enviar pelo WhatsApp agora?')) {
+                        window.open(urlWhatsapp, '_blank');
+                    }
+                }, 500);
+            }
+
+            // Salvar histórico de links gerados
+            salvarHistoricoLink({
+                cliente: cliente,
+                descricao: descricao,
+                valor: valor,
+                link: linkPagamento,
+                data: new Date().toISOString(),
+                status: 'pendente'
+            });
+
+        } else {
+            alert('❌ Erro ao gerar link: ' + (data.message || 'Verifique suas credenciais'));
+            console.error('Erro MP:', data);
+        }
+
+    } catch (error) {
+        alert('❌ Erro ao conectar com o Mercado Pago!\n\nVerifique:\n- Se as credenciais estão corretas\n- Sua conexão com a internet');
+        console.error('Erro:', error);
+    }
+}
+
+function copiarLink() {
+    const link = document.getElementById('link-gerado');
+    link.select();
+    document.execCommand('copy');
+    alert('✅ Link copiado para a área de transferência!');
+}
+
+function salvarHistoricoLink(dados) {
+    let historico = JSON.parse(localStorage.getItem('lm_links_pagamento') || '[]');
+    historico.unshift(dados);
+    // Manter apenas os últimos 50 links
+    if (historico.length > 50) historico = historico.slice(0, 50);
+    localStorage.setItem('lm_links_pagamento', JSON.stringify(historico));
+}
+
+// Carregar configurações ao abrir a página
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(carregarMercadoPago, 500);
+});
+

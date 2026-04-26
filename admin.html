@@ -296,6 +296,98 @@
             </div>
 
             <!-- CONFIGURAÇÕES -->
+
+            <!-- NOVA SEÇÃO: MERCADO PAGO -->
+<div class="config-card">
+    <h3>💳 Mercado Pago - Dados de Recebimento</h3>
+    <p class="config-descricao">
+        Configure suas credenciais do Mercado Pago para receber pagamentos 
+        por cartão automaticamente.
+    </p>
+
+    <div class="form-group">
+        <label>Nome/Razão Social:</label>
+        <input type="text" id="mp-nome" placeholder="Ex: Lenice Braga">
+    </div>
+
+    <div class="form-group">
+        <label>CPF/CNPJ:</label>
+        <input type="text" id="mp-documento" placeholder="000.000.000-00">
+    </div>
+
+    <div class="form-group">
+        <label>E-mail da conta Mercado Pago:</label>
+        <input type="email" id="mp-email" placeholder="seu@email.com">
+    </div>
+
+    <div class="form-group">
+        <label>🔓 Public Key (Chave Pública):</label>
+        <input type="text" id="mp-public-key" 
+               placeholder="APP_USR-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+        <small>Encontre em: mercadopago.com.br/developers</small>
+    </div>
+
+    <div class="form-group">
+        <label>🔐 Access Token (Chave Privada):</label>
+        <input type="password" id="mp-access-token" 
+               placeholder="APP_USR-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+        <small>⚠️ Mantenha esta chave em SEGREDO!</small>
+    </div>
+
+    <div class="form-group">
+        <label>Modo de Operação:</label>
+        <select id="mp-modo">
+            <option value="teste">🧪 Teste (Sandbox)</option>
+            <option value="producao">✅ Produção (Receber de verdade)</option>
+        </select>
+    </div>
+
+    <button class="btn-salvar" onclick="salvarMercadoPago()">
+        💾 Salvar Configurações do Mercado Pago
+    </button>
+</div>
+
+<!-- NOVA SEÇÃO: GERAR LINK DE PAGAMENTO -->
+<div class="config-card">
+    <h3>🔗 Gerar Link de Pagamento Manual</h3>
+    <p class="config-descricao">
+        Crie um link de pagamento para enviar ao cliente pelo WhatsApp.
+    </p>
+
+    <div class="form-group">
+        <label>Nome do Cliente:</label>
+        <input type="text" id="link-cliente" placeholder="Nome completo">
+    </div>
+
+    <div class="form-group">
+        <label>Descrição do Serviço:</label>
+        <input type="text" id="link-descricao" 
+               placeholder="Ex: Festa de aniversário - 80 convidados">
+    </div>
+
+    <div class="form-group">
+        <label>Valor (R$):</label>
+        <input type="number" id="link-valor" step="0.01" placeholder="0,00">
+    </div>
+
+    <div class="form-group">
+        <label>WhatsApp do Cliente:</label>
+        <input type="text" id="link-whatsapp" placeholder="(21) 99999-9999">
+    </div>
+
+    <button class="btn-salvar" onclick="gerarLinkPagamento()">
+        🔗 Gerar Link e Enviar WhatsApp
+    </button>
+
+    <div id="link-resultado" style="margin-top: 15px; display: none;">
+        <p><strong>✅ Link gerado:</strong></p>
+        <input type="text" id="link-gerado" readonly 
+               style="width: 100%; padding: 10px;">
+        <button onclick="copiarLink()">📋 Copiar Link</button>
+    </div>
+</div>
+
+
              <!-- ABA FOTOS -->
 <div class="config-section" id="config-fotos">
     <h3>🖼️ Gerenciar Fotos dos Carrosseis</h3>

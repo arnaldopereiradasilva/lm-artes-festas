@@ -2,8 +2,8 @@
    L&M ARTES E FESTAS - SCRIPT.JS
    ======================================== */
 
-window.addEventListener('load', function () {
-    // Carregar fotos salvas ANTES de iniciar carrosseis
+window.addEventListener('load', function() {
+      // Carregar fotos salvas ANTES de iniciar carrosseis
     carregarFotosSalvas();
 
     // ========================================
@@ -14,48 +14,48 @@ window.addEventListener('load', function () {
     var navbar = document.getElementById('navbar');
 
     if (menuToggle && navbar) {
-        menuToggle.addEventListener('click', function () {
+        menuToggle.addEventListener('click', function() {
             navbar.classList.toggle('open');
         });
-        document.querySelectorAll('.nav-link').forEach(function (link) {
-            link.addEventListener('click', function () {
+        document.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
                 navbar.classList.remove('open');
             });
         });
     }
 
     // ========================================
-    // CARREGAR FOTOS DOS CARROSSEIS
-    // ========================================
+// CARREGAR FOTOS DOS CARROSSEIS
+// ========================================
 
-    function carregarFotosSalvas() {
-        var tipos = {
-            avaliacoes: { key: 'lm_fotos_avaliacoes', slider: 'avalSlider' },
-            eventos: { key: 'lm_fotos_eventos', slider: 'eventosSlider' },
-            estacoes: { key: 'lm_fotos_estacoes', slider: 'estacoesSlider' }
-        };
+function carregarFotosSalvas() {
+    var tipos = {
+        avaliacoes: { key: 'lm_fotos_avaliacoes', slider: 'avalSlider' },
+        eventos: { key: 'lm_fotos_eventos', slider: 'eventosSlider' },
+        estacoes: { key: 'lm_fotos_estacoes', slider: 'estacoesSlider' }
+    };
 
-        Object.keys(tipos).forEach(function (tipo) {
-            var config = tipos[tipo];
-            try {
-                var salvas = localStorage.getItem(config.key);
-                if (!salvas) return;
+    Object.keys(tipos).forEach(function(tipo) {
+        var config = tipos[tipo];
+        try {
+            var salvas = localStorage.getItem(config.key);
+            if (!salvas) return;
 
-                var fotos = JSON.parse(salvas);
-                if (!fotos || fotos.length === 0) return;
+            var fotos = JSON.parse(salvas);
+            if (!fotos || fotos.length === 0) return;
 
-                var slider = document.getElementById(config.slider);
-                if (!slider) return;
+            var slider = document.getElementById(config.slider);
+            if (!slider) return;
 
-                slider.innerHTML = fotos.map(function (src, i) {
-                    return '<img src="' + src + '" alt="Foto ' + (i + 1) + '">';
-                }).join('');
+            slider.innerHTML = fotos.map(function(src, i) {
+                return '<img src="' + src + '" alt="Foto ' + (i + 1) + '">';
+            }).join('');
 
-            } catch (e) {
-                console.log('Erro ao carregar fotos:', tipo);
-            }
-        });
-    }
+        } catch(e) {
+            console.log('Erro ao carregar fotos:', tipo);
+        }
+    });
+}
 
 
     // ========================================
@@ -95,12 +95,12 @@ window.addEventListener('load', function () {
             slider.style.transform = 'translateX(-' + (atual * 100) + '%)';
         }
 
-        esq.onclick = function (e) {
+        esq.onclick = function(e) {
             e.preventDefault();
             ir(atual - 1);
         };
 
-        dir.onclick = function (e) {
+        dir.onclick = function(e) {
             e.preventDefault();
             ir(atual + 1);
         };
@@ -108,7 +108,7 @@ window.addEventListener('load', function () {
         ir(0);
 
         if (autoPlay) {
-            setInterval(function () { ir(atual + 1); }, 4000);
+            setInterval(function() { ir(atual + 1); }, 4000);
         }
     }
 
@@ -123,7 +123,7 @@ window.addEventListener('load', function () {
     // HEADER SCROLL
     // ========================================
 
-    window.addEventListener('scroll', function () {
+    window.addEventListener('scroll', function() {
         var header = document.querySelector('.header');
         if (window.scrollY > 50) {
             header.style.background = 'rgba(26, 26, 46, 1)';
@@ -138,8 +138,8 @@ window.addEventListener('load', function () {
     // ANIMAÇÕES AO SCROLL
     // ========================================
 
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
@@ -147,7 +147,7 @@ window.addEventListener('load', function () {
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.servico-card, .sugestao-box').forEach(function (el) {
+    document.querySelectorAll('.servico-card, .sugestao-box').forEach(function(el) {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -167,7 +167,7 @@ window.addEventListener('load', function () {
 
     var elWhats = document.getElementById('p-whatsapp');
     if (elWhats) {
-        elWhats.addEventListener('input', function () {
+        elWhats.addEventListener('input', function() {
             var v = this.value.replace(/\D/g, '');
             v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
             v = v.replace(/(\d)(\d{4})$/, '$1-$2');
@@ -177,7 +177,7 @@ window.addEventListener('load', function () {
 
     var elCpf = document.getElementById('p-cpf');
     if (elCpf) {
-        elCpf.addEventListener('input', function () {
+        elCpf.addEventListener('input', function() {
             var v = this.value.replace(/\D/g, '');
             v = v.replace(/(\d{3})(\d)/, '$1.$2');
             v = v.replace(/(\d{3})(\d)/, '$1.$2');
@@ -188,7 +188,7 @@ window.addEventListener('load', function () {
 
     var elCard = document.getElementById('card-numero');
     if (elCard) {
-        elCard.addEventListener('input', function () {
+        elCard.addEventListener('input', function() {
             var v = this.value.replace(/\D/g, '');
             v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
             this.value = v;
@@ -197,7 +197,7 @@ window.addEventListener('load', function () {
 
     var elValidade = document.getElementById('card-validade');
     if (elValidade) {
-        elValidade.addEventListener('input', function () {
+        elValidade.addEventListener('input', function() {
             var v = this.value.replace(/\D/g, '');
             v = v.replace(/(\d{2})(\d)/, '$1/$2');
             this.value = v;
@@ -218,7 +218,7 @@ function buscarDatasOcupadas() {
         var pedidos = JSON.parse(localStorage.getItem('lm_pedidos') || '[]');
         var contagem = {};
 
-        pedidos.forEach(function (p) {
+        pedidos.forEach(function(p) {
             if (p.status !== 'cancelado') {
                 var data = converterParaISO(p.evento.data);
                 if (data) {
@@ -233,13 +233,13 @@ function buscarDatasOcupadas() {
 
         datasOcupadas = [];
 
-        Object.keys(contagem).forEach(function (data) {
+        Object.keys(contagem).forEach(function(data) {
             if (contagem[data] >= maxPorDia) {
                 datasOcupadas.push(data);
             }
         });
 
-        bloqueios.forEach(function (b) {
+        bloqueios.forEach(function(b) {
             if (datasOcupadas.indexOf(b.data) === -1) {
                 datasOcupadas.push(b.data);
             }
@@ -247,7 +247,7 @@ function buscarDatasOcupadas() {
 
         iniciarFlatpickr();
 
-    } catch (e) {
+    } catch(e) {
         datasOcupadas = [];
         iniciarFlatpickr();
     }
@@ -262,12 +262,12 @@ function iniciarFlatpickr() {
         minDate: "today",
         dateFormat: "d/m/Y",
         disable: [
-            function (date) {
+            function(date) {
                 var iso = date.toISOString().split('T')[0];
                 return datasOcupadas.indexOf(iso) !== -1;
             }
         ],
-        onChange: function (selectedDates, dateStr) {
+        onChange: function(selectedDates, dateStr) {
             var status = document.getElementById('data-status');
             if (!status) return;
             var iso = converterParaISO(dateStr);
@@ -297,31 +297,14 @@ function converterParaISO(dataStr) {
 // DADOS DO PEDIDO
 // ========================================
 
-// ========================================
-// CARREGAR PREÇOS DO PAINEL ADMIN
-// ========================================
-
-function carregarPrecosAdmin() {
-    try {
-        var config = JSON.parse(localStorage.getItem('lm_config') || '{}');
-        if (config.precos) {
-            return config.precos;
-        }
-    } catch (e) {
-        console.log('Erro ao carregar preços do admin');
-    }
-    // Valores padrão (se o admin ainda não configurou)
-    return {
-        garcom: 180,
-        copeira: 160,
-        fritadeira: 150,
-        churrasqueiro: 220,
-        monitora: 140,
-        recepcionista: 160
-    };
-}
-
-var precos = carregarPrecosAdmin();
+var precos = {
+    garcom: 180,
+    copeira: 160,
+    fritadeira: 150,
+    churrasqueiro: 220,
+    monitora: 140,
+    recepcionista: 160
+};
 
 var nomesServicos = {
     garcom: 'Garçom',
@@ -367,30 +350,6 @@ function changeQty(servico, delta) {
 // ESTAÇÕES
 // ========================================
 
-// ========================================
-// ATUALIZAR PREÇOS NA TELA
-// ========================================
-
-function atualizarPrecosTela() {
-    var config = JSON.parse(localStorage.getItem('lm_config') || '{}');
-    
-    // Atualizar preços dos profissionais
-    if (config.precos) {
-        Object.keys(config.precos).forEach(function(servico) {
-            var valor = config.precos[servico];
-            var elemento = document.querySelector('[data-servico="' + servico + '"] .servico-preco');
-            if (elemento) {
-                elemento.textContent = 'R$ ' + valor.toFixed(2).replace('.', ',') + '/evento';
-            }
-        });
-    }
-}
-
-// Chamar a função quando carregar a página
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(atualizarPrecosTela, 100);
-});
-
 function toggleEstacao(estacao, preco) {
     if (estacoesSelecionadas[estacao]) {
         delete estacoesSelecionadas[estacao];
@@ -404,7 +363,7 @@ function toggleEstacao(estacao, preco) {
 // ========================================
 
 function showStep(step) {
-    document.querySelectorAll('.pedido-step').forEach(function (s) {
+    document.querySelectorAll('.pedido-step').forEach(function(s) {
         s.classList.add('hidden');
     });
 
@@ -471,7 +430,7 @@ function validarStep(step) {
 
     if (step === 3) {
         var total = 0;
-        Object.keys(quantidades).forEach(function (k) { total += quantidades[k]; });
+        Object.keys(quantidades).forEach(function(k) { total += quantidades[k]; });
         if (total === 0) { alert('Por favor, selecione pelo menos 1 profissional!'); return false; }
     }
 
@@ -484,10 +443,10 @@ function validarStep(step) {
 
 function calcularTotal() {
     var total = 0;
-    Object.keys(quantidades).forEach(function (servico) {
+    Object.keys(quantidades).forEach(function(servico) {
         total += precos[servico] * quantidades[servico];
     });
-    Object.keys(estacoesSelecionadas).forEach(function (est) {
+    Object.keys(estacoesSelecionadas).forEach(function(est) {
         total += estacoesSelecionadas[est];
     });
     return total;
@@ -504,7 +463,7 @@ function gerarResumo() {
     html += '<div class="resumo-secao">📋 Dados do Cliente</div>';
     html += '<div class="resumo-item"><span>Nome</span><span>' + document.getElementById('p-nome').value + '</span></div>';
     html += '<div class="resumo-item"><span>WhatsApp</span><span>' + document.getElementById('p-whatsapp').value + '</span></div>';
-    html += '<div class="resumo-item"><span>E-mail</span><span>' + document.getElementById('p-email').value + '</span></div>';
+        html += '<div class="resumo-item"><span>E-mail</span><span>' + document.getElementById('p-email').value + '</span></div>';
 
     html += '<div class="resumo-secao">📅 Dados do Evento</div>';
     html += '<div class="resumo-item"><span>Data</span><span>' + document.getElementById('p-data').value + '</span></div>';
@@ -514,13 +473,13 @@ function gerarResumo() {
     html += '<div class="resumo-item"><span>Convidados</span><span>' + document.getElementById('p-convidados').value + '</span></div>';
 
     var temMaoDeObra = false;
-    Object.keys(quantidades).forEach(function (k) {
+    Object.keys(quantidades).forEach(function(k) {
         if (quantidades[k] > 0) temMaoDeObra = true;
     });
 
     if (temMaoDeObra) {
         html += '<div class="resumo-secao">🤵 Mão de Obra</div>';
-        Object.keys(quantidades).forEach(function (servico) {
+        Object.keys(quantidades).forEach(function(servico) {
             var qty = quantidades[servico];
             if (qty > 0) {
                 var subtotal = precos[servico] * qty;
@@ -531,7 +490,7 @@ function gerarResumo() {
 
     if (Object.keys(estacoesSelecionadas).length > 0) {
         html += '<div class="resumo-secao">🍿 Estações</div>';
-        Object.keys(estacoesSelecionadas).forEach(function (est) {
+        Object.keys(estacoesSelecionadas).forEach(function(est) {
             var preco = estacoesSelecionadas[est];
             html += '<div class="resumo-item"><span>' + nomesEstacoes[est] + '</span><span>R$ ' + preco.toFixed(2).replace('.', ',') + '</span></div>';
         });
@@ -550,13 +509,13 @@ function gerarResumo() {
 function selectPagamento(tipo) {
     pagamentoSelecionado = tipo;
 
-    document.querySelectorAll('.pag-opcao').forEach(function (el) {
+    document.querySelectorAll('.pag-opcao').forEach(function(el) {
         el.classList.remove('selected');
     });
 
     document.getElementById('pag-' + tipo).classList.add('selected');
 
-    document.querySelectorAll('.pag-detalhe').forEach(function (el) {
+    document.querySelectorAll('.pag-detalhe').forEach(function(el) {
         el.classList.add('hidden');
     });
 
@@ -575,23 +534,47 @@ function selectPagamento(tipo) {
 
 function copiarPix() {
     var chave = 'lenicebraga@hotmail.com';
-    navigator.clipboard.writeText(chave).then(function () {
+    navigator.clipboard.writeText(chave).then(function() {
         var btn = document.querySelector('.btn-copiar');
         btn.textContent = '✅ Chave Copiada!';
-        setTimeout(function () {
+        setTimeout(function() {
             btn.textContent = '📋 Copiar Chave PIX';
         }, 3000);
     });
 }
 
 // ========================================
-// FINALIZAR PEDIDO (COM MERCADO PAGO)
+// FINALIZAR PEDIDO
 // ========================================
 
 function finalizarPedido() {
     if (!pagamentoSelecionado) {
         alert('Por favor, selecione uma forma de pagamento!');
         return;
+    }
+
+    if (pagamentoSelecionado === 'credito' || pagamentoSelecionado === 'debito') {
+        var numero = document.getElementById('card-numero').value.trim();
+        var validade = document.getElementById('card-validade').value.trim();
+        var cvv = document.getElementById('card-cvv').value.trim();
+        var nomeCartao = document.getElementById('card-nome').value.trim();
+
+        if (!numero || numero.length < 19) {
+            alert('Por favor, informe o número do cartão corretamente!');
+            return;
+        }
+        if (!validade || validade.length < 5) {
+            alert('Por favor, informe a validade do cartão!');
+            return;
+        }
+        if (!cvv || cvv.length < 3) {
+            alert('Por favor, informe o CVV do cartão!');
+            return;
+        }
+        if (!nomeCartao) {
+            alert('Por favor, informe o nome no cartão!');
+            return;
+        }
     }
 
     var numeroPedido = 'LM' + Date.now().toString().slice(-6);
@@ -626,155 +609,20 @@ function finalizarPedido() {
         dataPedido: new Date().toISOString()
     };
 
-    // Salvar pedido no localStorage
     var pedidos = JSON.parse(localStorage.getItem('lm_pedidos') || '[]');
     pedidos.push(pedido);
     localStorage.setItem('lm_pedidos', JSON.stringify(pedidos));
 
-    // Se escolheu PIX → fluxo antigo (WhatsApp)
-    if (pagamentoSelecionado === 'pix') {
-        mostrarSucesso(numeroPedido);
-        enviarWhatsApp(pedido);
-        return;
-    }
-
-    // Se escolheu CARTÃO → processar com Mercado Pago
-    if (pagamentoSelecionado === 'credito' || pagamentoSelecionado === 'debito') {
-        processarPagamentoCartao(pedido, numeroPedido);
-        return;
-    }
+    mostrarSucesso(numeroPedido);
+    enviarWhatsApp(pedido);
 }
-
-// ========================================
-// PROCESSAR PAGAMENTO COM MERCADO PAGO
-// ========================================
-
-async function processarPagamentoCartao(pedido, numeroPedido) {
-    // Pegar configurações do Mercado Pago
-    var mpConfig = localStorage.getItem('lm_mercadopago');
-
-    // Se não tiver Mercado Pago configurado
-    if (!mpConfig) {
-        alert('⚠️ Pagamento por cartão temporariamente indisponível.\n\nSeu pedido será enviado pelo WhatsApp e a Lenice entrará em contato para combinar o pagamento.');
-        mostrarSucesso(numeroPedido);
-        enviarWhatsApp(pedido);
-        return;
-    }
-
-    var mp = JSON.parse(mpConfig);
-
-    if (!mp.accessToken) {
-        alert('⚠️ Pagamento por cartão temporariamente indisponível.\n\nEntraremos em contato pelo WhatsApp para combinar o pagamento.');
-        mostrarSucesso(numeroPedido);
-        enviarWhatsApp(pedido);
-        return;
-    }
-
-    try {
-        // Mostrar mensagem de carregamento
-        var btnPagar = document.querySelector('button[onclick="finalizarPedido()"]');
-        if (btnPagar) {
-            btnPagar.disabled = true;
-            btnPagar.innerHTML = '⏳ Processando pagamento...';
-        }
-
-        // Criar preferência de pagamento no Mercado Pago
-        var response = await fetch('https://api.mercadopago.com/checkout/preferences', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + mp.accessToken
-            },
-            body: JSON.stringify({
-                items: [{
-                    title: 'Evento L&M Artes e Festas - Pedido #' + numeroPedido,
-                    description: 'Cliente: ' + pedido.cliente.nome + ' | Data: ' + pedido.evento.data,
-                    quantity: 1,
-                    currency_id: 'BRL',
-                    unit_price: parseFloat(pedido.total)
-                }],
-                payer: {
-                    name: pedido.cliente.nome,
-                    email: pedido.cliente.email,
-                    phone: {
-                        number: pedido.cliente.whatsapp.replace(/\D/g, '')
-                    }
-                },
-                payment_methods: {
-                    excluded_payment_types: pagamentoSelecionado === 'debito'
-                        ? [{ id: "credit_card" }, { id: "ticket" }]
-                        : [{ id: "ticket" }],
-                    installments: pagamentoSelecionado === 'credito' ? 12 : 1
-                },
-                back_urls: {
-                    success: 'https://www.google.com',
-                    failure: 'https://www.google.com',
-                    pending: 'https://www.google.com'
-                },
-                statement_descriptor: 'LM ARTES E FESTAS',
-                external_reference: numeroPedido
-            })
-        });
-
-        var data = await response.json();
-
-        if (data.init_point) {
-            // Link de pagamento criado com sucesso
-            var linkPagamento = mp.modo === 'producao'
-                ? data.init_point
-                : data.sandbox_init_point;
-
-            alert('✅ Redirecionando para o pagamento seguro do Mercado Pago...');
-
-            // Enviar WhatsApp para a Lenice avisando do pedido
-            enviarWhatsApp(pedido);
-
-            // Redirecionar para página de pagamento
-            window.location.href = linkPagamento;
-
-        } else {
-            throw new Error(data.message || 'Erro ao gerar pagamento');
-        }
-
-    } catch (error) {
-        console.error('Erro no pagamento:', error);
-        alert('⚠️ Erro ao processar pagamento.\n\nSeu pedido foi salvo e será enviado pelo WhatsApp. A Lenice entrará em contato!');
-
-        mostrarSucesso(numeroPedido);
-        enviarWhatsApp(pedido);
-
-        // Restaurar botão
-        var btnPagar = document.querySelector('button[onclick="finalizarPedido()"]');
-        if (btnPagar) {
-            btnPagar.disabled = false;
-            btnPagar.innerHTML = '✅ Finalizar Pedido';
-        }
-    }
-}
-
-// ========================================
-// VERIFICAR RETORNO DO PAGAMENTO
-// ========================================
-
-window.addEventListener('load', function () {
-    var urlParams = new URLSearchParams(window.location.search);
-    var statusPagamento = urlParams.get('pagamento');
-
-    if (statusPagamento === 'sucesso') {
-        alert('🎉 Pagamento aprovado com sucesso!\n\nEm breve a Lenice entrará em contato para confirmar os detalhes do seu evento!');
-    } else if (statusPagamento === 'erro') {
-        alert('❌ Pagamento não foi aprovado.\n\nPor favor, tente novamente ou entre em contato pelo WhatsApp.');
-    } else if (statusPagamento === 'pendente') {
-        alert('⏳ Pagamento pendente.\n\nAssim que for confirmado, entraremos em contato!');
-    }
-});
 
 // ========================================
 // MOSTRAR SUCESSO
 // ========================================
 
 function mostrarSucesso(numeroPedido) {
-    document.querySelectorAll('.pedido-step').forEach(function (s) {
+    document.querySelectorAll('.pedido-step').forEach(function(s) {
         s.classList.add('hidden');
     });
 
@@ -794,7 +642,7 @@ function enviarWhatsApp(pedido) {
     var total = pedido.total.toFixed(2).replace('.', ',');
 
     var equipeTexto = '';
-    Object.keys(pedido.equipe).forEach(function (servico) {
+    Object.keys(pedido.equipe).forEach(function(servico) {
         var qty = pedido.equipe[servico];
         if (qty > 0) {
             equipeTexto += '  - ' + qty + 'x ' + nomesServicos[servico] + '\n';
@@ -802,7 +650,7 @@ function enviarWhatsApp(pedido) {
     });
 
     var estacoesTexto = '';
-    Object.keys(pedido.estacoes).forEach(function (est) {
+    Object.keys(pedido.estacoes).forEach(function(est) {
         estacoesTexto += '  - ' + nomesEstacoes[est] + '\n';
     });
     if (!estacoesTexto) estacoesTexto = '  - Nenhuma estação\n';
@@ -856,12 +704,12 @@ function novoPedido() {
     document.getElementById('p-endereco').value = '';
     document.getElementById('p-convidados').value = '';
 
-    Object.keys(quantidades).forEach(function (s) {
+    Object.keys(quantidades).forEach(function(s) {
         var el = document.getElementById('qty-' + s);
         if (el) el.textContent = '0';
     });
 
-    document.querySelectorAll('.estacao-item input').forEach(function (cb) {
+    document.querySelectorAll('.estacao-item input').forEach(function(cb) {
         cb.checked = false;
     });
 
@@ -871,6 +719,54 @@ function novoPedido() {
     showStep(1);
 }
 
+function calcularDeslocamento() {
+    var ida = parseFloat(document.getElementById('desloc-ida').value) || 0;
+    var volta = parseFloat(document.getElementById('desloc-volta').value) || 0;
+    var profissionais = parseInt(document.getElementById('desloc-profissionais').value) || 0;
+
+    var resultado = document.getElementById('desloc-resultado');
+
+    if (ida <= 0 || volta <= 0 || profissionais <= 0) {
+        resultado.classList.add('hidden');
+        return;
+    }
+
+    // Quantos veículos necessários
+    // Cada carro comporta até 4 pessoas
+    var veiculos = Math.ceil(profissionais / 4);
+
+    // Descrição dos veículos
+    var descVeiculos = '';
+    if (profissionais <= 4) {
+        descVeiculos = '1 carro (até 4 pessoas)';
+    } else if (profissionais === 5) {
+        descVeiculos = '1 carro + 1 moto (5 pessoas)';
+    } else {
+        descVeiculos = veiculos + ' carros (' + profissionais + ' pessoas)';
+    }
+
+    // Calcular valores
+    var totalIda = ida * veiculos;
+    var totalVolta = volta * veiculos;
+    var totalGeral = totalIda + totalVolta;
+
+    // Atualizar tela
+    document.getElementById('res-profissionais').textContent = profissionais + ' profissionais';
+    document.getElementById('res-veiculos').textContent = descVeiculos;
+
+    document.getElementById('res-ida').textContent =
+        veiculos + ' corrida(s) x R$ ' + ida.toFixed(2).replace('.', ',') +
+        ' = R$ ' + totalIda.toFixed(2).replace('.', ',');
+
+    document.getElementById('res-volta').textContent =
+        veiculos + ' corrida(s) x R$ ' + volta.toFixed(2).replace('.', ',') +
+        ' = R$ ' + totalVolta.toFixed(2).replace('.', ',');
+
+    document.getElementById('res-total-valor').textContent =
+        'R$ ' + totalGeral.toFixed(2).replace('.', ',');
+
+    resultado.classList.remove('hidden');
+}
 
 // ========================================
 // FORMULÁRIO DE CONTATO
