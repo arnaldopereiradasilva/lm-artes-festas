@@ -374,16 +374,35 @@ function changeQty(servico, delta) {
 function atualizarPrecosTela() {
     var config = JSON.parse(localStorage.getItem('lm_config') || '{}');
     
+    if (!config.precos) return;
+    
+    // Lista de profissionais
+    var profissionais = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista'];
+    
+    // Lista de estações
+    var estacoes = ['pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
+    
     // Atualizar preços dos profissionais
-    if (config.precos) {
-        Object.keys(config.precos).forEach(function(servico) {
+    profissionais.forEach(function(servico) {
+        if (config.precos[servico] !== undefined) {
             var valor = config.precos[servico];
             var elemento = document.querySelector('[data-servico="' + servico + '"] .servico-preco');
             if (elemento) {
                 elemento.textContent = 'R$ ' + valor.toFixed(2).replace('.', ',') + '/evento';
             }
-        });
-    }
+        }
+    });
+    
+    // Atualizar preços das estações
+    estacoes.forEach(function(estacao) {
+        if (config.precos[estacao] !== undefined) {
+            var valor = config.precos[estacao];
+            var elemento = document.querySelector('[data-estacao="' + estacao + '"] .est-preco');
+            if (elemento) {
+                elemento.textContent = 'R$ ' + valor.toFixed(2).replace('.', ',');
+            }
+        }
+    });
 }
 
 // Chamar a função quando carregar a página
@@ -391,10 +410,30 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(atualizarPrecosTela, 100);
 });
 
-function toggleEstacao(estacao, preco) {
+function toggleEstacao(estacao) {
     if (estacoesSelecionadas[estacao]) {
         delete estacoesSelecionadas[estacao];
     } else {
+        // Buscar preço do painel admin
+        var config = JSON.parse(localStorage.getItem('lm_config') || '{}');
+        var preco = 0;
+        
+        if (config.precos && config.precos[estacao]) {
+            preco = config.precos[estacao];
+        } else {
+            // Preços padrão (caso admin não tenha configurado)
+            var precosPadrao = {
+                pipoca: 120,
+                algodao: 130,
+                acai: 200,
+                sorvete: 180,
+                batata: 150,
+                crepe: 160,
+                suco: 140
+            };
+            preco = precosPadrao[estacao] || 0;
+        }
+        
         estacoesSelecionadas[estacao] = preco;
     }
 }

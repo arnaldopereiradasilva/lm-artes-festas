@@ -269,7 +269,7 @@
                             <button onclick="changeQty('fritadeira', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item" data-servico="Churrasqueiro">
+                    <div class="servico-item" data-servico="churrasqueiro">
                         <div class="servico-info">
                             <span class="servico-emoji">🔥</span>
                             <div>
@@ -283,7 +283,7 @@
                             <button onclick="changeQty('churrasqueiro', 1)">+</button>
                         </div>
                     </div>
-                    <div class="servico-item" data-servico="Monitora">
+                    <div class="servico-item" data-servico="monitora">
                         <div class="servico-info">
                             <span class="servico-emoji">👧</span>
                             <div>
@@ -323,7 +323,7 @@
                 <h3>🍿 Escolha as Estações</h3>
                 <p class="step-desc">Opcional - Adicione estações para tornar seu evento ainda mais especial!</p>
                 <div class="estacoes-grid">
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="pipoca">
                         <input type="checkbox" id="est-pipoca" onchange="toggleEstacao('pipoca', 120)">
                         <label for="est-pipoca">
                             <span class="est-emoji">🍿</span>
@@ -331,7 +331,7 @@
                             <span class="est-preco">R$ 120,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="algodao">
                         <input type="checkbox" id="est-algodao" onchange="toggleEstacao('algodao', 130)">
                         <label for="est-algodao">
                             <span class="est-emoji">🩷</span>
@@ -339,7 +339,7 @@
                             <span class="est-preco">R$ 130,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="acai">
                         <input type="checkbox" id="est-acai" onchange="toggleEstacao('acai', 200)">
                         <label for="est-acai">
                             <span class="est-emoji">🫐</span>
@@ -347,7 +347,7 @@
                             <span class="est-preco">R$ 200,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="sorvete">
                         <input type="checkbox" id="est-sorvete" onchange="toggleEstacao('sorvete', 180)">
                         <label for="est-sorvete">
                             <span class="est-emoji">🍦</span>
@@ -355,7 +355,7 @@
                             <span class="est-preco">R$ 180,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="batata">
                         <input type="checkbox" id="est-batata" onchange="toggleEstacao('batata', 150)">
                         <label for="est-batata">
                             <span class="est-emoji">🍟</span>
@@ -363,7 +363,7 @@
                             <span class="est-preco">R$ 150,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="crepe">
                         <input type="checkbox" id="est-crepe" onchange="toggleEstacao('crepe', 160)">
                         <label for="est-crepe">
                             <span class="est-emoji">🥞</span>
@@ -371,7 +371,7 @@
                             <span class="est-preco">R$ 160,00</span>
                         </label>
                     </div>
-                    <div class="estacao-item">
+                    <div class="estacao-item" data-estacao="suco">
                         <input type="checkbox" id="est-suco" onchange="toggleEstacao('suco', 140)">
                         <label for="est-suco">
                             <span class="est-emoji">🥤</span>
@@ -679,11 +679,14 @@
                     <li>🗺️ Atendemos toda a Zona Oeste - RJ</li>
                 </ul>
                 <div class="footer-redes">
-                    <a href="https://www.instagram.com/lm_artes_e_festas/" target="_blank" aria-label="Instagram">
+                    <a href="https://www.instagram.com/lmartese/" target="_blank" aria-label="Instagram">
                         <img src="imagem/instagram.png" alt="Instagram">
                     </a>
                     <a href="https://wa.me/5521985412860" target="_blank" aria-label="WhatsApp">
                         <img src="imagem/whatsapp.png" alt="WhatsApp">
+                    </a>
+                     <a href="https://www.facebook.com/lemartesefestas" target="_blank" aria-label="facebook">
+                        <img src="imagem/facebook.png" alt="facebook">
                     </a>
                 </div>
             </div>
