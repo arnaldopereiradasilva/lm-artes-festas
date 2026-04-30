@@ -296,148 +296,12 @@
             </div>
 
             <!-- CONFIGURAÇÕES -->
-
-            <!-- NOVA SEÇÃO: MERCADO PAGO -->
-<div class="config-card">
-    <h3>💳 Mercado Pago - Dados de Recebimento</h3>
-    <p class="config-descricao">
-        Configure suas credenciais do Mercado Pago para receber pagamentos 
-        por cartão automaticamente.
-    </p>
-
-    <div class="form-group">
-        <label>Nome/Razão Social:</label>
-        <input type="text" id="mp-nome" placeholder="Ex: Lenice Braga">
-    </div>
-
-    <div class="form-group">
-        <label>CPF/CNPJ:</label>
-        <input type="text" id="mp-documento" placeholder="000.000.000-00">
-    </div>
-
-    <div class="form-group">
-        <label>E-mail da conta Mercado Pago:</label>
-        <input type="email" id="mp-email" placeholder="seu@email.com">
-    </div>
-
-    <div class="form-group">
-        <label>🔓 Public Key (Chave Pública):</label>
-        <input type="text" id="mp-public-key" 
-               placeholder="APP_USR-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-        <small>Encontre em: mercadopago.com.br/developers</small>
-    </div>
-
-    <div class="form-group">
-        <label>🔐 Access Token (Chave Privada):</label>
-        <input type="password" id="mp-access-token" 
-               placeholder="APP_USR-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-        <small>⚠️ Mantenha esta chave em SEGREDO!</small>
-    </div>
-
-    <div class="form-group">
-        <label>Modo de Operação:</label>
-        <select id="mp-modo">
-            <option value="teste">🧪 Teste (Sandbox)</option>
-            <option value="producao">✅ Produção (Receber de verdade)</option>
-        </select>
-    </div>
-
-    <button class="btn-salvar" onclick="salvarMercadoPago()">
-        💾 Salvar Configurações do Mercado Pago
-    </button>
-</div>
-
-<!-- NOVA SEÇÃO: GERAR LINK DE PAGAMENTO -->
-<div class="config-card">
-    <h3>🔗 Gerar Link de Pagamento Manual</h3>
-    <p class="config-descricao">
-        Crie um link de pagamento para enviar ao cliente pelo WhatsApp.
-    </p>
-
-    <div class="form-group">
-        <label>Nome do Cliente:</label>
-        <input type="text" id="link-cliente" placeholder="Nome completo">
-    </div>
-
-    <div class="form-group">
-        <label>Descrição do Serviço:</label>
-        <input type="text" id="link-descricao" 
-               placeholder="Ex: Festa de aniversário - 80 convidados">
-    </div>
-
-    <div class="form-group">
-        <label>Valor (R$):</label>
-        <input type="number" id="link-valor" step="0.01" placeholder="0,00">
-    </div>
-
-    <div class="form-group">
-        <label>WhatsApp do Cliente:</label>
-        <input type="text" id="link-whatsapp" placeholder="(21) 99999-9999">
-    </div>
-
-    <button class="btn-salvar" onclick="gerarLinkPagamento()">
-        🔗 Gerar Link e Enviar WhatsApp
-    </button>
-
-    <div id="link-resultado" style="margin-top: 15px; display: none;">
-        <p><strong>✅ Link gerado:</strong></p>
-        <input type="text" id="link-gerado" readonly 
-               style="width: 100%; padding: 10px;">
-        <button onclick="copiarLink()">📋 Copiar Link</button>
-    </div>
-</div>
-
-
-             <!-- ABA FOTOS -->
-<div class="config-section" id="config-fotos">
-    <h3>🖼️ Gerenciar Fotos dos Carrosseis</h3>
-
-    <!-- AVALIAÇÕES -->
-    <div class="fotos-section">
-        <h4>⭐ Avaliações Reais</h4>
-        <p class="fotos-desc">Fotos exibidas no carrossel de avaliações do site</p>
-        <div class="fotos-grid" id="grid-avaliacoes"></div>
-        <div class="fotos-add">
-            <label class="btn-add-foto">
-                ➕ Adicionar Foto
-                <input type="file" accept="image/*" multiple onchange="adicionarFotos('avaliacoes', this)">
-            </label>
-        </div>
-    </div>
-
-    <!-- EVENTOS -->
-    <div class="fotos-section">
-        <h4>🎉 Nossos Eventos</h4>
-        <p class="fotos-desc">Fotos exibidas no carrossel de eventos do site</p>
-        <div class="fotos-grid" id="grid-eventos"></div>
-        <div class="fotos-add">
-            <label class="btn-add-foto">
-                ➕ Adicionar Foto
-                <input type="file" accept="image/*" multiple onchange="adicionarFotos('eventos', this)">
-            </label>
-        </div>
-    </div>
-
-    <!-- ESTAÇÕES -->
-    <div class="fotos-section">
-        <h4>🍿 Nossas Estações</h4>
-        <p class="fotos-desc">Fotos exibidas no carrossel de estações do site</p>
-        <div class="fotos-grid" id="grid-estacoes"></div>
-        <div class="fotos-add">
-            <label class="btn-add-foto">
-                ➕ Adicionar Foto
-                <input type="file" accept="image/*" multiple onchange="adicionarFotos('estacoes', this)">
-            </label>
-        </div>
-    </div>
-
-</div>
             <div class="page hidden" id="page-configuracoes">
                 <div class="section-box">
-                    <h2>⚙️ Configurações do Sistema</h2>
+                    <h2>Configuracoes do Sistema</h2>
 
                     <div class="config-section">
-                        <h3>🔐 Alterar Senha</h3>
+                        <h3>Alterar Senha</h3>
                         <div class="form-group">
                             <label>Senha Atual</label>
                             <input type="password" id="senha-atual" placeholder="Digite a senha atual">
@@ -450,11 +314,69 @@
                             <label>Confirmar Nova Senha</label>
                             <input type="password" id="senha-confirmar" placeholder="Confirme a nova senha">
                         </div>
-                        <button class="btn-salvar" onclick="alterarSenha()">💾 Salvar Senha</button>
+                        <button class="btn-salvar" onclick="alterarSenha()">Salvar Senha</button>
                     </div>
 
                     <div class="config-section">
-                        <h3>💰 Preços dos Serviços</h3>
+                        <h3>Mercado Pago - Configuracoes</h3>
+                        <div class="form-group">
+                            <label>Nome/Razao Social:</label>
+                            <input type="text" id="mp-nome" placeholder="Ex: Lenice Braga">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF/CNPJ:</label>
+                            <input type="text" id="mp-documento" placeholder="000.000.000-00">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail da conta Mercado Pago:</label>
+                            <input type="email" id="mp-email" placeholder="seu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Public Key:</label>
+                            <input type="text" id="mp-public-key" placeholder="APP_USR-...">
+                        </div>
+                        <div class="form-group">
+                            <label>Access Token:</label>
+                            <input type="password" id="mp-access-token" placeholder="APP_USR-...">
+                        </div>
+                        <div class="form-group">
+                            <label>Modo:</label>
+                            <select id="mp-modo">
+                                <option value="sandbox">Teste (Sandbox)</option>
+                                <option value="producao">Producao</option>
+                            </select>
+                        </div>
+                        <button class="btn-salvar" onclick="salvarMercadoPago()">Salvar Mercado Pago</button>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Gerar Link de Pagamento</h3>
+                        <div class="form-group">
+                            <label>Nome do Cliente:</label>
+                            <input type="text" id="link-cliente" placeholder="Nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label>Descricao:</label>
+                            <input type="text" id="link-descricao" placeholder="Ex: Festa - 80 convidados">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$):</label>
+                            <input type="number" id="link-valor" step="0.01" placeholder="0,00">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp:</label>
+                            <input type="text" id="link-whatsapp" placeholder="(21) 99999-9999">
+                        </div>
+                        <button class="btn-salvar" onclick="gerarLinkPagamento()">Gerar Link</button>
+                        <div id="link-resultado" style="margin-top: 15px; display: none;">
+                            <p>Link gerado:</p>
+                            <input type="text" id="link-gerado" readonly style="width: 100%; padding: 10px;">
+                            <button onclick="copiarLink()">Copiar Link</button>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Preços dos Servicos</h3>
                         <div class="precos-grid">
                             <div class="form-group">
                                 <label>Garçom (R$)</label>
@@ -560,6 +482,7 @@
         </div>
     </div>
 
+    <script src="api-client.js"></script>
     <script src="admin-script.js"></script>
 
 </body>
