@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { getDb } = require('../db');
 const { autenticado } = require('../middleware/auth');
 
 const UPLOAD_DIR = path.join(__dirname, '..', 'uploads');
@@ -22,8 +21,14 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const tipos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    if (tipos.includes(file.mimetype)) cb(null, true);
-    else cb(new Error('Tipo de arquivo nao permitido'));
+    const extensoesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+    const ext = path.extname(file.originalname).toLowerCase();
+
+    if (tipos.includes(file.mimetype) && extensoesValidas.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Tipo de arquivo nao permitido'));
+    }
   }
 });
 
@@ -32,9 +37,7 @@ router.get('/:tipo', async (req, res) => {
     const tipos = ['avaliacoes', 'eventos', 'estacoes'];
     if (!tipos.includes(req.params.tipo)) return res.status(400).json({ erro: 'Tipo invalido' });
 
-    const db = getDb();
-    const fotos = await db.all('SELECT * FROM fotos WHERE tipo = ? ORDER BY ordem ASC', [req.params.tipo]);
-    db.close();
+    const fotos = await req.db.all('SELECT * FROM fotos WHERE tipo = ? ORDER BY ordem ASC, id ASC', [req.params.tipo]);
     res.json(fotos);
   } catch (err) {
     res.status(500).json({ erro: 'Erro interno' });
@@ -47,11 +50,12 @@ router.post('/:tipo', autenticado, upload.array('fotos', 20), async (req, res) =
     if (!tipos.includes(req.params.tipo)) return res.status(400).json({ erro: 'Tipo invalido' });
     if (!req.files || req.files.length === 0) return res.status(400).json({ erro: 'Nenhuma foto enviada' });
 
-    const db = getDb();
+    const maxOrdem = await req.db.get('SELECT COALESCE(MAX(ordem), -1) as maxOrdem FROM fotos WHERE tipo = ?', [req.params.tipo]);
+    const inicioOrdem = (maxOrdem && maxOrdem.maxOrdem !== null) ? maxOrdem.maxOrdem + 1 : 0;
+
     for (let i = 0; i < req.files.length; i++) {
-      await db.run('INSERT INTO fotos (tipo, caminho, ordem) VALUES (?, ?, ?)', [req.params.tipo, '/uploads/' + req.files[i].filename, i]);
+      await req.db.run('INSERT INTO fotos (tipo, caminho, ordem) VALUES (?, ?, ?)', [req.params.tipo, '/uploads/' + req.files[i].filename, inicioOrdem + i]);
     }
-    db.close();
     res.status(201).json({ ok: true, fotos: req.files.length });
   } catch (err) {
     res.status(500).json({ erro: 'Erro interno' });
@@ -60,15 +64,13 @@ router.post('/:tipo', autenticado, upload.array('fotos', 20), async (req, res) =
 
 router.delete('/:id', autenticado, async (req, res) => {
   try {
-    const db = getDb();
-    const foto = await db.get('SELECT * FROM fotos WHERE id = ?', [req.params.id]);
-    if (!foto) { db.close(); return res.status(404).json({ erro: 'Foto nao encontrada' }); }
+    const foto = await req.db.get('SELECT * FROM fotos WHERE id = ?', [req.params.id]);
+    if (!foto) { return res.status(404).json({ erro: 'Foto nao encontrada' }); }
 
     const caminhoCompleto = path.join(__dirname, '..', foto.caminho);
     if (fs.existsSync(caminhoCompleto)) fs.unlinkSync(caminhoCompleto);
 
-    await db.run('DELETE FROM fotos WHERE id = ?', [req.params.id]);
-    db.close();
+    await req.db.run('DELETE FROM fotos WHERE id = ?', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ erro: 'Erro interno' });

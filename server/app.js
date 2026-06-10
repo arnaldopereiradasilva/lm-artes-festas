@@ -6,9 +6,16 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
 const { apiLimiter } = require('./middleware/ratelimit');
-const { sanitizeBody } = require('./middleware/sanitize');
-const { initDatabase } = require('./db');
+const { sanitizeInputs } = require('./middleware/sanitize');
+const { initDatabase, dbMiddleware } = require('./db');
+
+if (!process.env.SESSION_SECRET) {
+  console.error('ERRO CRITICO: Variavel SESSION_SECRET nao definida no .env');
+  console.error('Gere uma chave aleatoria: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
+  process.exit(1);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +25,8 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:'],
       connectSrc: ["'self'", 'https://api.mercadopago.com'],
@@ -32,23 +40,65 @@ app.use(cors({
   credentials: true
 }));
 
+app.use((req, res, next) => {
+  if (req.path === '/api/pagamento/webhook' && req.method === 'POST') {
+    let data = '';
+    req.on('data', chunk => data += chunk);
+    req.on('end', () => {
+      req.rawBody = data;
+      try { req.body = JSON.parse(data); } catch { req.body = {}; }
+      next();
+    });
+  } else {
+    next();
+  }
+});
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-app.use(sanitizeBody);
+app.use(sanitizeInputs);
+
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ erro: 'Formato de dados invalido' });
+  }
+  next(err);
+});
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'trocar-esta-chave-em-producao-urgente',
+  store: new SQLiteStore({ dir: path.join(__dirname, 'data'), db: 'sessions.db' }),
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
 app.use('/api', apiLimiter);
+
+app.use('/api', dbMiddleware);
+
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) && req.path.startsWith('/api/')) {
+    if (req.path === '/api/pagamento/webhook') return next();
+    const origin = req.get('origin');
+    const referer = req.get('referer');
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    const origemPermitida = new URL(baseUrl).origin;
+    if (origin && origin !== origemPermitida) {
+      return res.status(403).json({ erro: 'Requisicao rejeitada' });
+    }
+    if (referer && !referer.startsWith(origemPermitida)) {
+      return res.status(403).json({ erro: 'Requisicao rejeitada' });
+    }
+  }
+  next();
+});
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '..')));
@@ -84,6 +134,11 @@ async function start() {
   try {
     await initDatabase();
     console.log('Banco de dados inicializado');
+
+    const { dbRun, dbOpen } = require('./db');
+    const cleanupDb = await dbOpen();
+    await dbRun(cleanupDb, "DELETE FROM tentativas_login WHERE bloqueado_ate IS NOT NULL AND bloqueado_ate < datetime('now')");
+    cleanupDb.close();
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando em http://localhost:${PORT}`);

@@ -39,6 +39,10 @@ var estacoesSelecionadas = {};
 var pagamentoSelecionado = '';
 
 window.addEventListener('load', function () {
+    salvarCarouselOriginal();
+    carregarCarrosseis();
+    setInterval(carregarCarrosseis, 30000); // Atualiza a cada 30 segundos
+
     carregarConfiguracoes();
 
     var menuToggle = document.querySelector('.menu-toggle');
@@ -103,24 +107,6 @@ window.addEventListener('load', function () {
         });
     }
 
-    var elCard = document.getElementById('card-numero');
-    if (elCard) {
-        elCard.addEventListener('input', function () {
-            var v = this.value.replace(/\D/g, '');
-            v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
-            this.value = v;
-        });
-    }
-
-    var elValidade = document.getElementById('card-validade');
-    if (elValidade) {
-        elValidade.addEventListener('input', function () {
-            var v = this.value.replace(/\D/g, '');
-            v = v.replace(/(\d{2})(\d)/, '$1/$2');
-            this.value = v;
-        });
-    }
-
     var urlParams = new URLSearchParams(window.location.search);
     var statusPagamento = urlParams.get('pagamento');
     if (statusPagamento === 'sucesso') {
@@ -159,12 +145,12 @@ async function carregarConfiguracoes() {
         atualizarChavePix();
         showStep(1);
         buscarDatasOcupadas(config.max_eventos_por_dia || 5);
-        carregarFotosServidor();
     } catch (e) {
         console.error('Erro ao carregar config:', e);
         showStep(1);
         buscarDatasOcupadas(5);
     }
+    carregarCarrosseis();
 }
 
 function atualizarChavePix() {
@@ -172,75 +158,117 @@ function atualizarChavePix() {
     if (elChave && chavePix) elChave.textContent = chavePix;
 }
 
-async function carregarFotosServidor() {
-    var tipos = {
-        avaliacoes: 'avalSlider',
-        eventos: 'eventosSlider',
-        estacoes: 'estacoesSlider'
-    };
+var _carregandoCarrosseis = false;
+var _carouselOriginalHTML = {};
 
-    for (var tipo in tipos) {
-        try {
-            var fotos = await API.fotos.listar(tipo);
-            if (fotos && fotos.length > 0) {
-                var slider = document.getElementById(tipos[tipo]);
-                if (slider) {
-                    slider.innerHTML = fotos.map(function (f, i) {
-                        return '<img src="' + f.caminho + '" alt="Foto ' + (i + 1) + '">';
-                    }).join('');
-                }
-            }
-        } catch (e) {
-        }
+function salvarCarouselOriginal() {
+    var ids = ['avalSlider', 'eventosSlider', 'estacoesSlider'];
+    for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el) _carouselOriginalHTML[ids[i]] = el.innerHTML;
     }
+}
 
-    iniciarCarrosseis();
+async function carregarCarrosseis() {
+    if (_carregandoCarrosseis) return;
+    _carregandoCarrosseis = true;
+    console.log('Carregando carrosseis do servidor...');
+    try {
+        var tipos = ['avaliacoes', 'eventos', 'estacoes'];
+        var sliderIds = {
+            avaliacoes: 'avalSlider',
+            eventos: 'eventosSlider',
+            estacoes: 'estacoesSlider'
+        };
+
+        for (var t = 0; t < tipos.length; t++) {
+            var tipo = tipos[t];
+            try {
+                var fotos = await API.fotos.listar(tipo);
+                var slider = document.getElementById(sliderIds[tipo]);
+                if (slider) {
+                    slider.innerHTML = _carouselOriginalHTML[sliderIds[tipo]] || '';
+                    if (fotos && fotos.length > 0) {
+                        for (var f = 0; f < fotos.length; f++) {
+                            var img = document.createElement('img');
+                            img.src = fotos[f].caminho;
+                            img.alt = 'Foto ' + (f + 1);
+                            slider.appendChild(img);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Erro ao carregar fotos ' + tipo + ':', e);
+            }
+        }
+    } catch (e) {
+        console.error('Erro em carregarCarrosseis:', e);
+    }
+    
+    // Reinicia os carrosseis após as imagens serem carregadas
+    setTimeout(function () {
+        console.log('Reiniciando carrosseis...');
+        if (typeof carrossel === 'function') {
+            carrossel('avalSlider', 'avalEsq', 'avalDir', false, true);
+            carrossel('eventosSlider', 'eventosEsq', 'eventosDir', true, true);
+            carrossel('estacoesSlider', 'estacoesEsq', 'estacoesDir', true, true);
+        }
+    }, 200);
+
+    _carregandoCarrosseis = false;
 }
 
 function iniciarCarrosseis() {
-    function carrossel(sliderId, esqId, dirId, autoPlay) {
+    console.log('Iniciando carrosseis...');
+    carrossel('avalSlider', 'avalEsq', 'avalDir', false);
+    carrossel('eventosSlider', 'eventosEsq', 'eventosDir', true);
+    carrossel('estacoesSlider', 'estacoesEsq', 'estacoesDir', true);
+}
+
+function atualizarCarrosseis() {
+    console.log('Atualizando carrosseis...');
+    carregarCarrosseis();
+}
+
+// Função global do carrossel
+function carrossel(sliderId, esqId, dirId, autoPlay, manterPosicao) {
+    try {
         var slider = document.getElementById(sliderId);
         var esq = document.getElementById(esqId);
         var dir = document.getElementById(dirId);
         if (!slider || !esq || !dir) return;
 
-        var imgs = slider.getElementsByTagName('img');
+        var imgs = slider.querySelectorAll('img');
         var total = imgs.length;
         if (total === 0) return;
-        var atual = 0;
 
-        for (var i = 0; i < imgs.length; i++) {
-            imgs[i].style.minWidth = '100%';
-            imgs[i].style.height = '450px';
-            imgs[i].style.objectFit = 'contain';
-            imgs[i].style.objectPosition = 'center';
-            imgs[i].style.flexShrink = '0';
-            imgs[i].style.display = 'block';
-            imgs[i].style.background = '#1a1a2e';
-        }
-
+        slider._total = total;
         slider.style.display = 'flex';
-        slider.style.transition = 'transform 0.5s ease';
 
         function ir(n) {
-            if (n < 0) n = total - 1;
-            if (n >= total) n = 0;
-            atual = n;
-            slider.style.transform = 'translateX(-' + (atual * 100) + '%)';
+            if (n < 0) n = slider._total - 1;
+            if (n >= slider._total) n = 0;
+            slider._atual = n;
+            slider.style.transform = 'translateX(-' + (slider._atual * 100) + '%)';
         }
 
-        esq.onclick = function (e) { e.preventDefault(); ir(atual - 1); };
-        dir.onclick = function (e) { e.preventDefault(); ir(atual + 1); };
-        ir(0);
+        esq.onclick = function (e) { e.preventDefault(); ir(slider._atual - 1); };
+        dir.onclick = function (e) { e.preventDefault(); ir(slider._atual + 1); };
 
-        if (autoPlay) {
-            setInterval(function () { ir(atual + 1); }, 4000);
+        if (manterPosicao && slider._atual !== undefined && slider._atual < total) {
+            ir(slider._atual);
+        } else {
+            slider._atual = 0;
+            ir(0);
         }
+
+        if (autoPlay && !manterPosicao) {
+            if (slider._autoPlayTimer) clearInterval(slider._autoPlayTimer);
+            slider._autoPlayTimer = setInterval(function () { ir(slider._atual + 1); }, 4000);
+        }
+    } catch (e) {
+        console.error('Erro no carrossel ' + sliderId + ':', e);
     }
-
-    carrossel('avalSlider', 'avalEsq', 'avalDir', false);
-    carrossel('eventosSlider', 'eventosEsq', 'eventosDir', true);
-    carrossel('estacoesSlider', 'estacoesEsq', 'estacoesDir', true);
 }
 
 async function buscarDatasOcupadas(maxPorDia) {
@@ -369,6 +397,7 @@ function validarStep(step) {
         if (!whatsapp) { alert('Por favor, informe seu WhatsApp!'); return false; }
         if (!email || email.indexOf('@') === -1) { alert('Por favor, informe um e-mail valido!'); return false; }
         if (!cpf) { alert('Por favor, informe seu CPF!'); return false; }
+        if (!validarCPF(cpf)) { alert('CPF invalido! Verifique o numero informado.'); return false; }
     }
 
     if (step === 2) {
@@ -450,6 +479,20 @@ function gerarResumo() {
     document.getElementById('total-valor').textContent = 'R$ ' + calcularTotal().toFixed(2).replace('.', ',');
 }
 
+function validarCPF(cpf) {
+    var numeros = cpf.replace(/\D/g, '');
+    if (numeros.length !== 11 || /^(\d)\1+$/.test(numeros)) return false;
+    var soma = 0;
+    for (var i = 0; i < 9; i++) soma += parseInt(numeros[i]) * (10 - i);
+    var dig1 = 11 - (soma % 11);
+    if (dig1 > 9) dig1 = 0;
+    soma = 0;
+    for (var i = 0; i < 10; i++) soma += parseInt(numeros[i]) * (11 - i);
+    var dig2 = 11 - (soma % 11);
+    if (dig2 > 9) dig2 = 0;
+    return dig1 === parseInt(numeros[9]) && dig2 === parseInt(numeros[10]);
+}
+
 function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
@@ -466,7 +509,6 @@ function selectPagamento(tipo) {
         document.getElementById('detalhe-pix').classList.remove('hidden');
     } else {
         document.getElementById('detalhe-cartao').classList.remove('hidden');
-        document.getElementById('parcelas-group').style.display = tipo === 'credito' ? 'block' : 'none';
     }
 }
 

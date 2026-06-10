@@ -5,6 +5,7 @@
 var pedidoAtualModal = null;
 var mesAtual = new Date().getMonth();
 var anoAtual = new Date().getFullYear();
+var _precosServicos = null;
 
 var nomesServicos = {
     garcom: 'Garcom',
@@ -101,7 +102,7 @@ function showPage(page) {
     document.querySelectorAll('.sidebar-link').forEach(function(l) { l.classList.remove('active'); });
     if (event && event.target) event.target.classList.add('active');
 
-    var titulos = { dashboard: 'Dashboard', pedidos: 'Pedidos', calendario: 'Calendario', financeiro: 'Financeiro', configuracoes: 'Configuracoes' };
+    var titulos = { dashboard: 'Dashboard', pedidos: 'Pedidos', calendario: 'Calendario', financeiro: 'Financeiro', configuracoes: 'Configuracoes', fotos: 'Fotos' };
     document.getElementById('page-title').textContent = titulos[page] || page;
 
     document.querySelector('.sidebar').classList.remove('open');
@@ -110,6 +111,8 @@ function showPage(page) {
     if (page === 'pedidos') renderizarPedidos();
     if (page === 'calendario') renderizarCalendario();
     if (page === 'financeiro') renderizarFinanceiro();
+    if (page === 'configuracoes') carregarConfiguracoesAdmin();
+    if (page === 'fotos') carregarFotos();
 }
 
 function toggleSidebar() {
@@ -202,6 +205,12 @@ function getBadge(status) {
 
 async function abrirModal(numeroPedido) {
     try {
+        if (!_precosServicos) {
+            var cfg = await API.config.listar();
+            _precosServicos = {};
+            var sv = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
+            for (var i = 0; i < sv.length; i++) _precosServicos[sv[i]] = parseFloat(cfg['preco_' + sv[i]]) || 0;
+        }
         var pedido = await API.pedidos.buscar(numeroPedido);
         if (!pedido) return;
         pedidoAtualModal = pedido;
@@ -276,10 +285,18 @@ function contatarCliente() {
     if (pedidoAtualModal) contatarClientePorNumero(pedidoAtualModal.numero_pedido);
 }
 
-function contatarClientePorNumero(numeroPedido) {
-    var pedidos = JSON.parse(sessionStorage.getItem('_pedidos_cache') || '[]');
-    var pedido = pedidos.find(function(p) { return p.numero_pedido === numeroPedido; });
-    if (!pedido) { alert('Pedido nao encontrado em cache'); return; }
+async function contatarClientePorNumero(numeroPedido) {
+    var pedido = null;
+    if (pedidoAtualModal && pedidoAtualModal.numero_pedido === numeroPedido) {
+        pedido = pedidoAtualModal;
+    } else {
+        var pedidos = JSON.parse(sessionStorage.getItem('_pedidos_cache') || '[]');
+        pedido = pedidos.find(function(p) { return p.numero_pedido === numeroPedido; });
+        if (!pedido) {
+            try { pedido = await API.pedidos.buscar(numeroPedido); } catch (_) {}
+        }
+    }
+    if (!pedido) { alert('Pedido nao encontrado'); return; }
 
     var mensagem = 'Ola ' + pedido.cliente_nome + '!\nAqui e a L&M Artes e Festas.\nEstamos entrando em contato sobre seu pedido *#' + pedido.numero_pedido + '* para o dia *' + pedido.evento_data + '*.';
     var whatsapp = pedido.cliente_whatsapp.replace(/\D/g, '');
@@ -348,7 +365,7 @@ function clicouDia(data) {
     var eventosDia = pedidos.filter(function(p) { return converterData(p.evento_data) === data && p.status !== 'cancelado'; });
 
     if (eventosDia.length > 0) {
-        var nomes = eventosDia.map(function(p) { '- #' + p.numero_pedido + ' - ' + p.cliente_nome; }).join('\n');
+        var nomes = eventosDia.map(function(p) { return '- #' + p.numero_pedido + ' - ' + p.cliente_nome; }).join('\n');
         alert('Eventos em ' + formatarData(data) + ':\n\n' + nomes);
     }
 }
@@ -523,6 +540,35 @@ async function salvarPrecos() {
     } catch (e) { alert('Erro: ' + e.message); }
 }
 
+async function carregarConfiguracoesAdmin() {
+    try {
+        var config = await API.config.listar();
+        if (config.whatsapp) document.getElementById('config-whatsapp').value = config.whatsapp;
+        if (config.email) document.getElementById('config-email').value = config.email;
+        if (config.pix) document.getElementById('config-pix').value = config.pix;
+        if (config.max_eventos_por_dia) document.getElementById('config-max-eventos').value = config.max_eventos_por_dia;
+
+        if (config.mp_nome) document.getElementById('mp-nome').value = config.mp_nome;
+        if (config.mp_documento) document.getElementById('mp-documento').value = config.mp_documento;
+        if (config.mp_email) document.getElementById('mp-email').value = config.mp_email;
+        if (config.mp_public_key) document.getElementById('mp-public-key').value = config.mp_public_key;
+        if (config.mp_modo) document.getElementById('mp-modo').value = config.mp_modo;
+
+        _precosServicos = {};
+        var servicos = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
+        for (var i = 0; i < servicos.length; i++) {
+            var s = servicos[i];
+            var campo = document.getElementById('preco-' + s);
+            if (config['preco_' + s]) {
+                campo.value = config['preco_' + s];
+                _precosServicos[s] = parseFloat(config['preco_' + s]);
+            } else {
+                _precosServicos[s] = parseFloat(campo.value) || 0;
+            }
+        }
+    } catch (e) { console.error('Erro ao carregar config:', e); }
+}
+
 async function salvarConfiguracoes() {
     var configs = {
         whatsapp: document.getElementById('config-whatsapp').value,
@@ -624,7 +670,66 @@ function formatarData(dataStr) {
 }
 
 function getPreco(servico) {
+    if (_precosServicos && _precosServicos[servico] !== undefined) {
+        return _precosServicos[servico];
+    }
     return 0;
+}
+
+async function carregarFotos() {
+    var tipos = ['avaliacoes', 'eventos', 'estacoes'];
+    for (var i = 0; i < tipos.length; i++) {
+        await renderizarFotos(tipos[i]);
+    }
+}
+
+async function renderizarFotos(tipo) {
+    try {
+        var fotos = await API.fotos.listar(tipo);
+        var grid = document.getElementById('fotos-' + tipo);
+        if (!grid) return;
+
+        if (!fotos || fotos.length === 0) {
+            grid.innerHTML = '<div class="fotos-vazio">Nenhuma foto ainda. Clique em "Adicionar Fotos" para enviar.</div>';
+            return;
+        }
+
+        grid.innerHTML = fotos.map(function(f, i) {
+            return '<div class="foto-item">' +
+                '<img src="' + f.caminho + '" alt="Foto ' + (i + 1) + '" loading="lazy">' +
+                '<span class="foto-num">#' + (i + 1) + '</span>' +
+                '<div class="foto-overlay">' +
+                    '<button class="btn-remover-foto" onclick="removerFoto(' + f.id + ', \'' + tipo + '\')">🗑 Excluir</button>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    } catch (e) { console.error('Erro ao carregar fotos:', e); }
+}
+
+async function uploadFotos(tipo, input) {
+    if (!input.files || input.files.length === 0) return;
+
+    var formData = new FormData();
+    for (var i = 0; i < input.files.length; i++) {
+        formData.append('fotos', input.files[i]);
+    }
+
+    try {
+        await API.fotos.enviar(tipo, formData);
+        input.value = '';
+        await renderizarFotos(tipo);
+        await API.site.atualizarCarrosseis();
+        alert('Fotos enviadas com sucesso!');
+    } catch (e) { alert('Erro ao enviar fotos: ' + e.message); }
+}
+
+async function removerFoto(id, tipo) {
+    if (!confirm('Deseja excluir esta foto?')) return;
+    try {
+        await API.fotos.remover(id);
+        await renderizarFotos(tipo);
+        await API.site.atualizarCarrosseis();
+    } catch (e) { alert('Erro ao excluir foto: ' + e.message); }
 }
 
 function escapeHtml(str) {

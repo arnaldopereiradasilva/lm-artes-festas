@@ -24,4 +24,12 @@ const pedidoLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-module.exports = { loginLimiter, apiLimiter, pedidoLimiter };
+const webhookLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 30,
+  message: { erro: 'Muitas requisicoes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+module.exports = { loginLimiter, apiLimiter, pedidoLimiter, webhookLimiter };

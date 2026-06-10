@@ -13,9 +13,21 @@ var API = (function() {
     };
     if (body) opts.body = JSON.stringify(body);
     return fetch(BASE + path, opts).then(function(res) {
-      return res.json().then(function(data) {
-        if (!res.ok) throw new Error(data.erro || 'Erro na requisicao');
-        return data;
+      var ct = res.headers.get('content-type');
+      if (ct && ct.includes('application/json')) {
+        return res.json().then(function(data) {
+          if (!res.ok) throw new Error(data.erro || 'Erro na requisicao');
+          return data;
+        }).catch(function(err) {
+          if (err.message && err.message.includes('JSON')) {
+            throw new Error('Erro na resposta do servidor (JSON invalido)');
+          }
+          throw err;
+        });
+      }
+      return res.text().then(function(text) {
+        if (!res.ok) throw new Error(text || 'Erro na requisicao');
+        throw new Error('Resposta inesperada do servidor');
       });
     });
   }
@@ -71,6 +83,15 @@ var API = (function() {
       criarLinkPedido: function(num, tipo) { return request('POST', '/api/pagamento/pedido/' + num, { tipo: tipo }); },
       gerarLink: function(dados) { return request('POST', '/api/pagamento/link', dados); },
       links: function() { return request('GET', '/api/pagamento/links'); }
+    },
+
+    site: {
+      atualizarCarrosseis: function() {
+        if (typeof atualizarCarrosseis === 'function') {
+          return Promise.resolve(atualizarCarrosseis());
+        }
+        return Promise.resolve();
+      }
     }
   };
 })();

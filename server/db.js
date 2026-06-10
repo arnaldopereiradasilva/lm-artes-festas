@@ -1,8 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'data', 'lm-artes.db');
+const DB_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
+const DB_PATH = path.join(DB_DIR, 'lm-artes.db');
 
 function dbOpen() {
   return new Promise((resolve, reject) => {
@@ -164,9 +167,13 @@ async function inserirConfiguracoesPadrao(db) {
 async function inserirUsuarioPadrao(db) {
   const existe = await dbGet(db, 'SELECT id FROM usuarios WHERE username = ?', ['lenice']);
   if (!existe) {
-    const senhaHash = await bcrypt.hash('lm2025', 10);
+    const senhaPadrao = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-6).toUpperCase();
+    const senhaHash = await bcrypt.hash(senhaPadrao, 10);
     await dbRun(db, 'INSERT INTO usuarios (username, senha_hash) VALUES (?, ?)', ['lenice', senhaHash]);
-    console.log('Usuario padrao criado (troque a senha no painel!)');
+    try {
+      fs.writeFileSync(path.join(__dirname, '..', '.senha_inicial.txt'), 'Usuario: lenice\nSenha: ' + senhaPadrao + '\n\nTROQUE A SENHA NO PAINEL IMEDIATAMENTE!\n');
+    } catch (_) {}
+    console.log('Usuario padrao criado. A senha inicial esta em .senha_inicial.txt');
   }
 }
 
@@ -180,4 +187,15 @@ function getDb() {
   };
 }
 
-module.exports = { initDatabase, getDb, dbOpen, dbRun, dbGet, dbAll };
+function dbMiddleware(req, res, next) {
+  const db = new sqlite3.Database(DB_PATH);
+  req.db = {
+    run: (sql, params) => dbRun(db, sql, params),
+    get: (sql, params) => dbGet(db, sql, params),
+    all: (sql, params) => dbAll(db, sql, params),
+  };
+  res.on('finish', () => db.close());
+  next();
+}
+
+module.exports = { initDatabase, getDb, dbOpen, dbRun, dbGet, dbAll, dbMiddleware };

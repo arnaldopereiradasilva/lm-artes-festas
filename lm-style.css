@@ -1405,3 +1405,10 @@ body {
 
     .carrossel-inner img { height: 220px; }
 }
+
+.flatpickr-calendar {
+    display: none !important;
+}
+.flatpickr-calendar.open {
+    display: inline-block !important;
+}

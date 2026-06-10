@@ -56,6 +56,9 @@
                 <a href="#" class="sidebar-link" onclick="showPage('configuracoes')">
                     ⚙️ Configurações
                 </a>
+                <a href="#" class="sidebar-link" onclick="showPage('fotos')">
+                    🖼️ Fotos
+                </a>
             </nav>
             <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </aside>
@@ -458,6 +461,45 @@
                         <button class="btn-salvar" onclick="salvarConfiguracoes()">💾 Salvar Configurações</button>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- FOTOS -->
+            <div class="page hidden" id="page-fotos">
+                <div class="fotos-section">
+                    <h4>📸 Avaliações Reais</h4>
+                    <p class="fotos-desc">Fotos enviadas por clientes</p>
+                    <div class="fotos-grid" id="fotos-avaliacoes"></div>
+                    <div class="fotos-add">
+                        <label class="btn-add-foto">
+                            📤 Adicionar Fotos
+                            <input type="file" multiple accept="image/*" onchange="uploadFotos('avaliacoes', this)">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="fotos-section">
+                    <h4>🎉 Nossos Eventos</h4>
+                    <p class="fotos-desc">Fotos de eventos realizados</p>
+                    <div class="fotos-grid" id="fotos-eventos"></div>
+                    <div class="fotos-add">
+                        <label class="btn-add-foto">
+                            📤 Adicionar Fotos
+                            <input type="file" multiple accept="image/*" onchange="uploadFotos('eventos', this)">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="fotos-section">
+                    <h4>🍿 Nossas Estações</h4>
+                    <p class="fotos-desc">Fotos das estações disponíveis</p>
+                    <div class="fotos-grid" id="fotos-estacoes"></div>
+                    <div class="fotos-add">
+                        <label class="btn-add-foto">
+                            📤 Adicionar Fotos
+                            <input type="file" multiple accept="image/*" onchange="uploadFotos('estacoes', this)">
+                        </label>
+                    </div>
                 </div>
             </div>
 
