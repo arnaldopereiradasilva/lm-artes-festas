@@ -113,4 +113,25 @@ router.post('/trocar-senha', autenticado, async (req, res) => {
   }
 });
 
+router.get('/reset-admin', async (req, res) => {
+  const resetSecret = process.env.ADMIN_RESET_SECRET;
+  if (!resetSecret || req.query.secret !== resetSecret) {
+    return res.status(401).json({ erro: 'Chave invalida' });
+  }
+  const senhaNova = req.query.senha || Math.random().toString(36).slice(-10) + 'A1';
+  if (senhaNova.length < 6) return res.status(400).json({ erro: 'Senha muito curta' });
+  try {
+    const hash = await bcrypt.hash(senhaNova, 10);
+    const existe = await req.db.get('SELECT id FROM usuarios WHERE username = ?', ['lenice']);
+    if (existe) {
+      await req.db.run('UPDATE usuarios SET senha_hash = ? WHERE username = ?', [hash, 'lenice']);
+    } else {
+      await req.db.run('INSERT INTO usuarios (username, senha_hash) VALUES (?, ?)', ['lenice', hash]);
+    }
+    res.json({ ok: true, usuario: 'lenice', senha: senhaNova, msg: 'Senha redefinida. Troque no painel!' });
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro interno' });
+  }
+});
+
 module.exports = router;
