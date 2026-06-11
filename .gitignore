@@ -19,3 +19,4 @@ npm-debug.log*
 # Temp / Dev
 reset-senha.js
 scripts/
+*.txt

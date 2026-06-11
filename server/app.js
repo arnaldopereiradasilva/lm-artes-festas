@@ -10,6 +10,8 @@ const SQLiteStore = require('connect-sqlite3')(session);
 const { apiLimiter } = require('./middleware/ratelimit');
 const { sanitizeInputs } = require('./middleware/sanitize');
 const { initDatabase, dbMiddleware } = require('./db');
+const SESSION_DIR = path.join(__dirname, 'data');
+if (!require('fs').existsSync(SESSION_DIR)) require('fs').mkdirSync(SESSION_DIR, { recursive: true });
 
 if (!process.env.SESSION_SECRET) {
   console.error('ERRO CRITICO: Variavel SESSION_SECRET nao definida no .env');
@@ -36,7 +38,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.BASE_URL || 'http://localhost:3000',
+  origin: function (origin, cb) { cb(null, true); },
   credentials: true
 }));
 
@@ -67,10 +69,10 @@ app.use((err, req, res, next) => {
 });
 
 app.use(session({
-  store: new SQLiteStore({ dir: path.join(__dirname, 'data'), db: 'sessions.db' }),
+  store: new SQLiteStore({ dir: SESSION_DIR, db: 'sessions.db' }),
   secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
