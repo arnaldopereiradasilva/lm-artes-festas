@@ -36,6 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (modalOverlay) modalOverlay.addEventListener('click', function(e) { if (e.target === this) fecharModal(); });
 
     API.setBase('');
+
+    API.auth.me().then(function(u) {
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('painel').classList.remove('hidden');
+        iniciarPainel();
+    }).catch(function() {
+        // Sessao inativa — login permanece visivel
+    });
 });
 
 async function fazerLogin() {

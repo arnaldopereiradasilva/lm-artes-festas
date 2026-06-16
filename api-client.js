@@ -5,6 +5,14 @@ var API = (function() {
     BASE = url;
   }
 
+  function redirecionarLogin() {
+    var loginOverlay = document.getElementById('loginOverlay');
+    var painel = document.getElementById('painel');
+    if (loginOverlay) loginOverlay.classList.remove('hidden');
+    if (painel) painel.classList.add('hidden');
+    throw new Error('Sessao expirada. Faca login novamente.');
+  }
+
   function request(method, path, body) {
     var opts = {
       method: method,
@@ -13,6 +21,9 @@ var API = (function() {
     };
     if (body) opts.body = JSON.stringify(body);
     return fetch(BASE + path, opts).then(function(res) {
+      if (res.status === 401) {
+        redirecionarLogin();
+      }
       var ct = res.headers.get('content-type');
       if (ct && ct.includes('application/json')) {
         return res.json().then(function(data) {
@@ -74,7 +85,10 @@ var API = (function() {
       listar: function(tipo) { return request('GET', '/api/fotos/' + tipo); },
       enviar: function(tipo, formData) {
         return fetch(BASE + '/api/fotos/' + tipo, { method: 'POST', body: formData, credentials: 'same-origin' })
-          .then(function(res) { return res.json().then(function(d) { if (!res.ok) throw new Error(d.erro); return d; }); });
+          .then(function(res) {
+            if (res.status === 401) { redirecionarLogin(); }
+            return res.json().then(function(d) { if (!res.ok) throw new Error(d.erro); return d; });
+          });
       },
       remover: function(id) { return request('DELETE', '/api/fotos/' + id); }
     },
