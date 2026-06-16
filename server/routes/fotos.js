@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { autenticado } = require('../middleware/auth');
 
-const UPLOAD_DIR = path.join(__dirname, '..', 'uploads');
+const UPLOAD_DIR = path.join(__dirname, 'data', 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -67,7 +67,7 @@ router.delete('/:id', autenticado, async (req, res) => {
     const foto = await req.db.get('SELECT * FROM fotos WHERE id = ?', [req.params.id]);
     if (!foto) { return res.status(404).json({ erro: 'Foto nao encontrada' }); }
 
-    const caminhoCompleto = path.join(__dirname, '..', foto.caminho);
+    const caminhoCompleto = path.join(UPLOAD_DIR, path.basename(foto.caminho));
     if (fs.existsSync(caminhoCompleto)) fs.unlinkSync(caminhoCompleto);
 
     await req.db.run('DELETE FROM fotos WHERE id = ?', [req.params.id]);
