@@ -556,12 +556,6 @@ async function carregarConfiguracoesAdmin() {
         if (config.pix) document.getElementById('config-pix').value = config.pix;
         if (config.max_eventos_por_dia) document.getElementById('config-max-eventos').value = config.max_eventos_por_dia;
 
-        if (config.mp_nome) document.getElementById('mp-nome').value = config.mp_nome;
-        if (config.mp_documento) document.getElementById('mp-documento').value = config.mp_documento;
-        if (config.mp_email) document.getElementById('mp-email').value = config.mp_email;
-        if (config.mp_public_key) document.getElementById('mp-public-key').value = config.mp_public_key;
-        if (config.mp_modo) document.getElementById('mp-modo').value = config.mp_modo;
-
         _precosServicos = {};
         var servicos = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
         for (var i = 0; i < servicos.length; i++) {
@@ -589,59 +583,6 @@ async function salvarConfiguracoes() {
         await API.config.salvarLote(configs);
         alert('Configuracoes salvas com sucesso!');
     } catch (e) { alert('Erro: ' + e.message); }
-}
-
-async function salvarMercadoPago() {
-    var dados = {
-        mp_nome: document.getElementById('mp-nome').value,
-        mp_documento: document.getElementById('mp-documento').value,
-        mp_email: document.getElementById('mp-email').value,
-        mp_public_key: document.getElementById('mp-public-key').value,
-        mp_access_token: document.getElementById('mp-access-token').value,
-        mp_modo: document.getElementById('mp-modo').value
-    };
-
-    if (!dados.mp_nome || !dados.mp_documento || !dados.mp_email) { alert('Preencha todos os dados!'); return; }
-    if (!dados.mp_public_key || !dados.mp_access_token) { alert('Adicione as chaves do Mercado Pago!'); return; }
-
-    try {
-        await API.config.salvarLote(dados);
-        alert('Configuracoes do Mercado Pago salvas!');
-    } catch (e) { alert('Erro: ' + e.message); }
-}
-
-async function gerarLinkPagamento() {
-    var cliente = document.getElementById('link-cliente').value;
-    var descricao = document.getElementById('link-descricao').value;
-    var valor = parseFloat(document.getElementById('link-valor').value);
-    var whatsapp = document.getElementById('link-whatsapp').value;
-
-    if (!cliente || !descricao || !valor || valor <= 0) { alert('Preencha todos os campos!'); return; }
-
-    try {
-        var result = await API.pagamento.gerarLink({ cliente: cliente, descricao: descricao, valor: valor, whatsapp: whatsapp });
-
-        document.getElementById('link-resultado').style.display = 'block';
-        document.getElementById('link-gerado').value = result.link;
-
-        if (result.whatsapp) {
-            var mensagem = 'Ola ' + cliente + '!\nAqui e a L&M Artes e Festas.\n\nSegue o link para pagamento:\n\n*' + descricao + '*\nValor: R$ ' + valor.toFixed(2).replace('.', ',') + '\n\nLink: ' + result.link;
-            var whatsNum = whatsapp.replace(/\D/g, '');
-            if (whatsNum.length === 11) whatsNum = '55' + whatsNum;
-            setTimeout(function() {
-                if (confirm('Deseja enviar pelo WhatsApp?')) {
-                    window.open('https://wa.me/' + whatsNum + '?text=' + encodeURIComponent(mensagem), '_blank');
-                }
-            }, 500);
-        }
-    } catch (e) { alert('Erro: ' + e.message); }
-}
-
-function copiarLink() {
-    var link = document.getElementById('link-gerado');
-    link.select();
-    document.execCommand('copy');
-    alert('Link copiado!');
 }
 
 function converterData(dataStr) {
