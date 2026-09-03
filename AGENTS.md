@@ -1,5 +1,13 @@
 # L&M Artes e Festas — Projeto
 
+## IMPORTANTE (versão gratuita)
+- **Site ativo e gratuito:** pasta `site-netlify/` (site 100% estático, sem backend)
+- Hospedado de graça no Netlify (arrasta e solta a pasta `site-netlify/`)
+- Sem painel admin, sem cartão. Pagamento só PIX. Pedido vai direto pro WhatsApp.
+- Para editar preços/PIX/WhatsApp: abrir `site-netlify/lm-script.js` (ver README local)
+- Ver `site-netlify/README.md` para instruções de deploy
+
+
 ## Stack
 - Node.js + Express.js + SQLite
 - Frontend: HTML/CSS/JS puro (sem frameworks)

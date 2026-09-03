@@ -1,0 +1,11 @@
+{
+  "editor.minimap.enabled": false,
+  "workbench.startupEditor": "none",
+  "files.autoSave": "off",
+  "extensions.ignoreRecommendations": true,
+  "update.mode": "manual",
+  "editor.renderWhitespace": "selection",
+  "editor.largeFileOptimizations": true,
+  "search.followSymlinks": false,
+  "workbench.tree.renderIndentGuides": "none"
+}
