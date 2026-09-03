@@ -507,7 +507,7 @@ function selectPagamento(tipo) {
 
     if (tipo === 'pix') {
         document.getElementById('detalhe-pix').classList.remove('hidden');
-    } else {
+    } else if (tipo === 'cartao') {
         document.getElementById('detalhe-cartao').classList.remove('hidden');
     }
 }
@@ -564,23 +564,9 @@ async function finalizarPedido() {
         var resultado = await API.pedidos.criar(pedido);
         var numeroPedido = resultado.numeroPedido;
 
-        if (pagamentoSelecionado === 'pix') {
-            mostrarSucesso(numeroPedido);
-            enviarWhatsApp(pedido, numeroPedido);
-            return;
-        }
-
-        if (pagamentoSelecionado === 'credito' || pagamentoSelecionado === 'debito') {
-            try {
-                var pagResult = await API.pagamento.criarLinkPedido(numeroPedido, pagamentoSelecionado);
-                enviarWhatsApp(pedido, numeroPedido);
-                window.location.href = pagResult.link;
-            } catch (err) {
-                mostrarSucesso(numeroPedido);
-                enviarWhatsApp(pedido, numeroPedido);
-            }
-            return;
-        }
+        mostrarSucesso(numeroPedido);
+        enviarWhatsApp(pedido, numeroPedido);
+        return;
     } catch (err) {
         alert('Erro ao criar pedido: ' + err.message);
         var btnPagar = document.querySelector('.btn-finalizar');
@@ -629,6 +615,10 @@ function enviarWhatsApp(pedido, numeroPedido) {
     mensagem += 'PAGAMENTO\n';
     mensagem += '- Forma: ' + pedido.pagamento.toUpperCase() + '\n';
     mensagem += '- Total: R$ ' + total + '\n';
+
+    if (pedido.pagamento === 'cartao') {
+        mensagem += '\nO cliente deseja pagar com CARTÃO. Por favor, entre em contato para combinar as parcelas.\n';
+    }
 
     var whatsNum = numeroWhatsApp || '5521985412860';
     var url = 'https://wa.me/' + whatsNum + '?text=' + encodeURIComponent(mensagem);
