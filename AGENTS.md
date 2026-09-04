@@ -18,7 +18,14 @@
 ## URLs
 - **Site:** https://lm-artes-festas.onrender.com
 - **Admin:** https://lm-artes-festas.onrender.com/admin.html
-- **Login admin:** lenice / admin123 (trocar senha em Configurações)
+- **Login admin:** usuário `lenice` — a senha é **gerada aleatoriamente** no primeiro boot (gravada em `.senha_inicial.txt`, que pode se perder em redeploys). Troque a senha em Configurações.
+
+### Resetar senha do admin (quando esquecida)
+No navegador (troque `SEU_SECRET` pelo valor de `ADMIN_RESET_SECRET` e `NovaSenha@2026` pela nova senha):
+```
+https://lm-artes-festas.onrender.com/api/auth/reset-admin?secret=SEU_SECRET&senha=NovaSenha@2026
+```
+Resposta esperada: `{"ok":true,"usuario":"lenice",...}`. Depois entre no painel com a senha nova e troque em Configurações.
 
 ## Variáveis de ambiente (Render)
 - NODE_ENV=production
@@ -36,6 +43,7 @@
 2. **Sessão expirada** — admin agora detecta 401 e redireciona para tela de login; ao carregar a página, verifica sessão ativa via API
 3. **MemoryStore** — usado pois connect-sqlite3 não funciona no Node 24 do Render
 4. **Disco persistente** — SQLite e uploads em `/opt/render/project/src/server/data/` sobrevivem a deploys
+5. **Mensagem de erro do login** — o cliente `api-client.js` não trata mais 401 do login como "sessão expirada"; senha errada mostra a mensagem real do servidor ("Usuário ou senha incorretos")
 
 ## Pendente / Próximos passos
 - **Comprar domínio** (ex: lmartesfestas.com.br) e configurar no Render

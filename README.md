@@ -17,8 +17,15 @@ node server/app.js
 # 4. Acessar
 # Site publico: http://localhost:3000
 # Painel admin: http://localhost:3000/admin.html
-# Login padrao: lenice (senha gerada na primeira execucao - veja .senha_inicial.txt)
+# Login padrao: lenice (senha gerada automaticamente na primeira execucao - veja .senha_inicial.txt)
 ```
+
+### Senha do admin esquecida
+A senha inicial e gerada aleatoriamente no primeiro boot e gravada em `.senha_inicial.txt`. Se ela se perder (redeploys novas no Render), redefina pelo endpoint de reset usando o `ADMIN_RESET_SECRET` configurado nas variaveis de ambiente:
+```
+https://lm-artes-festas.onrender.com/api/auth/reset-admin?secret=SEU_SECRET&senha=NovaSenha@2026
+```
+Resposta: `{"ok":true,"usuario":"lenice",...}` — depois entre no painel e troque a senha em Configuracoes.
 
 ## Instrucoes de Seguranca para Producao
 
