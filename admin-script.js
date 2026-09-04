@@ -556,9 +556,12 @@ async function carregarConfiguracoesAdmin() {
         if (config.email) document.getElementById('config-email').value = config.email;
         if (config.pix) document.getElementById('config-pix').value = config.pix;
         if (config.max_eventos_por_dia) document.getElementById('config-max-eventos').value = config.max_eventos_por_dia;
+<<<<<<< HEAD
         if (config.equipe_base_local) document.getElementById('config-equipe-base').value = config.equipe_base_local;
         if (config.equipe_custo_km) document.getElementById('config-equipe-taxa').value = config.equipe_custo_km;
         if (config.equipe_por_carro) document.getElementById('config-equipe-por-carro').value = config.equipe_por_carro;
+=======
+>>>>>>> 9237dc3be0823b2956c8553120105dae3f1eb15c
 
         _precosServicos = {};
         var servicos = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
@@ -592,6 +595,7 @@ async function salvarConfiguracoes() {
     } catch (e) { alert('Erro: ' + e.message); }
 }
 
+<<<<<<< HEAD
 async function carregarPromocoesAdmin() {
     try {
         var promos = await API.promocoes.todas();
@@ -681,6 +685,8 @@ async function removerPromocao(id) {
     } catch (e) { alert('Erro: ' + e.message); }
 }
 
+=======
+>>>>>>> 9237dc3be0823b2956c8553120105dae3f1eb15c
 function converterData(dataStr) {
     if (!dataStr) return null;
     if (dataStr.indexOf('/') !== -1) {

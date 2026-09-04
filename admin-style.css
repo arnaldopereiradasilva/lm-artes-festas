@@ -1228,6 +1228,51 @@ body {
     .filtros input {
         width: 100%;
     }
+
+    /* Indicador de que a tabela rola horizontalmente */
+    .table-wrapper {
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #eee;
+        border-radius: var(--radius);
+    }
+
+    .table-wrapper::after {
+        content: '← deslize para ver mais →';
+        display: block;
+        text-align: center;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--gray-dark);
+        background: var(--gray);
+        border-top: 1px solid #eee;
+        font-style: italic;
+    }
+
+    .painel-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /* Inputs e botões maiores para toque no celular */
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .form-row input,
+    .form-row select {
+        font-size: 16px;
+        padding: 0.9rem;
+    }
+
+    button {
+        touch-action: manipulation;
+    }
+
+    .modal-content,
+    .modal {
+        width: 95%;
+        max-width: 95%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1256,6 +1301,57 @@ body {
 
     .login-box {
         padding: 2rem 1.5rem;
+    }
+
+    .painel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .painel-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .data-atual {
+        font-size: 0.8rem;
+    }
+
+    .main-content {
+        padding: 0.75rem;
+    }
+
+    .section-box,
+    .fotos-section,
+    .cards-resumo {
+        padding: 1rem;
+    }
+
+    .table-wrapper::after {
+        font-size: 0.7rem;
+    }
+
+    .sidebar-link {
+        padding: 1rem 1.25rem;
+        font-size: 1.05rem;
+    }
+
+    .fotos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem;
+    }
+
+    .btn-menu-mobile {
+        font-size: 1.8rem;
+        padding: 0.3rem 0.6rem;
+        background: var(--gray);
+        border-radius: var(--radius);
     }
 }
 
