@@ -13,7 +13,7 @@ var API = (function() {
     throw new Error('Sessao expirada. Faca login novamente.');
   }
 
-  function request(method, path, body) {
+  function request(method, path, body, skipAuthRedirect) {
     var opts = {
       method: method,
       headers: { 'Content-Type': 'application/json' },
@@ -21,7 +21,7 @@ var API = (function() {
     };
     if (body) opts.body = JSON.stringify(body);
     return fetch(BASE + path, opts).then(function(res) {
-      if (res.status === 401) {
+      if (res.status === 401 && !skipAuthRedirect) {
         redirecionarLogin();
       }
       var ct = res.headers.get('content-type');
@@ -47,7 +47,7 @@ var API = (function() {
     setBase: setBase,
 
     auth: {
-      login: function(user, pass) { return request('POST', '/api/auth/login', { username: user, senha: pass }); },
+      login: function(user, pass) { return request('POST', '/api/auth/login', { username: user, senha: pass }, true); },
       logout: function() { return request('POST', '/api/auth/logout'); },
       me: function() { return request('GET', '/api/auth/me'); },
       trocarSenha: function(atual, nova, confirmar) { return request('POST', '/api/auth/trocar-senha', { senhaAtual: atual, senhaNova: nova, senhaConfirmar: confirmar }); }
