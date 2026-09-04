@@ -110,7 +110,7 @@ function showPage(page) {
     document.querySelectorAll('.sidebar-link').forEach(function(l) { l.classList.remove('active'); });
     if (event && event.target) event.target.classList.add('active');
 
-    var titulos = { dashboard: 'Dashboard', pedidos: 'Pedidos', calendario: 'Calendario', financeiro: 'Financeiro', configuracoes: 'Configuracoes', fotos: 'Fotos' };
+    var titulos = { dashboard: 'Dashboard', pedidos: 'Pedidos', calendario: 'Calendario', financeiro: 'Financeiro', promocoes: 'Promocoes', configuracoes: 'Configuracoes', fotos: 'Fotos' };
     document.getElementById('page-title').textContent = titulos[page] || page;
 
     document.querySelector('.sidebar').classList.remove('open');
@@ -119,6 +119,7 @@ function showPage(page) {
     if (page === 'pedidos') renderizarPedidos();
     if (page === 'calendario') renderizarCalendario();
     if (page === 'financeiro') renderizarFinanceiro();
+    if (page === 'promocoes') carregarPromocoesAdmin();
     if (page === 'configuracoes') carregarConfiguracoesAdmin();
     if (page === 'fotos') carregarFotos();
 }
@@ -555,12 +556,9 @@ async function carregarConfiguracoesAdmin() {
         if (config.email) document.getElementById('config-email').value = config.email;
         if (config.pix) document.getElementById('config-pix').value = config.pix;
         if (config.max_eventos_por_dia) document.getElementById('config-max-eventos').value = config.max_eventos_por_dia;
-
-        if (config.mp_nome) document.getElementById('mp-nome').value = config.mp_nome;
-        if (config.mp_documento) document.getElementById('mp-documento').value = config.mp_documento;
-        if (config.mp_email) document.getElementById('mp-email').value = config.mp_email;
-        if (config.mp_public_key) document.getElementById('mp-public-key').value = config.mp_public_key;
-        if (config.mp_modo) document.getElementById('mp-modo').value = config.mp_modo;
+        if (config.equipe_base_local) document.getElementById('config-equipe-base').value = config.equipe_base_local;
+        if (config.equipe_custo_km) document.getElementById('config-equipe-taxa').value = config.equipe_custo_km;
+        if (config.equipe_por_carro) document.getElementById('config-equipe-por-carro').value = config.equipe_por_carro;
 
         _precosServicos = {};
         var servicos = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
@@ -582,7 +580,10 @@ async function salvarConfiguracoes() {
         whatsapp: document.getElementById('config-whatsapp').value,
         email: document.getElementById('config-email').value,
         pix: document.getElementById('config-pix').value,
-        max_eventos_por_dia: document.getElementById('config-max-eventos').value
+        max_eventos_por_dia: document.getElementById('config-max-eventos').value,
+        equipe_base_local: document.getElementById('config-equipe-base').value,
+        equipe_custo_km: document.getElementById('config-equipe-taxa').value,
+        equipe_por_carro: document.getElementById('config-equipe-por-carro').value
     };
 
     try {
@@ -591,57 +592,93 @@ async function salvarConfiguracoes() {
     } catch (e) { alert('Erro: ' + e.message); }
 }
 
-async function salvarMercadoPago() {
+async function carregarPromocoesAdmin() {
+    try {
+        var promos = await API.promocoes.todas();
+        var lista = document.getElementById('lista-promocoes');
+        if (!lista) return;
+
+        if (!promos || promos.length === 0) {
+            lista.innerHTML = '<p style="color: var(--gray-dark); font-style: italic;">Nenhuma promocao cadastrada.</p>';
+            return;
+        }
+
+        lista.innerHTML = promos.map(function (p) {
+            var status = p.ativo ? '<span class="badge badge-confirmado">Ativa</span>' : '<span class="badge badge-cancelado">Inativa</span>';
+            return '<div class="promo-item">' +
+                '<div class="promo-item-info">' +
+                    '<strong>' + escapeHtml(p.titulo) + '</strong>' +
+                    (p.subtitulo ? '<span>' + escapeHtml(p.subtitulo) + '</span>' : '') +
+                    (p.preco ? '<span class="promo-item-preco">' + escapeHtml(p.preco) + '</span>' : '') +
+                '</div>' +
+                status +
+                '<div class="promo-item-acoes">' +
+                    '<button class="btn-acao" onclick="editarPromocao(' + p.id + ')">Editar</button>' +
+                    '<button class="btn-acao" onclick="removerPromocao(' + p.id + ')">Excluir</button>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    } catch (e) { console.error(e); }
+}
+
+function limparFormPromocao() {
+    document.getElementById('promo-id').value = '';
+    document.getElementById('promo-titulo').value = '';
+    document.getElementById('promo-subtitulo').value = '';
+    document.getElementById('promo-preco').value = '';
+    document.getElementById('promo-imagem').value = '';
+    document.getElementById('promo-ativo').value = '1';
+    document.getElementById('promo-form-titulo').textContent = 'Nova Promoção';
+}
+
+async function salvarPromocao() {
+    var id = document.getElementById('promo-id').value;
     var dados = {
-        mp_nome: document.getElementById('mp-nome').value,
-        mp_documento: document.getElementById('mp-documento').value,
-        mp_email: document.getElementById('mp-email').value,
-        mp_public_key: document.getElementById('mp-public-key').value,
-        mp_access_token: document.getElementById('mp-access-token').value,
-        mp_modo: document.getElementById('mp-modo').value
+        titulo: document.getElementById('promo-titulo').value.trim(),
+        subtitulo: document.getElementById('promo-subtitulo').value.trim(),
+        preco: document.getElementById('promo-preco').value.trim(),
+        imagem: document.getElementById('promo-imagem').value.trim(),
+        ativo: document.getElementById('promo-ativo').value === '1' ? 1 : 0
     };
 
-    if (!dados.mp_nome || !dados.mp_documento || !dados.mp_email) { alert('Preencha todos os dados!'); return; }
-    if (!dados.mp_public_key || !dados.mp_access_token) { alert('Adicione as chaves do Mercado Pago!'); return; }
+    if (!dados.titulo) { alert('Informe o titulo da promocao!'); return; }
 
     try {
-        await API.config.salvarLote(dados);
-        alert('Configuracoes do Mercado Pago salvas!');
-    } catch (e) { alert('Erro: ' + e.message); }
-}
-
-async function gerarLinkPagamento() {
-    var cliente = document.getElementById('link-cliente').value;
-    var descricao = document.getElementById('link-descricao').value;
-    var valor = parseFloat(document.getElementById('link-valor').value);
-    var whatsapp = document.getElementById('link-whatsapp').value;
-
-    if (!cliente || !descricao || !valor || valor <= 0) { alert('Preencha todos os campos!'); return; }
-
-    try {
-        var result = await API.pagamento.gerarLink({ cliente: cliente, descricao: descricao, valor: valor, whatsapp: whatsapp });
-
-        document.getElementById('link-resultado').style.display = 'block';
-        document.getElementById('link-gerado').value = result.link;
-
-        if (result.whatsapp) {
-            var mensagem = 'Ola ' + cliente + '!\nAqui e a L&M Artes e Festas.\n\nSegue o link para pagamento:\n\n*' + descricao + '*\nValor: R$ ' + valor.toFixed(2).replace('.', ',') + '\n\nLink: ' + result.link;
-            var whatsNum = whatsapp.replace(/\D/g, '');
-            if (whatsNum.length === 11) whatsNum = '55' + whatsNum;
-            setTimeout(function() {
-                if (confirm('Deseja enviar pelo WhatsApp?')) {
-                    window.open('https://wa.me/' + whatsNum + '?text=' + encodeURIComponent(mensagem), '_blank');
-                }
-            }, 500);
+        if (id) {
+            await API.promocoes.atualizar(id, dados);
+        } else {
+            await API.promocoes.criar(dados);
         }
+        alert('Promocao salva com sucesso!');
+        limparFormPromocao();
+        carregarPromocoesAdmin();
     } catch (e) { alert('Erro: ' + e.message); }
 }
 
-function copiarLink() {
-    var link = document.getElementById('link-gerado');
-    link.select();
-    document.execCommand('copy');
-    alert('Link copiado!');
+async function editarPromocao(id) {
+    try {
+        var promos = await API.promocoes.todas();
+        var p = promos.find(function (x) { return x.id === id; });
+        if (!p) return;
+        document.getElementById('promo-id').value = p.id;
+        document.getElementById('promo-titulo').value = p.titulo;
+        document.getElementById('promo-subtitulo').value = p.subtitulo || '';
+        document.getElementById('promo-preco').value = p.preco || '';
+        document.getElementById('promo-imagem').value = p.imagem || '';
+        document.getElementById('promo-ativo').value = p.ativo ? '1' : '0';
+        document.getElementById('promo-form-titulo').textContent = 'Editar Promoção';
+        document.getElementById('page-promocoes').scrollIntoView({ behavior: 'smooth' });
+    } catch (e) { console.error(e); }
+}
+
+async function removerPromocao(id) {
+    if (!confirm('Deseja excluir esta promocao?')) return;
+    try {
+        await API.promocoes.remover(id);
+        alert('Promocao excluida!');
+        limparFormPromocao();
+        carregarPromocoesAdmin();
+    } catch (e) { alert('Erro: ' + e.message); }
 }
 
 function converterData(dataStr) {

@@ -108,26 +108,25 @@ async function initDatabase() {
   `);
 
   await dbRun(db, `
+    CREATE TABLE IF NOT EXISTS promocoes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      titulo TEXT NOT NULL,
+      subtitulo TEXT DEFAULT '',
+      preco TEXT DEFAULT '',
+      imagem TEXT DEFAULT '',
+      ativo INTEGER DEFAULT 1,
+      ordem INTEGER DEFAULT 0,
+      criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await dbRun(db, `
     CREATE TABLE IF NOT EXISTS tentativas_login (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       ip TEXT NOT NULL,
       tentativas INTEGER DEFAULT 1,
       bloqueado_ate DATETIME,
       ultima_tentativa DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  await dbRun(db, `
-    CREATE TABLE IF NOT EXISTS links_pagamento (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      pedido_numero TEXT,
-      cliente_nome TEXT NOT NULL,
-      cliente_whatsapp TEXT,
-      descricao TEXT NOT NULL,
-      valor REAL NOT NULL,
-      link TEXT,
-      status TEXT DEFAULT 'pendente',
-      criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
@@ -157,10 +156,25 @@ async function inserirConfiguracoesPadrao(db) {
     { chave: 'preco_batata', valor: '150' },
     { chave: 'preco_crepe', valor: '160' },
     { chave: 'preco_suco', valor: '140' },
+    { chave: 'equipe_base_local', valor: 'Zona Oeste - Rio de Janeiro' },
+    { chave: 'equipe_custo_km', valor: '2.50' },
+    { chave: 'equipe_por_carro', valor: '4' },
   ];
 
   for (const c of padrao) {
     await dbRun(db, 'INSERT OR IGNORE INTO configuracoes (chave, valor) VALUES (?, ?)', [c.chave, c.valor]);
+  }
+
+  const qtdPromos = await dbGet(db, 'SELECT COUNT(*) AS total FROM promocoes');
+  if (qtdPromos.total === 0) {
+    const promosExemplo = [
+      { titulo: 'Dia dos Pais', subtitulo: 'Combo de 3 profissionais', preco: 'R$ 250,00', ativo: 1, ordem: 1 },
+      { titulo: 'Combo Aniversário', subtitulo: '2 garçons + 1 recepcionista', preco: 'R$ 490,00', ativo: 1, ordem: 2 }
+    ];
+    for (const p of promosExemplo) {
+      await dbRun(db, 'INSERT INTO promocoes (titulo, subtitulo, preco, ativo, ordem) VALUES (?, ?, ?, ?, ?)',
+        [p.titulo, p.subtitulo, p.preco, p.ativo, p.ordem]);
+    }
   }
 }
 

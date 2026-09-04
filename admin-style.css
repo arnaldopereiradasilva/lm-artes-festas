@@ -803,6 +803,48 @@ body {
     transform: scale(1.2);
 }
 
+/* PROMOÇÕES */
+.promo-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.9rem 1rem;
+    background: var(--gray);
+    border-radius: var(--radius);
+    margin-bottom: 0.8rem;
+    border-left: 4px solid var(--primary);
+}
+
+.promo-item-info {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.promo-item-info strong {
+    font-size: 1rem;
+    color: var(--secondary);
+}
+
+.promo-item-info span {
+    color: var(--gray-dark);
+    font-size: 0.9rem;
+}
+
+.promo-item-info .promo-item-preco {
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.promo-item-acoes {
+    display: flex;
+    gap: 0.4rem;
+}
+
 /* ========================================
    PRÓXIMOS EVENTOS
    ======================================== */

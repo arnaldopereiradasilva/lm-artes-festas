@@ -6,6 +6,7 @@ var precos = {};
 var datasOcupadas = [];
 var chavePix = '';
 var numeroWhatsApp = '';
+var transporteConfig = { base: '', taxa: 2.5, porCarro: 4 };
 
 var nomesServicos = {
     garcom: 'Garcom',
@@ -44,6 +45,7 @@ window.addEventListener('load', function () {
     setInterval(carregarCarrosseis, 30000); // Atualiza a cada 30 segundos
 
     carregarConfiguracoes();
+    carregarPromocoes();
 
     var menuToggle = document.querySelector('.menu-toggle');
     var navbar = document.getElementById('navbar');
@@ -109,13 +111,6 @@ window.addEventListener('load', function () {
 
     var urlParams = new URLSearchParams(window.location.search);
     var statusPagamento = urlParams.get('pagamento');
-    if (statusPagamento === 'sucesso') {
-        alert('Pagamento aprovado com sucesso! Em breve entraremos em contato.');
-    } else if (statusPagamento === 'erro') {
-        alert('Pagamento nao foi aprovado. Tente novamente ou entre em contato.');
-    } else if (statusPagamento === 'pendente') {
-        alert('Pagamento pendente. Assim que for confirmado, entraremos em contato!');
-    }
 });
 
 async function carregarConfiguracoes() {
@@ -141,8 +136,20 @@ async function carregarConfiguracoes() {
         chavePix = config.pix || '';
         numeroWhatsApp = config.whatsapp || '5521985412860';
 
+        transporteConfig.base = config.equipe_base_local || 'Zona Oeste - Rio de Janeiro';
+        transporteConfig.taxa = parseFloat(config.equipe_custo_km) || 2.5;
+        transporteConfig.porCarro = parseInt(config.equipe_por_carro) || 4;
+
+        var elBase = document.getElementById('tr-base');
+        if (elBase) elBase.textContent = transporteConfig.base;
+        var elTaxa = document.getElementById('tr-taxa');
+        if (elTaxa) elTaxa.textContent = transporteConfig.taxa.toFixed(2).replace('.', ',');
+        var elPorCarro = document.getElementById('tr-por-carro');
+        if (elPorCarro) elPorCarro.textContent = transporteConfig.porCarro;
+
         atualizarPrecosTela();
         atualizarChavePix();
+        sincronizarTransporte();
         showStep(1);
         buscarDatasOcupadas(config.max_eventos_por_dia || 5);
     } catch (e) {
@@ -344,6 +351,7 @@ function atualizarPrecosTela() {
 function changeQty(servico, delta) {
     quantidades[servico] = Math.max(0, quantidades[servico] + delta);
     document.getElementById('qty-' + servico).textContent = quantidades[servico];
+    sincronizarTransporte();
 }
 
 function toggleEstacao(estacao) {
@@ -424,6 +432,64 @@ function validarStep(step) {
     }
 
     return true;
+}
+
+async function carregarPromocoes() {
+    var grid = document.getElementById('promo-grid');
+    if (!grid) return;
+    try {
+        var promos = await API.promocoes.listar();
+        if (!promos || promos.length === 0) {
+            grid.innerHTML = '<p class="sem-promo">Nenhuma promoção no momento</p>';
+            return;
+        }
+        grid.innerHTML = promos.map(function (p) {
+            var estilo = p.imagem ? 'style="background-image:url(\'' + p.imagem + '\');"' : '';
+            var precoHtml = p.preco ? '<span class="promo-preco">' + escapeHtml(p.preco) + '</span>' : '';
+            return '<a class="promo-card" href="#pedido" ' + estilo + '>' +
+                '<div class="promo-card-inner">' +
+                '<span class="promo-tag">Promoção Especial</span>' +
+                '<h3>' + escapeHtml(p.titulo) + '</h3>' +
+                (p.subtitulo ? '<p>' + escapeHtml(p.subtitulo) + '</p>' : '') +
+                precoHtml +
+                '<span class="promo-cta">Fazer Pedido →</span>' +
+                '</div>' +
+                '</a>';
+        }).join('');
+    } catch (e) {
+        console.error('Erro ao carregar promocoes:', e);
+    }
+}
+
+function totalProfissionais() {
+    var total = 0;
+    Object.keys(quantidades).forEach(function (k) { total += quantidades[k]; });
+    return total;
+}
+
+function sincronizarTransporte() {
+    var elProf = document.getElementById('tr-profissionais');
+    if (elProf) elProf.value = Math.max(1, totalProfissionais());
+    calcularTransporte();
+}
+
+function calcularTransporte() {
+    var elDist = document.getElementById('tr-distancia');
+    var elProf = document.getElementById('tr-profissionais');
+    if (!elDist || !elProf) return;
+
+    var dist = parseFloat(elDist.value) || 0;
+    var prof = parseInt(elProf.value) || 1;
+    var taxa = transporteConfig.taxa;
+    var porCarro = transporteConfig.porCarro || 4;
+    var carros = Math.max(1, Math.ceil(prof / porCarro));
+    var ida = dist * taxa * carros;
+    var total = ida * 2;
+
+    document.getElementById('tr-carros').textContent = carros;
+    document.getElementById('tr-ida').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
+    document.getElementById('tr-volta').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
+    document.getElementById('tr-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
 }
 
 function calcularTotal() {

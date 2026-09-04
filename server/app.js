@@ -30,8 +30,8 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'", 'https://api.mercadopago.com'],
-      frameSrc: ["'self'", 'https://www.mercadopago.com']
+      connectSrc: ["'self'"],
+      frameSrc: ["'self'"]
     }
   }
 }));
@@ -40,20 +40,6 @@ app.use(cors({
   origin: function (origin, cb) { cb(null, true); },
   credentials: true
 }));
-
-app.use((req, res, next) => {
-  if (req.path === '/api/pagamento/webhook' && req.method === 'POST') {
-    let data = '';
-    req.on('data', chunk => data += chunk);
-    req.on('end', () => {
-      req.rawBody = data;
-      try { req.body = JSON.parse(data); } catch { req.body = {}; }
-      next();
-    });
-  } else {
-    next();
-  }
-});
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -85,7 +71,6 @@ app.use('/api', dbMiddleware);
 
 app.use((req, res, next) => {
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) && req.path.startsWith('/api/')) {
-    if (req.path === '/api/pagamento/webhook') return next();
     const origin = req.get('origin');
     const referer = req.get('referer');
     const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
@@ -112,14 +97,14 @@ const pedidosRoutes = require('./routes/pedidos');
 const configRoutes = require('./routes/config');
 const bloqueiosRoutes = require('./routes/bloqueios');
 const fotosRoutes = require('./routes/fotos');
-const pagamentoRoutes = require('./routes/pagamento');
+const promocoesRoutes = require('./routes/promocoes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/bloqueios', bloqueiosRoutes);
 app.use('/api/fotos', fotosRoutes);
-app.use('/api/pagamento', pagamentoRoutes);
+app.use('/api/promocoes', promocoesRoutes);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));

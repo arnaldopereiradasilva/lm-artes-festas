@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { autenticado } = require('../middleware/auth');
 
-const CHAVES_SENSIVEIS = ['mp_access_token', 'mp_token', 'mp_public_key', 'mp_nome', 'mp_documento', 'mp_email'];
+const CHAVES_SENSIVEIS = [];
 
 function isChaveSensivel(chave) {
   return CHAVES_SENSIVEIS.some(s => chave.toLowerCase().includes(s.toLowerCase()));

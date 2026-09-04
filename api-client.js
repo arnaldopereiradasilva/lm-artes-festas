@@ -81,6 +81,14 @@ var API = (function() {
       remover: function(data) { return request('DELETE', '/api/bloqueios/' + data); }
     },
 
+    promocoes: {
+      listar: function() { return request('GET', '/api/promocoes'); },
+      todas: function() { return request('GET', '/api/promocoes/todas'); },
+      criar: function(dados) { return request('POST', '/api/promocoes', dados); },
+      atualizar: function(id, dados) { return request('PUT', '/api/promocoes/' + id, dados); },
+      remover: function(id) { return request('DELETE', '/api/promocoes/' + id); }
+    },
+
     fotos: {
       listar: function(tipo) { return request('GET', '/api/fotos/' + tipo); },
       enviar: function(tipo, formData) {
@@ -91,12 +99,6 @@ var API = (function() {
           });
       },
       remover: function(id) { return request('DELETE', '/api/fotos/' + id); }
-    },
-
-    pagamento: {
-      criarLinkPedido: function(num, tipo) { return request('POST', '/api/pagamento/pedido/' + num, { tipo: tipo }); },
-      gerarLink: function(dados) { return request('POST', '/api/pagamento/link', dados); },
-      links: function() { return request('GET', '/api/pagamento/links'); }
     },
 
     site: {

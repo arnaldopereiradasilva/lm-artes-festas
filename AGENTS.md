@@ -12,7 +12,7 @@
 - Node.js + Express.js + SQLite
 - Frontend: HTML/CSS/JS puro (sem frameworks)
 - Hospedagem: Render Starter ($7/mês) + 1GB disco persistente
-- Pagamentos: Mercado Pago (sandbox)
+- Pagamentos: PIX (chave na tela + comprovante por WhatsApp) e cartão via WhatsApp
 - Domínio: a comprar (~R$ 40/ano)
 
 ## URLs
@@ -24,8 +24,6 @@
 - NODE_ENV=production
 - SESSION_SECRET=<gerado>
 - BASE_URL=https://lm-artes-festas.onrender.com
-- MERCADOPAGO_MODE=sandbox
-- MERCADOPAGO_ACCESS_TOKEN=<token sandbox>
 - ADMIN_RESET_SECRET=<chave para reset>
 
 ## Configurações do admin
@@ -41,7 +39,6 @@
 
 ## Pendente / Próximos passos
 - **Comprar domínio** (ex: lmartesfestas.com.br) e configurar no Render
-- **Mercado Pago produção** — quando pronta para receber reais, colocar token de produção em Configurações
 - O domínio deve apontar os nameservers para o Render (ou configurar CNAME)
 
 ## Contato

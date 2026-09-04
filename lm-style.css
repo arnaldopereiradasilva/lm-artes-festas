@@ -1406,6 +1406,230 @@ body {
     .carrossel-inner img { height: 220px; }
 }
 
+/* ========================================
+   PROMOÇÕES
+   ======================================== */
+
+.promocoes {
+    padding: 4rem 2rem;
+    background: var(--gray);
+}
+
+.promo-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.sem-promo {
+    text-align: center;
+    color: var(--gray-dark);
+    font-style: italic;
+    grid-column: 1 / -1;
+}
+
+.promo-card {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    min-height: 200px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 55%, var(--primary-dark) 150%);
+    background-size: cover;
+    background-position: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.promo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+}
+
+.promo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 20, 40, 0.45);
+    z-index: 1;
+}
+
+.promo-card-inner {
+    position: relative;
+    z-index: 2;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 200px;
+    justify-content: flex-end;
+}
+
+.promo-tag {
+    align-self: flex-start;
+    background: var(--primary);
+    color: var(--secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+}
+
+.promo-card h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.promo-card p {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.05rem;
+}
+
+.promo-preco {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.promo-cta {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* ========================================
+   TRANSPORTE DA EQUIPE
+   ======================================== */
+
+.transporte {
+    padding: 5rem 2rem;
+    background: var(--white);
+}
+
+.transporte-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.transporte-info .title { text-align: left; margin-bottom: 1.5rem; }
+
+.transporte-info p {
+    color: var(--gray-dark);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+}
+
+.transporte-info p strong { color: var(--secondary); }
+
+.transporte-base {
+    background: var(--gray);
+    border-left: 4px solid var(--primary);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: var(--secondary);
+    font-size: 1rem;
+}
+
+.transporte-aviso {
+    background: #fff8e1;
+    border: 1px solid #f0d97a;
+    color: #7a5b00;
+    padding: 0.9rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.transporte-simulador {
+    background: var(--secondary);
+    border-radius: var(--radius);
+    padding: 2rem;
+    color: var(--white);
+    box-shadow: var(--shadow-hover);
+}
+
+.transporte-simulador h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+}
+
+.transporte-simulador .form-group label { color: rgba(255, 255, 255, 0.85); }
+
+.transporte-simulador input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1rem;
+}
+
+.transporte-simulador input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.tr-sinc { color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; }
+
+.tr-resultado {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.tr-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.tr-linha strong { color: var(--white); }
+
+.tr-linha.total {
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-bottom: none;
+    margin-top: 0.3rem;
+    padding-top: 0.8rem;
+}
+
+.tr-linha.total span { color: var(--accent); font-weight: 700; }
+
+.tr-linha.total strong { color: var(--accent); font-size: 1.25rem; }
+
+.tr-nota {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+    margin-top: 0.8rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .transporte-wrap { grid-template-columns: 1fr; }
+    .promo-grid { grid-template-columns: 1fr; }
+}
+
 .flatpickr-calendar {
     display: none !important;
 }

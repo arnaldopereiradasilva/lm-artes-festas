@@ -60,6 +60,14 @@
         </div>
     </section>
 
+    <!-- PROMOÇÕES -->
+    <section class="promocoes" id="promocoes">
+        <h2 class="title">Promoções & <span>Datas Especiais</span></h2>
+        <div class="promo-grid" id="promo-grid">
+            <p class="sem-promo">Nenhuma promoção no momento</p>
+        </div>
+    </section>
+
     <!-- SOBRE -->
     <section class="about" id="about">
         <h2 class="title">Sobre <span>Nós</span></h2>
@@ -446,6 +454,45 @@
                 </div>
             </div>
 
+        </div>
+    </section>
+
+    <!-- TRANSPORTE -->
+    <section class="transporte" id="transporte">
+        <div class="transporte-wrap">
+            <div class="transporte-info">
+                <h2 class="title">🚗 Transporte da <span>Equipe</span></h2>
+                <p>Nossa equipe se desloca até o seu evento por <strong>aplicativo de transporte</strong> (Uber/99).</p>
+                <p>O custo de <strong>ida e volta</strong> do deslocamento é por conta do cliente, conforme a distância
+                    entre a base da equipe e o local do evento.</p>
+                <div class="transporte-base">
+                    📍 <strong>Base de saída:</strong> <span id="tr-base">Zona Oeste - Rio de Janeiro</span>
+                </div>
+                <div class="transporte-aviso">
+                    ⚠️ O valor exato da corrida é informado pelo aplicativo. A estimativa abaixo ajuda você a se
+                    planejar.
+                </div>
+            </div>
+            <div class="transporte-simulador">
+                <h3>Estimativa do Deslocamento</h3>
+                <div class="form-group">
+                    <label>Distância aproximada do evento (km)</label>
+                    <input type="number" id="tr-distancia" min="0" step="1" placeholder="Ex: 15" oninput="calcularTransporte()">
+                </div>
+                <div class="form-group">
+                    <label>Nº de profissionais contratados</label>
+                    <input type="number" id="tr-profissionais" min="1" value="1" oninput="calcularTransporte()">
+                    <small class="tr-sinc">Sincronizado com a equipe escolhida no pedido</small>
+                </div>
+                <div class="tr-resultado" id="tr-resultado">
+                    <div class="tr-linha"><span>Carros necessários</span><strong id="tr-carros">0</strong></div>
+                    <div class="tr-linha"><span>Ida (estimativa)</span><strong id="tr-ida">R$ 0,00</strong></div>
+                    <div class="tr-linha"><span>Volta (estimativa)</span><strong id="tr-volta">R$ 0,00</strong></div>
+                    <div class="tr-linha total"><span>Total ida + volta</span><strong id="tr-total">R$ 0,00</strong></div>
+                </div>
+                <p class="tr-nota">* Estimativa baseada em <strong>R$ <span id="tr-taxa">2,50</span>/km</strong> por carro,
+                    suportando até <span id="tr-por-carro">4</span> profissionais por corrida.</p>
+            </div>
         </div>
     </section>
 

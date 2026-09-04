@@ -9,7 +9,7 @@ npm install
 
 # 2. Configurar variaveis de ambiente
 cp .env.example .env
-# Edite .env com suas credenciais (SESSION_SECRET, Mercado Pago, etc.)
+# Edite .env com suas credenciais (SESSION_SECRET, etc.)
 
 # 3. Iniciar servidor
 node server/app.js
@@ -38,6 +38,3 @@ npm run backup
 
 ### 4. Atualizacoes
 Rode `npm audit` regularmente e atualize as dependencias para corrigir vulnerabilidades conhecidas.
-
-### 5. Mercado Pago
-Mantenha as credenciais do Mercado Pago no modo `sandbox` ate estar pronto para producao. Troque para `producao` apenas quando o site estiver em HTTPS e com o dominio configurado.

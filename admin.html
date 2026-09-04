@@ -53,6 +53,9 @@
                 <a href="#" class="sidebar-link" onclick="showPage('financeiro')">
                     💰 Financeiro
                 </a>
+                <a href="#" class="sidebar-link" onclick="showPage('promocoes')">
+                    🎁 Promoções
+                </a>
                 <a href="#" class="sidebar-link" onclick="showPage('configuracoes')">
                     ⚙️ Configurações
                 </a>
@@ -298,6 +301,57 @@
                 </div>
             </div>
 
+            <!-- PROMOÇÕES -->
+            <div class="page hidden" id="page-promocoes">
+                <div class="section-box">
+                    <div class="section-header">
+                        <h2>🎁 Promoções e Datas Especiais</h2>
+                        <p style="color: var(--gray-dark);">As promoções ativas aparecem no site como banners.</p>
+                    </div>
+
+                    <div class="config-section">
+                        <h3 id="promo-form-titulo">Nova Promoção</h3>
+                        <input type="hidden" id="promo-id">
+                        <div class="precos-grid">
+                            <div class="form-group">
+                                <label>Título</label>
+                                <input type="text" id="promo-titulo" placeholder="Ex: Dia dos Pais">
+                            </div>
+                            <div class="form-group">
+                                <label>Preço (opcional)</label>
+                                <input type="text" id="promo-preco" placeholder="Ex: R$ 250,00">
+                            </div>
+                            <div class="form-group">
+                                <label>Ativo</label>
+                                <select id="promo-ativo">
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição / Subtítulo</label>
+                            <input type="text" id="promo-subtitulo" placeholder="Ex: Combo de 3 profissionais">
+                        </div>
+                        <div class="form-group">
+                            <label>Imagem de fundo (URL opcional)</label>
+                            <input type="text" id="promo-imagem" placeholder="https://... (se vazio, usa fundo colorido)">
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 0.8rem; align-items: center;">
+                            <button class="btn-salvar" onclick="salvarPromocao()">💾 Salvar Promoção</button>
+                            <button class="btn-ver-todos" onclick="limparFormPromocao()" style="cursor:pointer;">Limpar</button>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 1.5rem;">
+                        <h3>Promoções cadastradas</h3>
+                    </div>
+                    <div id="lista-promocoes">
+                        <p style="color: var(--gray-dark); font-style: italic;">Carregando...</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- CONFIGURAÇÕES -->
             <div class="page hidden" id="page-configuracoes">
                 <div class="section-box">
@@ -318,64 +372,6 @@
                             <input type="password" id="senha-confirmar" placeholder="Confirme a nova senha">
                         </div>
                         <button class="btn-salvar" onclick="alterarSenha()">Salvar Senha</button>
-                    </div>
-
-                    <div class="config-section">
-                        <h3>Mercado Pago - Configuracoes</h3>
-                        <div class="form-group">
-                            <label>Nome/Razao Social:</label>
-                            <input type="text" id="mp-nome" placeholder="Ex: Lenice Braga">
-                        </div>
-                        <div class="form-group">
-                            <label>CPF/CNPJ:</label>
-                            <input type="text" id="mp-documento" placeholder="000.000.000-00">
-                        </div>
-                        <div class="form-group">
-                            <label>E-mail da conta Mercado Pago:</label>
-                            <input type="email" id="mp-email" placeholder="seu@email.com">
-                        </div>
-                        <div class="form-group">
-                            <label>Public Key:</label>
-                            <input type="text" id="mp-public-key" placeholder="APP_USR-...">
-                        </div>
-                        <div class="form-group">
-                            <label>Access Token:</label>
-                            <input type="password" id="mp-access-token" placeholder="APP_USR-...">
-                        </div>
-                        <div class="form-group">
-                            <label>Modo:</label>
-                            <select id="mp-modo">
-                                <option value="sandbox">Teste (Sandbox)</option>
-                                <option value="producao">Producao</option>
-                            </select>
-                        </div>
-                        <button class="btn-salvar" onclick="salvarMercadoPago()">Salvar Mercado Pago</button>
-                    </div>
-
-                    <div class="config-section">
-                        <h3>Gerar Link de Pagamento</h3>
-                        <div class="form-group">
-                            <label>Nome do Cliente:</label>
-                            <input type="text" id="link-cliente" placeholder="Nome completo">
-                        </div>
-                        <div class="form-group">
-                            <label>Descricao:</label>
-                            <input type="text" id="link-descricao" placeholder="Ex: Festa - 80 convidados">
-                        </div>
-                        <div class="form-group">
-                            <label>Valor (R$):</label>
-                            <input type="number" id="link-valor" step="0.01" placeholder="0,00">
-                        </div>
-                        <div class="form-group">
-                            <label>WhatsApp:</label>
-                            <input type="text" id="link-whatsapp" placeholder="(21) 99999-9999">
-                        </div>
-                        <button class="btn-salvar" onclick="gerarLinkPagamento()">Gerar Link</button>
-                        <div id="link-resultado" style="margin-top: 15px; display: none;">
-                            <p>Link gerado:</p>
-                            <input type="text" id="link-gerado" readonly style="width: 100%; padding: 10px;">
-                            <button onclick="copiarLink()">Copiar Link</button>
-                        </div>
                     </div>
 
                     <div class="config-section">
@@ -459,6 +455,25 @@
                             <input type="number" id="config-max-eventos" value="5">
                         </div>
                         <button class="btn-salvar" onclick="salvarConfiguracoes()">💾 Salvar Configurações</button>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>🚗 Transporte da Equipe</h3>
+                        <div class="form-group">
+                            <label>Local de saída da equipe (base)</label>
+                            <input type="text" id="config-equipe-base" value="Zona Oeste - Rio de Janeiro">
+                        </div>
+                        <div class="precos-grid">
+                            <div class="form-group">
+                                <label>Custo médio por km (R$)</label>
+                                <input type="number" id="config-equipe-taxa" value="2.50" step="0.10" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Profissionais por carro</label>
+                                <input type="number" id="config-equipe-por-carro" value="4" min="1">
+                            </div>
+                        </div>
+                        <button class="btn-salvar" onclick="salvarConfiguracoes()">💾 Salvar Transporte</button>
                     </div>
 
                 </div>
