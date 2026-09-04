@@ -6,7 +6,7 @@ var precos = {};
 var datasOcupadas = [];
 var chavePix = '';
 var numeroWhatsApp = '';
-var transporteConfig = { base: '', taxa: 2.5, porCarro: 4 };
+var transporteConfig = { base: '', carroBase: 10, carroKm: 3, motoBase: 3, motoKm: 1, porCarro: 4 };
 
 var nomesServicos = {
     garcom: 'Garcom',
@@ -136,14 +136,23 @@ async function carregarConfiguracoes() {
         chavePix = config.pix || '';
         numeroWhatsApp = config.whatsapp || '5521985412860';
 
-        transporteConfig.base = config.equipe_base_local || 'Zona Oeste - Rio de Janeiro';
-        transporteConfig.taxa = parseFloat(config.equipe_custo_km) || 2.5;
+        transporteConfig.base = config.equipe_base_local || 'Av. do Contorno, 129 - Paciência - CEP 23585-808';
+        transporteConfig.carroBase = parseFloat(config.equipe_carro_base) || 10;
+        transporteConfig.carroKm = parseFloat(config.equipe_custo_km) || 3;
+        transporteConfig.motoBase = parseFloat(config.equipe_moto_base) || 3;
+        transporteConfig.motoKm = parseFloat(config.equipe_custo_km_moto) || 1;
         transporteConfig.porCarro = parseInt(config.equipe_por_carro) || 4;
 
         var elBase = document.getElementById('tr-base');
         if (elBase) elBase.textContent = transporteConfig.base;
-        var elTaxa = document.getElementById('tr-taxa');
-        if (elTaxa) elTaxa.textContent = transporteConfig.taxa.toFixed(2).replace('.', ',');
+        var elCarroBase = document.getElementById('tr-carro-base');
+        if (elCarroBase) elCarroBase.textContent = transporteConfig.carroBase.toFixed(2).replace('.', ',');
+        var elCarroKm = document.getElementById('tr-carro-km');
+        if (elCarroKm) elCarroKm.textContent = transporteConfig.carroKm.toFixed(2).replace('.', ',');
+        var elMotoBase = document.getElementById('tr-moto-base');
+        if (elMotoBase) elMotoBase.textContent = transporteConfig.motoBase.toFixed(2).replace('.', ',');
+        var elMotoKm = document.getElementById('tr-moto-km');
+        if (elMotoKm) elMotoKm.textContent = transporteConfig.motoKm.toFixed(2).replace('.', ',');
         var elPorCarro = document.getElementById('tr-por-carro');
         if (elPorCarro) elPorCarro.textContent = transporteConfig.porCarro;
 
@@ -480,7 +489,10 @@ function calcularTransporte() {
 
     var dist = parseFloat(elDist.value) || 0;
     var prof = parseInt(elProf.value) || 1;
-    var taxa = transporteConfig.taxa;
+    var carroBase = transporteConfig.carroBase;
+    var carroKm = transporteConfig.carroKm;
+    var motoBase = transporteConfig.motoBase;
+    var motoKm = transporteConfig.motoKm;
     var porCarro = Math.max(1, transporteConfig.porCarro || 4);
 
     var carros = Math.floor(prof / porCarro);
@@ -489,13 +501,16 @@ function calcularTransporte() {
     if (resto === 1) motos = 1;
     else if (resto > 1) carros += 1;
 
-    var veiculos = carros + motos;
-    var ida = dist * taxa * veiculos;
+    var custoCarro = carroBase + (dist * carroKm);
+    var custoMoto = motoBase + (dist * motoKm);
+    var idaCarro = custoCarro * carros;
+    var idaMoto = custoMoto * motos;
+    var ida = idaCarro + idaMoto;
     var total = ida * 2;
 
     document.getElementById('tr-carros').textContent = carros;
-    document.getElementById('tr-motos').textContent = motos;
-    document.getElementById('tr-ida').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
+    document.getElementById('tr-ida-carro').textContent = 'R$ ' + idaCarro.toFixed(2).replace('.', ',');
+    document.getElementById('tr-ida-moto').textContent = 'R$ ' + idaMoto.toFixed(2).replace('.', ',');
     document.getElementById('tr-volta').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
     document.getElementById('tr-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
 }
