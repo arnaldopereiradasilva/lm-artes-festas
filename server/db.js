@@ -156,7 +156,7 @@ async function inserirConfiguracoesPadrao(db) {
     { chave: 'preco_batata', valor: '150' },
     { chave: 'preco_crepe', valor: '160' },
     { chave: 'preco_suco', valor: '140' },
-    { chave: 'equipe_base_local', valor: 'Zona Oeste - Rio de Janeiro' },
+    { chave: 'equipe_base_local', valor: 'Av. do Contorno, 129 - Paciência - CEP 23585-808' },
     { chave: 'equipe_custo_km', valor: '2.50' },
     { chave: 'equipe_por_carro', valor: '4' },
   ];

@@ -481,12 +481,20 @@ function calcularTransporte() {
     var dist = parseFloat(elDist.value) || 0;
     var prof = parseInt(elProf.value) || 1;
     var taxa = transporteConfig.taxa;
-    var porCarro = transporteConfig.porCarro || 4;
-    var carros = Math.max(1, Math.ceil(prof / porCarro));
-    var ida = dist * taxa * carros;
+    var porCarro = Math.max(1, transporteConfig.porCarro || 4);
+
+    var carros = Math.floor(prof / porCarro);
+    var resto = prof % porCarro;
+    var motos = 0;
+    if (resto === 1) motos = 1;
+    else if (resto > 1) carros += 1;
+
+    var veiculos = carros + motos;
+    var ida = dist * taxa * veiculos;
     var total = ida * 2;
 
     document.getElementById('tr-carros').textContent = carros;
+    document.getElementById('tr-motos').textContent = motos;
     document.getElementById('tr-ida').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
     document.getElementById('tr-volta').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
     document.getElementById('tr-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
