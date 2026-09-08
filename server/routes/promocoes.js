@@ -1,6 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { autenticado } = require('../middleware/auth');
+
+const UPLOAD_DIR = path.join(__dirname, '..', 'data', 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+  filename: (req, file, cb) => {
+    const nome = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
+    cb(null, nome);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const tipos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const extensoesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (tipos.includes(file.mimetype) && extensoesValidas.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Tipo de arquivo nao permitido'));
+    }
+  }
+});
+
+router.post('/imagem', autenticado, upload.single('foto'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ erro: 'Nenhuma imagem enviada' });
+  res.json({ ok: true, caminho: '/uploads/' + req.file.filename });
+});
 
 router.get('/', async (req, res) => {
   try {

@@ -637,6 +637,32 @@ function limparFormPromocao() {
     document.getElementById('promo-imagem').value = '';
     document.getElementById('promo-ativo').value = '1';
     document.getElementById('promo-form-titulo').textContent = 'Nova Promoção';
+    document.getElementById('promo-imagem-arquivo').value = '';
+    var prev = document.getElementById('promo-imagem-preview');
+    prev.style.display = 'none';
+    prev.src = '';
+}
+
+async function enviarPromoImagem(input) {
+    if (!input.files || input.files.length === 0) return;
+    var arquivo = input.files[0];
+
+    var visor = document.getElementById('promo-imagem-preview');
+    visor.style.display = 'block';
+    visor.src = URL.createObjectURL(arquivo);
+
+    var formData = new FormData();
+    formData.append('foto', arquivo);
+
+    try {
+        var res = await API.promocoes.enviarImagem(formData);
+        document.getElementById('promo-imagem').value = res.caminho;
+        visor.src = res.caminho;
+        alert('Imagem enviada! Agora clique em 💾 Salvar Promoção.');
+    } catch (e) {
+        visor.style.display = 'none';
+        alert('Erro ao enviar imagem: ' + e.message);
+    }
 }
 
 async function salvarPromocao() {
@@ -675,6 +701,14 @@ async function editarPromocao(id) {
         document.getElementById('promo-imagem').value = p.imagem || '';
         document.getElementById('promo-ativo').value = p.ativo ? '1' : '0';
         document.getElementById('promo-form-titulo').textContent = 'Editar Promoção';
+        var prev = document.getElementById('promo-imagem-preview');
+        if (p.imagem) {
+            prev.style.display = 'block';
+            prev.src = p.imagem;
+        } else {
+            prev.style.display = 'none';
+            prev.src = '';
+        }
         document.getElementById('page-promocoes').scrollIntoView({ behavior: 'smooth' });
     } catch (e) { console.error(e); }
 }

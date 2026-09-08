@@ -337,6 +337,14 @@
                             <label>Imagem de fundo (URL opcional)</label>
                             <input type="text" id="promo-imagem" placeholder="https://... (se vazio, usa fundo colorido)">
                         </div>
+                        <div class="form-group">
+                            <label>Ou envie uma imagem do seu computador/Instagram</label>
+                            <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+                                <input type="file" id="promo-imagem-arquivo" accept="image/*" onchange="enviarPromoImagem(this)">
+                                <img id="promo-imagem-preview" alt="Prévia" style="height: 60px; border-radius: 8px; display: none;">
+                            </div>
+                            <p style="color: var(--gray-dark); font-size: 0.85rem; margin-top: 0.4rem;">Dica: no Instagram, salve a foto no celular/computador e selecione aqui.</p>
+                        </div>
                         <div class="form-group" style="display: flex; gap: 0.8rem; align-items: center;">
                             <button class="btn-salvar" onclick="salvarPromocao()">💾 Salvar Promoção</button>
                             <button class="btn-ver-todos" onclick="limparFormPromocao()" style="cursor:pointer;">Limpar</button>

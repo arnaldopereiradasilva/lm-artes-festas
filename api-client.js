@@ -86,7 +86,14 @@ var API = (function() {
       todas: function() { return request('GET', '/api/promocoes/todas'); },
       criar: function(dados) { return request('POST', '/api/promocoes', dados); },
       atualizar: function(id, dados) { return request('PUT', '/api/promocoes/' + id, dados); },
-      remover: function(id) { return request('DELETE', '/api/promocoes/' + id); }
+      remover: function(id) { return request('DELETE', '/api/promocoes/' + id); },
+      enviarImagem: function(formData) {
+        return fetch(BASE + '/api/promocoes/imagem', { method: 'POST', body: formData, credentials: 'same-origin' })
+          .then(function(res) {
+            if (res.status === 401) { redirecionarLogin(); }
+            return res.json().then(function(d) { if (!res.ok) throw new Error(d.erro); return d; });
+          });
+      }
     },
 
     fotos: {
