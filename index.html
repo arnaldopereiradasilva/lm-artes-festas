@@ -483,6 +483,15 @@
                     <input type="number" id="tr-profissionais" min="1" value="1" oninput="calcularTransporte()">
                     <small class="tr-sinc">Sincronizado com a equipe escolhida no pedido</small>
                 </div>
+                <div class="form-group">
+                    <label>Endereço do evento (para ver o valor no app)</label>
+                    <input type="text" id="tr-endereco" placeholder="Rua, número, bairro, cidade" oninput="atualizarBotoesApps()">
+                </div>
+                <div class="tr-apps">
+                    <button class="tr-btn-app tr-btn-uber" id="tr-btn-uber" onclick="abrirAppUber()" disabled>🚙 Ver na Uber</button>
+                    <button class="tr-btn-app tr-btn-99" id="tr-btn-99" onclick="abrirApp99()" disabled>🚘 Ver na 99</button>
+                </div>
+                <p class="tr-app-nota" id="tr-app-nota">Preencha o endereço do evento para consultar o valor da corrida direto nos aplicativos.</p>
                 <div class="tr-resultado" id="tr-resultado">
                     <div class="tr-linha"><span>Locais de saída (Av. do Contorno, 129 - Paciência)</span><strong id="tr-base-resumo">—</strong></div>
                     <div class="tr-linha"><span>Carros necessários</span><strong id="tr-carros">0</strong></div>

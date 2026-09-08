@@ -6,7 +6,7 @@ var precos = {};
 var datasOcupadas = [];
 var chavePix = '';
 var numeroWhatsApp = '';
-var transporteConfig = { base: '', carroBase: 10, carroKm: 3, motoBase: 3, motoKm: 1, porCarro: 4 };
+var transporteConfig = { base: '', carroBase: 10, carroKm: 3, motoBase: 3, motoKm: 1, porCarro: 4, c99ClientId: '' };
 
 var nomesServicos = {
     garcom: 'Garcom',
@@ -142,6 +142,7 @@ async function carregarConfiguracoes() {
         transporteConfig.motoBase = parseFloat(config.equipe_moto_base) || 3;
         transporteConfig.motoKm = parseFloat(config.equipe_custo_km_moto) || 1;
         transporteConfig.porCarro = parseInt(config.equipe_por_carro) || 4;
+        transporteConfig.c99ClientId = config.equipe_99_client_id || '';
 
         var elBase = document.getElementById('tr-base');
         if (elBase) elBase.textContent = transporteConfig.base;
@@ -513,6 +514,51 @@ function calcularTransporte() {
     document.getElementById('tr-ida-moto').textContent = 'R$ ' + idaMoto.toFixed(2).replace('.', ',');
     document.getElementById('tr-volta').textContent = 'R$ ' + ida.toFixed(2).replace('.', ',');
     document.getElementById('tr-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+}
+
+var BASE_EQUIPE_LAT = -22.9275732;
+var BASE_EQUIPE_LON = -43.6405803;
+var BASE_EQUIPE_NOME = 'L&M Artes e Festas';
+var BASE_EQUIPE_ENDERECO = 'Av. do Contorno, 129 - Paciência - Rio de Janeiro - RJ';
+
+function atualizarBotoesApps() {
+    var end = document.getElementById('tr-endereco');
+    var ok = end && end.value.trim().length > 3;
+    var btnUber = document.getElementById('tr-btn-uber');
+    var btn99 = document.getElementById('tr-btn-99');
+    if (btnUber) btnUber.disabled = !ok;
+    if (btn99) btn99.disabled = !ok;
+}
+
+function abrirAppUber() {
+    var end = document.getElementById('tr-endereco');
+    if (!end || end.value.trim().length < 4) return;
+    var url = 'https://m.uber.com/ul/?action=setPickup' +
+        '&pickup[latitude]=' + BASE_EQUIPE_LAT +
+        '&pickup[longitude]=' + BASE_EQUIPE_LON +
+        '&pickup[nickname]=' + encodeURIComponent(BASE_EQUIPE_NOME) +
+        '&pickup[formatted_address]=' + encodeURIComponent(BASE_EQUIPE_ENDERECO) +
+        '&dropoff[nickname]=' + encodeURIComponent('Meu Evento') +
+        '&dropoff[formatted_address]=' + encodeURIComponent(end.value.trim());
+    window.open(url, '_blank');
+}
+
+function abrirApp99() {
+    var end = document.getElementById('tr-endereco');
+    if (!end || end.value.trim().length < 4) return;
+    var clientId = transporteConfig.c99ClientId;
+    if (!clientId) {
+        window.open('https://99app.com/passageiro/', '_blank');
+        return;
+    }
+    var url = 'taxis99://call' +
+        '?pickup_latitude=' + BASE_EQUIPE_LAT +
+        '&pickup_longitude=' + BASE_EQUIPE_LON +
+        '&pickup_title=' + encodeURIComponent(BASE_EQUIPE_NOME) +
+        '&dropoff_nickname=' + encodeURIComponent('Meu Evento') +
+        '&client_id=' + encodeURIComponent(clientId) +
+        '&deep_link_product_id=316';
+    window.open(url, '_blank');
 }
 
 function calcularTotal() {

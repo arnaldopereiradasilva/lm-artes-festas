@@ -162,6 +162,7 @@ async function inserirConfiguracoesPadrao(db) {
     { chave: 'equipe_moto_base', valor: '3.00' },
     { chave: 'equipe_custo_km_moto', valor: '1.00' },
     { chave: 'equipe_por_carro', valor: '4' },
+    { chave: 'equipe_99_client_id', valor: '' },
   ];
 
   for (const c of padrao) {

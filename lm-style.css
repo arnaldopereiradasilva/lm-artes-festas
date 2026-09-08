@@ -1625,6 +1625,45 @@ body {
     line-height: 1.5;
 }
 
+.tr-apps {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.tr-btn-app {
+    flex: 1;
+    min-width: 140px;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.tr-btn-app:hover:not(:disabled) { transform: translateY(-2px); }
+
+.tr-btn-app:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.tr-btn-uber { background: #09091a; }
+
+.tr-btn-99 { background: #f5b70a; color: #333; }
+
+.tr-app-nota {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+    margin-top: 0.6rem;
+    line-height: 1.4;
+}
+
 @media (max-width: 768px) {
     .transporte-wrap { grid-template-columns: 1fr; }
     .promo-grid { grid-template-columns: 1fr; }
