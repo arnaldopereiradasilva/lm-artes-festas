@@ -255,8 +255,7 @@ function carrossel(sliderId, esqId, dirId, autoPlay, manterPosicao) {
         var dir = document.getElementById(dirId);
         if (!slider || !esq || !dir) return;
 
-        var imgs = slider.querySelectorAll('img');
-        var total = imgs.length;
+        var total = slider.children.length;
         if (total === 0) return;
 
         slider._total = total;
@@ -445,27 +444,43 @@ function validarStep(step) {
 }
 
 async function carregarPromocoes() {
-    var grid = document.getElementById('promo-grid');
-    if (!grid) return;
+    var slider = document.getElementById('promoSlider');
+    if (!slider) return;
     try {
         var promos = await API.promocoes.listar();
+        var esq = document.getElementById('promoEsq');
+        var dir = document.getElementById('promoDir');
+
         if (!promos || promos.length === 0) {
-            grid.innerHTML = '<p class="sem-promo">Nenhuma promoção no momento</p>';
+            slider.innerHTML = '<p class="sem-promo">Nenhuma promoção no momento</p>';
+            if (esq) esq.style.display = 'none';
+            if (dir) dir.style.display = 'none';
             return;
         }
-        grid.innerHTML = promos.map(function (p) {
-            var estilo = p.imagem ? 'style="background-image:url(\'' + p.imagem + '\');"' : '';
+
+        slider.innerHTML = promos.map(function (p) {
+            var img = p.imagem
+                ? '<img src="' + escapeHtml(p.imagem) + '" alt="' + escapeHtml(p.titulo) + '">'
+                : '<div class="promo-slide-sem-imagem"></div>';
             var precoHtml = p.preco ? '<span class="promo-preco">' + escapeHtml(p.preco) + '</span>' : '';
-            return '<a class="promo-card" href="#pedido" ' + estilo + '>' +
-                '<div class="promo-card-inner">' +
+            return '<div class="promo-slide">' +
+                img +
+                '<div class="promo-slide-content">' +
                 '<span class="promo-tag">Promoção Especial</span>' +
                 '<h3>' + escapeHtml(p.titulo) + '</h3>' +
                 (p.subtitulo ? '<p>' + escapeHtml(p.subtitulo) + '</p>' : '') +
                 precoHtml +
-                '<span class="promo-cta">Fazer Pedido →</span>' +
+                '<a class="promo-cta" href="#pedido">Fazer Pedido →</a>' +
                 '</div>' +
-                '</a>';
+                '</div>';
         }).join('');
+
+        if (esq) esq.style.display = 'flex';
+        if (dir) dir.style.display = 'flex';
+
+        setTimeout(function () {
+            carrossel('promoSlider', 'promoEsq', 'promoDir', true);
+        }, 100);
     } catch (e) {
         console.error('Erro ao carregar promocoes:', e);
     }
