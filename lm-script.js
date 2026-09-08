@@ -489,6 +489,14 @@ function calcularTransporte() {
     if (!elDist || !elProf) return;
 
     var dist = parseFloat(elDist.value) || 0;
+
+    document.getElementById('tr-carros').textContent = '0';
+    document.getElementById('tr-ida-carro').textContent = 'R$ 0,00';
+    document.getElementById('tr-ida-moto').textContent = 'R$ 0,00';
+    document.getElementById('tr-volta').textContent = 'R$ 0,00';
+    document.getElementById('tr-total').textContent = 'R$ 0,00';
+    if (dist <= 0) return;
+
     var prof = parseInt(elProf.value) || 1;
     var carroBase = transporteConfig.carroBase;
     var carroKm = transporteConfig.carroKm;
