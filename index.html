@@ -467,48 +467,17 @@
             <div class="transporte-info">
                 <h2 class="title">🚗 Transporte da <span>Equipe</span></h2>
                 <p>Nossa equipe se desloca até o seu evento por <strong>aplicativo de transporte</strong> (Uber/99).</p>
-                <p>O custo de <strong>ida e volta</strong> do deslocamento é por conta do cliente, conforme a distância
+                <p>O custo de <strong>ida e volta</strong> do deslocamento é <strong>por conta do cliente</strong>, conforme a distância
                     entre a base da equipe e o local do evento.</p>
                 <div class="transporte-base">
                     📍 <strong>Base de saída:</strong> <span id="tr-base">Av. do Contorno, 129 - Paciência - CEP 23585-808</span>
                 </div>
-                <div class="transporte-aviso">
-                    ⚠️ O valor exato da corrida é informado pelo aplicativo. A estimativa abaixo ajuda você a se
-                    planejar.
-                </div>
             </div>
             <div class="transporte-simulador">
-                <h3>Estimativa do Deslocamento</h3>
-                <div class="form-group">
-                    <label>Distância aproximada do evento (km)</label>
-                    <input type="number" id="tr-distancia" min="0" step="1" placeholder="Ex: 15" oninput="calcularTransporte()">
-                </div>
-                <div class="form-group">
-                    <label>Nº de profissionais contratados</label>
-                    <input type="number" id="tr-profissionais" min="1" value="1" oninput="calcularTransporte()">
-                    <small class="tr-sinc">Sincronizado com a equipe escolhida no pedido</small>
-                </div>
-                <div class="form-group">
-                    <label>Endereço do evento (para ver o valor no app)</label>
-                    <input type="text" id="tr-endereco" placeholder="Rua, número, bairro, cidade" oninput="atualizarBotoesApps()">
-                </div>
-                <div class="tr-apps">
-                    <button class="tr-btn-app tr-btn-uber" id="tr-btn-uber" onclick="abrirAppUber()" disabled>🚙 Ver na Uber</button>
-                    <button class="tr-btn-app tr-btn-99" id="tr-btn-99" onclick="abrirApp99()" disabled>🚘 Ver na 99</button>
-                </div>
-                <p class="tr-app-nota" id="tr-app-nota">Preencha o endereço do evento para consultar o valor da corrida direto nos aplicativos.</p>
-                <div class="tr-resultado" id="tr-resultado">
-                    <div class="tr-linha"><span>Locais de saída (Av. do Contorno, 129 - Paciência)</span><strong id="tr-base-resumo">—</strong></div>
-                    <div class="tr-linha"><span>Carros necessários</span><strong id="tr-carros">0</strong></div>
-                    <div class="tr-linha"><span>Ida (carros)</span><strong id="tr-ida-carro">R$ 0,00</strong></div>
-                    <div class="tr-linha"><span>Ida (moto)</span><strong id="tr-ida-moto">R$ 0,00</strong></div>
-                    <div class="tr-linha"><span>Volta (estimativa)</span><strong id="tr-volta">R$ 0,00</strong></div>
-                    <div class="tr-linha total"><span>Total ida + volta</span><strong id="tr-total">R$ 0,00</strong></div>
-                </div>
-                <p class="tr-nota">* Estimativa: carro <strong>R$ <span id="tr-carro-base">10,00</span> + R$ <span id="tr-carro-km">3,00</span>/km</strong>
-                    e moto <strong>R$ <span id="tr-moto-base">3,00</span> + R$ <span id="tr-moto-km">1,00</span>/km</strong>,
-                    conforme a tarifa dos aplicativos. Cada carro leva até <span id="tr-por-carro">4</span> profissionais;
-                    a moto leva 1 e só é usada quando sobra 1 pessoa.</p>
+                <h3>Quanto custa o deslocamento?</h3>
+                <p>O valor exato da corrida é informado pelo aplicativo de transporte. Para saber o valor do deslocamento da equipe
+                    até o local do seu evento, <strong>entre em contato com a gente</strong>.</p>
+                <a href="#" id="tr-whatsapp-btn" class="tr-whatsapp-btn" target="_blank" rel="noopener">💬 Consultar deslocamento no WhatsApp</a>
             </div>
         </div>
     </section>

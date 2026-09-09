@@ -157,12 +157,6 @@ async function inserirConfiguracoesPadrao(db) {
     { chave: 'preco_crepe', valor: '160' },
     { chave: 'preco_suco', valor: '140' },
     { chave: 'equipe_base_local', valor: 'Av. do Contorno, 129 - Paciência - CEP 23585-808' },
-    { chave: 'equipe_carro_base', valor: '10.00' },
-    { chave: 'equipe_custo_km', valor: '3.00' },
-    { chave: 'equipe_moto_base', valor: '3.00' },
-    { chave: 'equipe_custo_km_moto', valor: '1.00' },
-    { chave: 'equipe_por_carro', valor: '4' },
-    { chave: 'equipe_99_client_id', valor: '' },
   ];
 
   for (const c of padrao) {

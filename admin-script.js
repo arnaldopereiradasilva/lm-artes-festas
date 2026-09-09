@@ -556,13 +556,7 @@ async function carregarConfiguracoesAdmin() {
         if (config.email) document.getElementById('config-email').value = config.email;
         if (config.pix) document.getElementById('config-pix').value = config.pix;
         if (config.max_eventos_por_dia) document.getElementById('config-max-eventos').value = config.max_eventos_por_dia;
-if (config.equipe_base_local) document.getElementById('config-equipe-base').value = config.equipe_base_local;
-        if (config.equipe_carro_base) document.getElementById('config-veic-carro-base').value = config.equipe_carro_base;
-        if (config.equipe_custo_km) document.getElementById('config-equipe-taxa').value = config.equipe_custo_km;
-        if (config.equipe_moto_base) document.getElementById('config-veic-moto-base').value = config.equipe_moto_base;
-        if (config.equipe_custo_km_moto) document.getElementById('config-equipe-taxa-moto').value = config.equipe_custo_km_moto;
-        if (config.equipe_por_carro) document.getElementById('config-equipe-por-carro').value = config.equipe_por_carro;
-        if (config.equipe_99_client_id) document.getElementById('config-99-client-id').value = config.equipe_99_client_id;
+        if (config.equipe_base_local) document.getElementById('config-equipe-base').value = config.equipe_base_local;
 
         _precosServicos = {};
         var servicos = ['garcom', 'copeira', 'fritadeira', 'churrasqueiro', 'monitora', 'recepcionista', 'pipoca', 'algodao', 'acai', 'sorvete', 'batata', 'crepe', 'suco'];
@@ -585,13 +579,7 @@ async function salvarConfiguracoes() {
         email: document.getElementById('config-email').value,
         pix: document.getElementById('config-pix').value,
         max_eventos_por_dia: document.getElementById('config-max-eventos').value,
-        equipe_base_local: document.getElementById('config-equipe-base').value,
-        equipe_carro_base: document.getElementById('config-veic-carro-base').value,
-        equipe_custo_km: document.getElementById('config-equipe-taxa').value,
-        equipe_moto_base: document.getElementById('config-veic-moto-base').value,
-        equipe_custo_km_moto: document.getElementById('config-equipe-taxa-moto').value,
-        equipe_por_carro: document.getElementById('config-equipe-por-carro').value,
-        equipe_99_client_id: document.getElementById('config-99-client-id').value
+        equipe_base_local: document.getElementById('config-equipe-base').value
     };
 
     try {
