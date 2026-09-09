@@ -162,18 +162,6 @@ async function inserirConfiguracoesPadrao(db) {
   for (const c of padrao) {
     await dbRun(db, 'INSERT OR IGNORE INTO configuracoes (chave, valor) VALUES (?, ?)', [c.chave, c.valor]);
   }
-
-  const qtdPromos = await dbGet(db, 'SELECT COUNT(*) AS total FROM promocoes');
-  if (qtdPromos.total === 0) {
-    const promosExemplo = [
-      { titulo: 'Dia dos Pais', subtitulo: 'Combo de 3 profissionais', preco: 'R$ 250,00', ativo: 1, ordem: 1 },
-      { titulo: 'Combo Aniversário', subtitulo: '2 garçons + 1 recepcionista', preco: 'R$ 490,00', ativo: 1, ordem: 2 }
-    ];
-    for (const p of promosExemplo) {
-      await dbRun(db, 'INSERT INTO promocoes (titulo, subtitulo, preco, ativo, ordem) VALUES (?, ?, ?, ?, ?)',
-        [p.titulo, p.subtitulo, p.preco, p.ativo, p.ordem]);
-    }
-  }
 }
 
 async function inserirUsuarioPadrao(db) {
