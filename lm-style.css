@@ -1383,9 +1383,15 @@ body {
 
     .carrossel-inner .promo-slide img, .carrossel-inner .promo-slide-sem-imagem { height: 320px; }
 
-    .carrossel-inner .promo-slide-content { padding: 1.2rem; }
+    .carrossel-inner .promo-slide-content { padding: 2rem 0.8rem 0.7rem; }
 
-    .carrossel-inner .promo-slide-content h3 { font-size: 1.4rem; }
+    .carrossel-inner .promo-slide-content h3 { font-size: 1.1rem; }
+
+    .carrossel-inner .promo-slide-content p { font-size: 0.88rem; }
+
+    .carrossel-inner .promo-preco { font-size: 1.2rem; }
+
+    .carrossel-inner .promo-cta { font-size: 0.85rem; }
 
     .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
 
@@ -1470,15 +1476,16 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 2rem;
+    padding: 3rem 1.5rem 1.1rem;
+    background: linear-gradient(to top, rgba(15, 15, 35, 0.92) 0%, rgba(15, 15, 35, 0) 100%);
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.25rem;
     align-items: flex-start;
 }
 
 .promo-slide-content h3 {
-    font-size: 1.8rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--white);
     margin: 0;
@@ -1486,23 +1493,23 @@ body {
 
 .promo-slide-content p {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     margin: 0;
 }
 
 .promo-tag {
     background: var(--primary);
     color: var(--secondary);
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 0.3rem 0.8rem;
+    padding: 0.25rem 0.7rem;
     border-radius: 20px;
 }
 
 .promo-preco {
-    font-size: 2rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--accent);
 }
@@ -1510,7 +1517,7 @@ body {
 .promo-cta {
     color: var(--accent);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-decoration: none;
 }
 
