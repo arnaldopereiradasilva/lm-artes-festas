@@ -1514,6 +1514,34 @@ body {
     text-decoration: none;
 }
 
+.promo-zoom-lb {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    cursor: zoom-out;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.promo-zoom-lb.open {
+    display: flex;
+}
+
+.promo-zoom-lb img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 480px) {
+    .promo-zoom-lb { padding: 0.8rem; }
+}
+
 /* ========================================
    TRANSPORTE DA EQUIPE
    ======================================== */

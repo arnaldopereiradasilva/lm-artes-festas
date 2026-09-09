@@ -478,12 +478,36 @@ async function carregarPromocoes() {
         if (esq) esq.style.display = 'flex';
         if (dir) dir.style.display = 'flex';
 
+        slider.style.cursor = 'zoom-in';
+        slider.onclick = function (e) {
+            if (e.target.closest && e.target.closest('.promo-cta')) return;
+            var slide = e.target.closest ? e.target.closest('.promo-slide') : null;
+            if (!slide) return;
+            var img = slide.querySelector('img');
+            if (img && img.src) abrirZoomPromo(img.src, img.alt);
+        };
+
         setTimeout(function () {
-            carrossel('promoSlider', 'promoEsq', 'promoDir', true);
+            carrossel('promoSlider', 'promoEsq', 'promoDir', false);
         }, 100);
     } catch (e) {
         console.error('Erro ao carregar promocoes:', e);
     }
+}
+
+function abrirZoomPromo(src, alt) {
+    var lb = document.getElementById('promoZoomLb');
+    if (!lb) {
+        lb = document.createElement('div');
+        lb.id = 'promoZoomLb';
+        lb.className = 'promo-zoom-lb';
+        lb.innerHTML = '<img alt="">';
+        document.body.appendChild(lb);
+        lb.addEventListener('click', function () { lb.classList.remove('open'); });
+    }
+    lb.querySelector('img').src = src;
+    lb.querySelector('img').alt = alt || 'Promoção';
+    lb.classList.add('open');
 }
 
 function totalProfissionais() {
