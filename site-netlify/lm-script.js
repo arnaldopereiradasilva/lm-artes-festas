@@ -199,6 +199,13 @@ async function carregarCarrosseis() {
                             slider.appendChild(img);
                         }
                     }
+                    slider.style.cursor = 'zoom-in';
+                    slider.onclick = function (e) {
+                        var alvo = e.target;
+                        if (alvo && alvo.tagName === 'IMG' && alvo.src) {
+                            abrirZoomPromo(alvo.src, alvo.alt);
+                        }
+                    };
                 }
             } catch (e) {
                 console.error('Erro ao carregar fotos ' + tipo + ':', e);
