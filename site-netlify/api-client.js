@@ -423,7 +423,7 @@ var API = (function() {
             seq.push(uploadImagem(files[i]).then(function(publico) { return publico; }));
           }
           return Promise.all(seq).then(function(urls) {
-            var linhas = urls.map(function(url, idx) { return { tipo: tipo, caminho: url, ordem: inicio + idx }; });
+            var linhas = urls.map(function(url, idx) { return { tipo: tipo, caminho: publicUrl(url), ordem: inicio + idx }; });
             return supabase().from('fotos').insert(linhas).then(function(rres) {
               if (rres.error) return Promise.reject(new Error(rres.error.message));
               return { ok: true, fotos: files.length };
