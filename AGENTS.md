@@ -1,55 +1,67 @@
 # L&M Artes e Festas — Projeto
 
-## IMPORTANTE (versão gratuita)
-- **Site ativo e gratuito:** pasta `site-netlify/` (site 100% estático, sem backend)
-- Hospedado de graça no Netlify (arrasta e solta a pasta `site-netlify/`)
-- Sem painel admin, sem cartão. Pagamento só PIX. Pedido vai direto pro WhatsApp.
-- Para editar preços/PIX/WhatsApp: abrir `site-netlify/lm-script.js` (ver README local)
-- Ver `site-netlify/README.md` para instruções de deploy
-
+## IMPORTANTE (solução gratuita em vigor)
+- **Site hospedado de graça no Netlify** (site estático na pasta `site-netlify/`, plano grátis)
+- **Banco/login/fotos de graça no Supabase** (plano grátis, projeto `lm-artes-festas`)
+- Painel admin continua funcionando (login e-mail/senha via Supabase Auth)
+- Pagamento: só PIX (chave na tela + comprovante por WhatsApp). Pedido vai pro WhatsApp de Lenice.
+- Ver `site-netlify/README.md` para instruções de deploy e de como editar preços/PIX/WhatsApp/promoções.
 
 ## Stack
-- Node.js + Express.js + SQLite
-- Frontend: HTML/CSS/JS puro (sem frameworks)
-- Hospedagem: Render Starter ($7/mês) + 1GB disco persistente
-- Pagamentos: PIX (chave na tela + comprovante por WhatsApp) e cartão via WhatsApp
-- Domínio: a comprar (~R$ 40/ano)
+- **Frontend:** HTML/CSS/JS puro (sem frameworks), pasta `site-netlify/`
+- **Backend de dados:** Supabase (PostgreSQL + Storage + Auth), acesso via API REST
+- **Hospedagem:** Netlify (grátis) — arrasta e solta a pasta `site-netlify/` em https://app.netlify.com/drop
+- **Domínio:** a comprar (~R$ 40/ano) e configurar no Netlify quando decidir
 
 ## URLs
-- **Site:** https://lm-artes-festas.onrender.com
-- **Admin:** https://lm-artes-festas.onrender.com/admin.html
-- **Login admin:** usuário `lenice` — a senha é **gerada aleatoriamente** no primeiro boot (gravada em `.senha_inicial.txt`, que pode se perder em redeploys). Troque a senha em Configurações.
+- **Site:** https://<nome>.netlify.app (ver Netlify após publicar)
+- **Admin:** https://<seu-repositorio>.netlify.app/admin.html
+- **Login admin:** e-mail `lenicebraga@hotmail.com` (ou digita só `lenice`) — senha inicial combinada com o Arnaldo (trocar no painel em Configurações)
 
-### Resetar senha do admin (quando esquecida)
-No navegador (troque `SEU_SECRET` pelo valor de `ADMIN_RESET_SECRET` e `NovaSenha@2026` pela nova senha):
-```
-https://lm-artes-festas.onrender.com/api/auth/reset-admin?secret=SEU_SECRET&senha=NovaSenha@2026
-```
-Resposta esperada: `{"ok":true,"usuario":"lenice",...}`. Depois entre no painel com a senha nova e troque em Configurações.
+### Resetar senha do admin (Supabase)
+- Dashboard Supabase > Authentication > Users > botão ... do usuário > **Reset password**
+- (O Supabase envia e-mail de redefinição para o e-mail de Lenice.)
 
-## Variáveis de ambiente (Render)
-- NODE_ENV=production
-- SESSION_SECRET=<gerado>
-- BASE_URL=https://lm-artes-festas.onrender.com
-- ADMIN_RESET_SECRET=<chave para reset>
+## Supabase (projeto lm-artes-festas)
+- Project URL: `https://njhqturaptmjglzejbla.supabase.co`
+- Chave pública (segura pra ficar no site): `sb_publishable_SXjPJvmihqe5203gzoFsMw_BU0x9nWs`
+- `config.js` na pasta `site-netlify/` guarda essas duas informações (não colocar a Secret key).
+- Esquema/redefinições: `site-netlify/supabase-schema.sql` (rodar no SQL Editor; já é idempotente).
+- Tabelas: configuracoes, promocoes, pedidos, bloqueios, fotos. Storage bucket: `imagens`.
+- RLS: públicos podem ler configurações/promoções(ativas)/bloqueios/fotos e criar pedidos;
+  só o admin logado altera tudo.
 
-## Configurações do admin
-- WhatsApp: 5521985412860
-- PIX: 101.011.487-55
-- Email: lenicebraga@hotmail.com
+## Estrutura da pasta site-netlify/
+- `index.html` — site público (carrossel de promoções, transporte, pedido, PIX)
+- `admin.html` — painel (dashboard, pedidos, calendário, financeiro, promoções, configurações, fotos)
+- `api-client.js` — camada única de acesso ao Supabase (mesma interface da versão antiga)
+- `config.js` — SUPABASE_URL e SUPABASE_ANON_KEY
+- `imagem/` — imagens dos carrosséis de eventos/estações/avaliações (editar os arquivos aqui),
+  uploads extras do painel vão para o storage do Supabase
+- `supabase-schema.sql` — criação do banco (já rodado)
+- `README.md` — instruções de deploy e edição para a Lenice
 
-## Correções aplicadas
-1. **Upload de fotos** — UPLOAD_DIR em `server/routes/fotos.js` aponta para `server/data/uploads/` (estava indo para `routes/data/uploads/` — servidor estático não encontrava)
-2. **Sessão expirada** — admin agora detecta 401 e redireciona para tela de login; ao carregar a página, verifica sessão ativa via API
-3. **MemoryStore** — usado pois connect-sqlite3 não funciona no Node 24 do Render
-4. **Disco persistente** — SQLite e uploads em `/opt/render/project/src/server/data/` sobrevivem a deploys
-5. **Mensagem de erro do login** — o cliente `api-client.js` não trata mais 401 do login como "sessão expirada"; senha errada mostra a mensagem real do servidor ("Usuário ou senha incorretos")
+## Configurações padrão (tabela configuracoes)
+- WhatsApp: 5521985412860 | PIX: lenicebraga@hotmail.com | Email: lenicebraga@hotmail.com
+- max_eventos_por_dia: 5 | preços dos serviços e estações | equipe_base_local: Av. do Contorno, 129
+- Editáveis pelo painel (Configurações) ou direto no Supabase.
+
+## Correções/lições aplicadas
+1. **Fim do Render**: plano Free não tem disco persistente — dados eram apagados a cada deploy.
+   Migração para Supabase resolve isso (dados ficam na nuvem do Supabase).
+2. **Aba do artigo**: `bloqueios` e `configuracoes` são chaves textuais — não têm sequence no
+   Postgres (não referenciar `<tabela>_id_seq` delas no GRANT).
+3. **Login (Supabase Auth)**: e-mail + senha; se digitar `lenice` sem @, vira `lenicebraga@hotmail.com`.
+4. `api-client.js` manteve a MESMA interface `API.*`, então `lm-script.js`/`admin-script.js` 
+   não precisaram de mudanças (só o `admin.html` trocou o rótulo do login para e-mail).
+5. Galerias de eventos/estações/avaliações usam as imagens locais de `imagem/` (estáticas);
+   a tabela `fotos` só adiciona fotos extras enviadas pelo painel.
 
 ## Pendente / Próximos passos
-- **Comprar domínio** (ex: lmartesfestas.com.br) e configurar no Render
-- O domínio deve apontar os nameservers para o Render (ou configurar CNAME)
+- Publicar no Netlify (arrastar a pasta `site-netlify/` em app.netlify.com/drop)
+- Testar login real do painel e o fluxo de pedido no endereço novo
+- Comprar domínio (ex: lmartesfestas.com.br) e configurar no Netlify
+- (Opcional) Conectar o repo ao Netlify para deploy automático a cada `git push`
 
 ## Contato
-- Cliente: Lenice
-- WhatsApp: 21985412860
-- Email: lenicebraga@hotmail.com
+- Cliente: Lenice | WhatsApp: 21985412860 | Email: lenicebraga@hotmail.com
