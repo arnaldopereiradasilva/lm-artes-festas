@@ -251,6 +251,8 @@ body {
     flex: 1;
     padding: 2rem;
     min-height: 100vh;
+    min-width: 0;
+    overflow-x: auto;
 }
 
 /* ========================================
@@ -1161,6 +1163,10 @@ body {
         .precos-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .fotos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
@@ -1366,6 +1372,9 @@ body {
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
     border: 1px solid #eee;
+    max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .fotos-section h4 {
@@ -1481,6 +1490,9 @@ body {
     font-size: 0.8rem;
     color: var(--gray-dark);
     margin-top: 0.4rem;
+    white-space: normal;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 .fotos-vazio {
