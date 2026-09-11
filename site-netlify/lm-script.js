@@ -190,7 +190,7 @@ async function carregarCarrosseis() {
                 var fotos = await API.fotos.listar(tipo);
                 var slider = document.getElementById(sliderIds[tipo]);
                 if (slider) {
-                    slider.innerHTML = _carouselOriginalHTML[sliderIds[tipo]] || '';
+                    slider.innerHTML = '';
                     if (fotos && fotos.length > 0) {
                         for (var f = 0; f < fotos.length; f++) {
                             var img = document.createElement('img');

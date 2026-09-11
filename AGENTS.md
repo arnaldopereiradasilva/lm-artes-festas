@@ -10,12 +10,14 @@
 ## Stack
 - **Frontend:** HTML/CSS/JS puro (sem frameworks), pasta `site-netlify/`
 - **Backend de dados:** Supabase (PostgreSQL + Storage + Auth), acesso via API REST
-- **Hospedagem:** Netlify (grátis) — arrasta e solta a pasta `site-netlify/` em https://app.netlify.com/drop
+- **Hospedagem:** Netlify (grátis) — conectado ao GitHub (repo `arnaldopereiradasilva/lm-artes-festas`,
+  branch `main`, Base directory `site-netlify`). Deploy automático a cada `git push`.
+  (Fallback manual: arrastar a pasta `site-netlify/` em https://app.netlify.com/drop)
 - **Domínio:** a comprar (~R$ 40/ano) e configurar no Netlify quando decidir
 
 ## URLs
-- **Site:** https://<nome>.netlify.app (ver Netlify após publicar)
-- **Admin:** https://<seu-repositorio>.netlify.app/admin.html
+- **Site:** https://gorgeous-puffpuff-123a64.netlify.app
+- **Admin:** https://gorgeous-puffpuff-123a64.netlify.app/admin.html
 - **Login admin:** e-mail `lenicebraga@hotmail.com` (ou digita só `lenice`) — senha inicial combinada com o Arnaldo (trocar no painel em Configurações)
 
 ### Resetar senha do admin (Supabase)
@@ -36,8 +38,10 @@
 - `admin.html` — painel (dashboard, pedidos, calendário, financeiro, promoções, configurações, fotos)
 - `api-client.js` — camada única de acesso ao Supabase (mesma interface da versão antiga)
 - `config.js` — SUPABASE_URL e SUPABASE_ANON_KEY
-- `imagem/` — imagens dos carrosséis de eventos/estações/avaliações (editar os arquivos aqui),
-  uploads extras do painel vão para o storage do Supabase
+- `imagem/` — imagens originais dos carrosséis de eventos/estações/avaliações. Elas foram
+  enviadas uma vez como SEED ao Supabase (tabela `fotos` + bucket `imagens`); a partir daí
+  as galerias são 100% controladas pelo painel (Fotos). A pasta local continua sendo a
+  referência visual e também serve o resto dos assets (logo, ícones sociais).
 - `supabase-schema.sql` — criação do banco (já rodado)
 - `README.md` — instruções de deploy e edição para a Lenice
 
@@ -54,14 +58,17 @@
 3. **Login (Supabase Auth)**: e-mail + senha; se digitar `lenice` sem @, vira `lenicebraga@hotmail.com`.
 4. `api-client.js` manteve a MESMA interface `API.*`, então `lm-script.js`/`admin-script.js` 
    não precisaram de mudanças (só o `admin.html` trocou o rótulo do login para e-mail).
-5. Galerias de eventos/estações/avaliações usam as imagens locais de `imagem/` (estáticas);
-   a tabela `fotos` só adiciona fotos extras enviadas pelo painel.
+5. **Galerias 100% no Supabase** (desde set/2026): os carrosséis de avaliações/eventos/estações
+   renderizam só a tabela `fotos` (o JS limpa o `<div>` antes de montar). O seed das 21 fotos
+   originais (4 avaliações, 13 eventos, 4 estações) foi feito via script. Adicionar/remover fotos
+   pelo painel atualiza o site na hora. Nomes de arquivo no storage não podem ter acento/ç
+   ("Invalid key" do Supabase) — isso inclui uploads futuros pelo painel.
 
 ## Pendente / Próximos passos
-- Publicar no Netlify (arrastar a pasta `site-netlify/` em app.netlify.com/drop)
-- Testar login real do painel e o fluxo de pedido no endereço novo
 - Comprar domínio (ex: lmartesfestas.com.br) e configurar no Netlify
-- (Opcional) Conectar o repo ao Netlify para deploy automático a cada `git push`
+- Trocar senha inicial do painel (Configurações) p/ uma só da Lenice
+- Gerar QR Code do PIX (chave: lenicebraga@hotmail.com) e colocar na seção de pagamento
+- Cópia do projeto fora deste repo (ex: Dropbox) já foi apagada — manter tudo só no Git/GitHub
 
 ## Contato
 - Cliente: Lenice | WhatsApp: 21985412860 | Email: lenicebraga@hotmail.com
