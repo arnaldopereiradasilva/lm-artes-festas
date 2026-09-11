@@ -485,10 +485,9 @@
                     <p class="fotos-desc">Fotos enviadas por clientes</p>
                     <div class="fotos-grid" id="fotos-avaliacoes"></div>
                     <div class="fotos-add">
-                        <label class="btn-add-foto">
-                            📤 Adicionar Fotos
-                            <input type="file" multiple accept="image/*" onchange="uploadFotos('avaliacoes', this)">
-                        </label>
+                        <input type="file" id="foto-input-avaliacoes" multiple accept="image/*" onchange="uploadFotos('avaliacoes', this)">
+                        <button type="button" class="btn-add-foto" onclick="document.getElementById('foto-input-avaliacoes').click()">&#128228; Adicionar Fotos</button>
+                        <p class="fotos-hint">Envie JPG ou PNG (pode escolher várias de uma vez).</p>
                     </div>
                 </div>
 
@@ -497,10 +496,9 @@
                     <p class="fotos-desc">Fotos de eventos realizados</p>
                     <div class="fotos-grid" id="fotos-eventos"></div>
                     <div class="fotos-add">
-                        <label class="btn-add-foto">
-                            📤 Adicionar Fotos
-                            <input type="file" multiple accept="image/*" onchange="uploadFotos('eventos', this)">
-                        </label>
+                        <input type="file" id="foto-input-eventos" multiple accept="image/*" onchange="uploadFotos('eventos', this)">
+                        <button type="button" class="btn-add-foto" onclick="document.getElementById('foto-input-eventos').click()">&#128228; Adicionar Fotos</button>
+                        <p class="fotos-hint">Envie JPG ou PNG (pode escolher várias de uma vez).</p>
                     </div>
                 </div>
 
@@ -509,10 +507,9 @@
                     <p class="fotos-desc">Fotos das estações disponíveis</p>
                     <div class="fotos-grid" id="fotos-estacoes"></div>
                     <div class="fotos-add">
-                        <label class="btn-add-foto">
-                            📤 Adicionar Fotos
-                            <input type="file" multiple accept="image/*" onchange="uploadFotos('estacoes', this)">
-                        </label>
+                        <input type="file" id="foto-input-estacoes" multiple accept="image/*" onchange="uploadFotos('estacoes', this)">
+                        <button type="button" class="btn-add-foto" onclick="document.getElementById('foto-input-estacoes').click()">&#128228; Adicionar Fotos</button>
+                        <p class="fotos-hint">Envie JPG ou PNG (pode escolher várias de uma vez).</p>
                     </div>
                 </div>
             </div>
