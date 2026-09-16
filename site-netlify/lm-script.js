@@ -136,6 +136,15 @@ async function carregarConfiguracoes() {
         chavePix = config.pix || '';
         numeroWhatsApp = config.whatsapp || '5521985412860';
 
+        atualizarChavePix();
+
+        var elFone = document.getElementById('footer-fone');
+        if (elFone) elFone.textContent = '📱 ' + formatarFone(numeroWhatsApp);
+        var elEmail = document.getElementById('footer-email');
+        if (elEmail) elEmail.textContent = '📧 ' + (config.email || '');
+        var elWa = document.getElementById('footer-wa');
+        if (elWa) elWa.href = 'https://wa.me/' + numeroWhatsApp;
+
         transporteConfig.base = config.equipe_base_local || 'Av. do Contorno, 129 - Paciência - CEP 23585-808';
 
         var elBase = document.getElementById('tr-base');
@@ -154,6 +163,15 @@ async function carregarConfiguracoes() {
         buscarDatasOcupadas(5);
     }
     carregarCarrosseis();
+}
+
+function formatarFone(num) {
+    var d = String(num || '').replace(/\D/g, '');
+    if (d.indexOf('55') === 0) d = d.slice(2);
+    if (d.length === 11) {
+        return '(' + d.slice(0, 2) + ') ' + d[2] + ' ' + d.slice(3, 7) + '-' + d.slice(7);
+    }
+    return num;
 }
 
 function atualizarChavePix() {
