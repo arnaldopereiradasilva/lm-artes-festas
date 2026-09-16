@@ -134,6 +134,20 @@ create policy fotos_public_select on public.fotos for select using (true);
 create policy fotos_auth_all on public.fotos for all
   using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
+-- ---------- VAGAS POR DIA (seguro p/ visitante: so data+quantidade+limite) ----------
+drop view if exists public.vagas_por_dia;
+create view public.vagas_por_dia as
+select evento_data as data,
+       count(*) filter (where status <> 'cancelado') as qtd,
+       coalesce(
+         nullif((select valor from public.configuracoes where chave = 'max_eventos_por_dia'), '')::int,
+         5
+       ) as limite
+from public.pedidos
+group by evento_data;
+
+grant select on public.vagas_por_dia to anon, authenticated;
+
 -- ---------- ARMAZENAMENTO DE IMAGENS ----------
 insert into storage.buckets (id, name, public)
 values ('imagens', 'imagens', true)

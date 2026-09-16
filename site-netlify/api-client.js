@@ -158,9 +158,11 @@ var API = (function() {
         var dataISO = converterParaISO(evento.data);
         return supabase().from('configuracoes').select('valor').eq('chave', 'max_eventos_por_dia').limit(1).then(function(cfg) {
           var maxEventos = parseInt((cfg.data && cfg.data[0] && cfg.data[0].valor) || 5, 10) || 5;
-          return supabase().from('pedidos').select('id').eq('evento_data', dataISO).neq('status', 'cancelado').then(function(chk) {
+          return supabase().from('vagas_por_dia').select('qtd,limite').eq('data', dataISO).maybeSingle().then(function(chk) {
             if (chk.error) return Promise.reject(new Error(chk.error.message));
-            if (chk.data && chk.data.length >= maxEventos) {
+            var qtd = (chk.data && typeof chk.data.qtd === 'number') ? chk.data.qtd : 0;
+            var limite = (chk.data && typeof chk.data.limite === 'number') ? chk.data.limite : maxEventos;
+            if (limite > 0 && qtd >= limite) {
               return Promise.reject(new Error('Data lotada. Escolha outra data.'));
             }
             var numeroPedido = gerarNumeroPedido();
@@ -242,15 +244,13 @@ var API = (function() {
 
       datasOcupadas: function(max) {
         var maxPorDia = max || 5;
-        return supabase().from('pedidos').select('evento_data').neq('status', 'cancelado').then(function(rp) {
-          if (rp.error) return Promise.reject(new Error(rp.error.message));
-          var contagem = {};
-          (rp.data || []).forEach(function(p) {
-            contagem[p.evento_data] = (contagem[p.evento_data] || 0) + 1;
-          });
+        return supabase().from('vagas_por_dia').select('data,qtd,limite').then(function(rv) {
+          if (rv.error) return Promise.reject(new Error(rv.error.message));
+          var ocupadas = (rv.data || []).filter(function(r) {
+            return typeof r.qtd === 'number' && typeof r.limite === 'number' && r.limite > 0 && r.qtd >= r.limite;
+          }).map(function(r) { return r.data; });
           return supabase().from('bloqueios').select('data').then(function(rb) {
             if (rb.error) return Promise.reject(new Error(rb.error.message));
-            var ocupadas = Object.keys(contagem).filter(function(d) { return contagem[d] >= maxPorDia; });
             (rb.data || []).forEach(function(b) {
               if (ocupadas.indexOf(b.data) === -1) ocupadas.push(b.data);
             });
