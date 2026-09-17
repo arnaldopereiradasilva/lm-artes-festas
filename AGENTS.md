@@ -66,6 +66,11 @@
 
 ## Pendente / Próximos passos
 - Comprar domínio (ex: lmartesfestas.com.br) e configurar no Netlify
+  - **Ao configurar o domínio, atualizar as URLs** (canonical, og:, twitter:, sitemap.xml, robots.txt)
+    em `site-netlify/index.html`, `site-netlify/sitemap.xml` e `site-netlify/robots.txt`
+- Depois do domínio: enviar o sitemap no Google Search Console (https://search.google.com/search-console)
+  e criar o cadastro no Google Meu Negócio (Google Business Profile) — principal fator para
+  aparecer em buscas locais como "garçom de festa zona oeste"
 - Trocar senha inicial do painel (Configurações) p/ uma só da Lenice
 - Gerar QR Code do PIX (chave: lenicebraga@hotmail.com) e colocar na seção de pagamento
 - Cópia do projeto fora deste repo (ex: Dropbox) já foi apagada — manter tudo só no Git/GitHub
