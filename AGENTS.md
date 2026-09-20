@@ -72,7 +72,7 @@
   e criar o cadastro no Google Meu Negócio (Google Business Profile) — principal fator para
   aparecer em buscas locais como "garçom de festa zona oeste"
 - Trocar senha inicial do painel (Configurações) p/ uma só da Lenice
-- Gerar QR Code do PIX (chave: lenicebraga@hotmail.com) e colocar na seção de pagamento
+- QR Code do PIX já está no site (chave CPF 101011487-55, arquivo qrcode-pix.png)
 - Cópia do projeto fora deste repo (ex: Dropbox) já foi apagada — manter tudo só no Git/GitHub
 
 ## Contato
