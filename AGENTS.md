@@ -46,7 +46,7 @@
 - `README.md` — instruções de deploy e edição para a Lenice
 
 ## Configurações padrão (tabela configuracoes)
-- WhatsApp: 5521985412860 | PIX: lenicebraga@hotmail.com | Email: lenicebraga@hotmail.com
+- WhatsApp: 5521985412860 | PIX: 101011487-55 (chave CPF da Lenice) | Email: lenicebraga@hotmail.com
 - max_eventos_por_dia: 5 | preços dos serviços e estações | equipe_base_local: Av. do Contorno, 129
 - Editáveis pelo painel (Configurações) ou direto no Supabase.
 
@@ -74,6 +74,15 @@
 - Trocar senha inicial do painel (Configurações) p/ uma só da Lenice
 - QR Code do PIX já está no site (chave CPF 101011487-55, arquivo qrcode-pix.png)
 - Cópia do projeto fora deste repo (ex: Dropbox) já foi apagada — manter tudo só no Git/GitHub
+
+## Memória da conversa (SEMPRE)
+- A "última conversa" completa fica em:
+  `C:\Users\arnal\OneDrive\Documentos\conversa-lm-artes-festas\ultima-conversa.md`
+  (pasta **fora** deste repo, porque contém senhas — NUNCA commitar/espelhar no GitHub)
+- **Início de sessão** (retomada): ler esse arquivo se o usuário pedir para retomar do zero.
+- **Fim de CADA sessão/conversa**: atualizar esse arquivo com o estado final —
+  o que foi feito, configs atuais, bugs corrigidos, pendências e o próximo passo.
+  Manter este `AGENTS.md` e o `README.md` do site-netlify também sempre coerentes.
 
 ## Contato
 - Cliente: Lenice | WhatsApp: 21985412860 | Email: lenicebraga@hotmail.com
