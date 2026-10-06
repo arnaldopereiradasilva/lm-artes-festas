@@ -63,8 +63,20 @@
    originais (4 avaliações, 13 eventos, 4 estações) foi feito via script. Adicionar/remover fotos
    pelo painel atualiza o site na hora. Nomes de arquivo no storage não podem ter acento/ç
    ("Invalid key" do Supabase) — isso inclui uploads futuros pelo painel.
+6. **Nunca amarrar clique/zoom à chamada de rede** (06/10/2026): o `onclick` dos carrosséis era
+   registrado só depois do `await` da API; se o Supabase falhasse, o HTML estático continuava
+   aparecendo e o zoom "sumia" sem nenhum erro visível. Agora `ativarZoomSlider()` liga o handler
+   **antes** de buscar as fotos (lm-script.js). Teste de regressão: derrubar a API e ver se o clique
+   ainda amplia.
+7. **Projeto free do Supabase pausa após ~7 dias sem atividade** e o hostname fica em NXDOMAIN
+   (o site inteiro fica sem dados e o painel não loga). Diagnosticar com:
+   `https://dns.google/resolve?name=<ref>.supabase.co&type=A` → `Status:3` = pausado/sem DNS.
+   Status global do Supabase: https://status.supabase.com
 
 ## Pendente / Próximos passos
+- **🚨 Restaurar o projeto Supabase se o hostname estiver em NXDOMAIN** (dashboard → *Restore project*)
+  — enquanto isso galerias/promoções/preços/PIX ficam nos valores estáticos do HTML e o login do
+  painel falha. Ver seção 0.1 da última conversa.
 - Comprar domínio (ex: lmartesfestas.com.br) e configurar no Netlify
   - **Ao configurar o domínio, atualizar as URLs** (canonical, og:, twitter:, sitemap.xml, robots.txt)
     em `site-netlify/index.html`, `site-netlify/sitemap.xml` e `site-netlify/robots.txt`

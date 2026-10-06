@@ -190,18 +190,40 @@ function salvarCarouselOriginal() {
     }
 }
 
+// Zoom no clique da imagem. Registrado ANTES da chamada à API para que
+// continue funcionando mesmo se o Supabase estiver fora do ar (as imagens
+// estáticas do HTML continuam clicáveis).
+function ativarZoomSlider(slider) {
+    if (!slider) return;
+    slider.style.cursor = 'zoom-in';
+    slider.onclick = function (e) {
+        var alvo = e.target;
+        if (alvo && alvo.tagName === 'IMG' && alvo.src) {
+            e.preventDefault();
+            e.stopPropagation();
+            abrirZoomPromo(alvo.src, alvo.alt);
+        }
+    };
+}
+
+var _idsCarrossel = {
+    avaliacoes: 'avalSlider',
+    eventos: 'eventosSlider',
+    estacoes: 'estacoesSlider'
+};
+
 async function carregarCarrosseis() {
     if (_carregandoCarrosseis) return;
     _carregandoCarrosseis = true;
     console.log('Carregando carrosseis do servidor...');
-    try {
-        var tipos = ['avaliacoes', 'eventos', 'estacoes'];
-        var sliderIds = {
-            avaliacoes: 'avalSlider',
-            eventos: 'eventosSlider',
-            estacoes: 'estacoesSlider'
-        };
+    var tipos = ['avaliacoes', 'eventos', 'estacoes'];
+    var sliderIds = _idsCarrossel;
 
+    for (var z = 0; z < tipos.length; z++) {
+        ativarZoomSlider(document.getElementById(sliderIds[tipos[z]]));
+    }
+
+    try {
         for (var t = 0; t < tipos.length; t++) {
             var tipo = tipos[t];
             try {
@@ -217,15 +239,7 @@ async function carregarCarrosseis() {
                             slider.appendChild(img);
                         }
                     }
-                    slider.style.cursor = 'zoom-in';
-                    slider.onclick = function (e) {
-                        var alvo = e.target;
-                        if (alvo && alvo.tagName === 'IMG' && alvo.src) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            abrirZoomPromo(alvo.src, alvo.alt);
-                        }
-                    };
+                    ativarZoomSlider(slider);
                 }
             } catch (e) {
                 console.error('Erro ao carregar fotos ' + tipo + ':', e);
