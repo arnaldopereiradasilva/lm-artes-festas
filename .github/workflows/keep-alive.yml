@@ -1,0 +1,21 @@
+name: Keep Supabase alive
+
+# Evita que o projeto FREE do Supabase pouse sozinho depois de 7 dias
+# sem atividade. A chamada de leitura abaixo gera "atividade" na conta.
+# (A chave usada é a PÚBLICA/publishable, que já está no config.js do site.)
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'   # toda segunda-feira às 12:00 UTC (09:00 em Brasília)
+  workflow_dispatch:       # permite rodar manualmente pela aba Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping na API do Supabase
+        run: |
+          curl -sS -o /dev/null -w 'supabase HTTP:%{http_code}\n' \
+            'https://njhqturaptmjglzejbla.supabase.co/rest/v1/configuracoes?select=chave&limit=25' \
+            -H 'apikey: sb_publishable_SXjPJvmihqe5203gzoFsMw_BU0x9nWs' \
+            -H 'Authorization: Bearer sb_publishable_SXjPJvmihqe5203gzoFsMw_BU0x9nWs'
