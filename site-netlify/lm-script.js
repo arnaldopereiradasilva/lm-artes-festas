@@ -137,6 +137,7 @@ async function carregarConfiguracoes() {
         numeroWhatsApp = config.whatsapp || '5521985412860';
 
         atualizarChavePix();
+        atualizarPrecosTela();
 
         var elFone = document.getElementById('footer-fone');
         if (elFone) elFone.textContent = '📱 ' + formatarFone(numeroWhatsApp);
@@ -369,7 +370,7 @@ function atualizarPrecosTela() {
         if (precos[servico] !== undefined) {
             var elemento = document.querySelector('[data-servico="' + servico + '"] .servico-preco');
             if (elemento) {
-                elemento.textContent = 'R$ ' + precos[servico].toFixed(2).replace('.', ',') + '/evento';
+                elemento.textContent = 'R$ ' + precos[servico].toFixed(2).replace('.', ',') + ' / evento';
             }
         }
     });

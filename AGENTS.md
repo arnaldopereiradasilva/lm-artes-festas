@@ -74,9 +74,14 @@
    Status global do Supabase: https://status.supabase.com
 
 ## Pendente / Próximos passos
-- **🚨 Restaurar o projeto Supabase se o hostname estiver em NXDOMAIN** (dashboard → *Restore project*)
-  — enquanto isso galerias/promoções/preços/PIX ficam nos valores estáticos do HTML e o login do
-  painel falha. Ver seção 0.1 da última conversa.
+- **Se o hostname do Supabase ficar em NXDOMAIN = projeto free pausado** (7 dias sem atividade).
+  Restaurar no dashboard Supabase (**Resume project**), como feito em 06/10/2026. Checklist de
+  diagnóstico: `https://dns.google/resolve?name=<ref>.supabase.co&type=A` → `Status:3` = pausado;
+  site fica com fotos/promoções/preços estáticos e painel não loga. (Ver seção 0.1 da última conversa.)
+- **FEITO (06/10/2026):** `atualizarPrecosTela()` agora é chamado em `carregarConfiguracoes()` →
+  preços dos cards do site vêm do banco (Painel → Configurações reflete na hora).
+- **FEITO (06/10/2026):** keep-alive do projeto free via GitHub Actions
+  (`.github/workflows/keep-alive.yml`, toda segunda-feira) para não pausar de novo.
 - Comprar domínio (ex: lmartesfestas.com.br) e configurar no Netlify
   - **Ao configurar o domínio, atualizar as URLs** (canonical, og:, twitter:, sitemap.xml, robots.txt)
     em `site-netlify/index.html`, `site-netlify/sitemap.xml` e `site-netlify/robots.txt`
