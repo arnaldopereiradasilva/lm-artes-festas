@@ -221,6 +221,8 @@ async function carregarCarrosseis() {
                     slider.onclick = function (e) {
                         var alvo = e.target;
                         if (alvo && alvo.tagName === 'IMG' && alvo.src) {
+                            e.preventDefault();
+                            e.stopPropagation();
                             abrirZoomPromo(alvo.src, alvo.alt);
                         }
                     };
@@ -494,7 +496,11 @@ async function carregarPromocoes() {
             var slide = e.target.closest ? e.target.closest('.promo-slide') : null;
             if (!slide) return;
             var img = slide.querySelector('img');
-            if (img && img.src) abrirZoomPromo(img.src, img.alt);
+            if (img && img.src) {
+                e.preventDefault();
+                e.stopPropagation();
+                abrirZoomPromo(img.src, img.alt);
+            }
         };
 
         setTimeout(function () {
